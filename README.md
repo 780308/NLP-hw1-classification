@@ -95,3 +95,18 @@ python cnn_architecture_experiments.py audit
 正式运行的检查点保存在忽略的 `outputs/cnn_architecture/CNN-ARCH-001/`；配置、逐轮数据和预测归档到 `report/cnn_architecture/`。
 
 九次架构训练已完成，按三种子内部验证选定 **CNN-ARCH-C**：79.83% ± 2.84%，最差种子 77.50%。详见[架构汇总与曲线](report/cnn_architecture/architecture_summary.md)。本阶段没有运行 CNN 最终测试。
+
+## CNN 训练策略比较：CNN-TRAIN-001
+
+固定 CNN-ARCH-C 与 `REP-006-FUSION`，直接引用既有 CNN-ARCH-C 运行作为 T0；新增 T1 原图水平镜像后重新提取手工特征、T2 融合层后的 Dropout2d(0.10)、T3 余弦学习率三种单独干预。仅用 `data/train` 的既有内部划分，`data/val` 不参与。
+
+```bash
+python cnn_training_strategy_experiments.py smoke
+python cnn_training_strategy_experiments.py build-flip-cache
+python cnn_training_strategy_experiments.py validate-flip-cache
+python cnn_training_strategy_experiments.py run-all
+python cnn_training_strategy_experiments.py summarize
+python cnn_training_strategy_experiments.py audit
+```
+
+镜像特征缓存保存在忽略的 `outputs/stage1/cache/handcrafted128_flipped/`；正式运行检查点保存在 `outputs/cnn_training/CNN-TRAIN-001/`；小型记录归档在 `report/cnn_training/`。
