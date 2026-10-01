@@ -31,7 +31,7 @@ from training import write_json
 
 OUTPUT = ROOT / "outputs/stage1"
 REPORT = ROOT / "report/stage1"
-ARTIFACT_NAMES = ("config.json", "normalization.json", "metrics.json", "history.csv", "train_summary.json")
+ARTIFACT_NAMES = ("config.json", "normalization.json", "metrics.json", "history.csv", "train_summary.json", "predictions.csv")
 RESULT_COLUMNS = (
     "batch_id", "run_id", "representation_id", "probe", "seed", "channels", "spatial_h",
     "spatial_w", "flatten_dim", "parameter_count", "validation_accuracy", "cat_accuracy",

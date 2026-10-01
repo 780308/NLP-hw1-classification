@@ -86,3 +86,9 @@ python evaluate.py --checkpoint outputs/dnn/best_model.pt --data-dir data/val
 ## 7. 问题与后续反思
 
 原始数据使用文件名标注而非类别子目录，因此实现了明确的文件名解析和固定类别映射。DNN 在测试集上的狗类准确率为 54.40%，是当前最需解释的误差现象；后续可结合 CNN、RNN 的真实结果判断局部空间特征或序列建模是否改善这一问题。后续章节只追加可追溯的实测值，不回填假设成绩。
+
+## 8. Stage I：手工空间表示扩展（持续更新）
+
+此扩展遵循 [`STAGE1-GUIDELINES.md`](../STAGE1-GUIDELINES.md)，不取代上述原始图像的 DNN/CNN/RNN 主实验。仅用 `data/train` 进行内部验证；保留测试集未用于 Stage I 的表示选择。完整自动生成表格、配置和决策依据见 [`stage1/stage1_summary.md`](stage1/stage1_summary.md)。
+
+S1A-001 的固定 MLP 在种子 42 的内部验证上，原始像素对照为 64.00%，HOG+LBP 为 76.00%，条件触发的 HOG+LBP+HSV+RootSIFT 融合为 78.50%。融合与 HOG+LBP 进入三种子确认，结论待 S1B-001 完成后更新。RootSIFT 和 RootSIFT+LBP 的线性探针曾报告未收敛，相关数值只作辅助诊断。

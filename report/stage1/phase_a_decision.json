@@ -1,0 +1,38 @@
+{
+  "batch_id": "S1A-001",
+  "lbp_removed": false,
+  "hsv_retained": true,
+  "hsv_accuracy_gain": 0.010000000000000009,
+  "hsv_min_class_accuracy_gain": 0.040000000000000036,
+  "hog_family_best": "REP-002-HOG-LBP",
+  "rootsift_family_best": "REP-005-ROOTSIFT-LBP-HSV",
+  "fusion_triggered": true,
+  "fusion_pending": false,
+  "fusion_groups": [
+    "hog",
+    "lbp",
+    "hsv",
+    "rootsift"
+  ],
+  "prediction_overlap": {
+    "A": "REP-002-HOG-LBP",
+    "B": "REP-005-ROOTSIFT-LBP-HSV",
+    "A_correct_B_wrong": 22,
+    "A_wrong_B_correct": 18,
+    "both_correct": 130,
+    "both_wrong": 30,
+    "prediction_disagreement_rate": 0.2
+  },
+  "selected_for_phase_b": [
+    "REP-006-FUSION",
+    "REP-002-HOG-LBP"
+  ],
+  "phase_a_accuracy": {
+    "REP-001-HOG": 0.74,
+    "REP-002-HOG-LBP": 0.76,
+    "REP-003-ROOTSIFT": 0.71,
+    "REP-004-ROOTSIFT-LBP": 0.73,
+    "REP-005-ROOTSIFT-LBP-HSV": 0.74,
+    "REP-006-FUSION": 0.785
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "experiment_id": "S1A-001-REP-003-ROOTSIFT-MLP-seed42",
+  "batch_id": "S1A-001",
+  "representation_id": "REP-003-ROOTSIFT",
+  "probe": "MLP",
+  "seed": 42,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "representation_shape": [
+    128,
+    7,
+    7
+  ],
+  "flatten_dim": 6272,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "code_commit": "137f7502f421dcc680f4f442220e6b5b105801d9",
+  "parameter_count": 1622466,
+  "best_epoch": 19,
+  "train_accuracy": 0.7311111111111112,
+  "validation_accuracy": 0.71,
+  "cat_accuracy": 0.67,
+  "dog_accuracy": 0.75,
+  "balanced_accuracy": 0.71,
+  "macro_f1": 0.7095352564102564,
+  "confusion_matrix": [
+    [
+      67,
+      33
+    ],
+    [
+      25,
+      75
+    ]
+  ],
+  "validation_loss": 0.566591591835022,
+  "fit_seconds": 9.467970130000026,
+  "status": "complete"
+}

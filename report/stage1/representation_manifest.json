@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "source_dataset": "data/train",
+  "handcrafted_cache_config_sha256": "b2fd6104a9c7de181ba9bd16c1a5550ccd3ea83532e6f5b04e31be0a87c93c0f",
+  "handcrafted_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "handcrafted_cache_bytes": 74480128,
+  "handcrafted_extraction_seconds": 48.37453890699999,
+  "raw_cache_config_sha256": "d38a49b4f2ec8cd43d6b5d58d6623fcd9db83164305daf65ebcf3e473392f864",
+  "raw_cache_manifest_sha256": "91b6ccd974499b4af7622e25a319eff681394fa277e83adb146344a3e75cf6ef",
+  "channel_groups": {
+    "hog": [
+      0,
+      36
+    ],
+    "lbp": [
+      36,
+      46
+    ],
+    "hsv": [
+      46,
+      62
+    ],
+    "rootsift": [
+      62,
+      190
+    ]
+  },
+  "representations": [
+    {
+      "id": "REP-000-RAW64",
+      "shape": [
+        3,
+        64,
+        64
+      ],
+      "flatten_dim": 12288,
+      "groups": [
+        "raw RGB"
+      ]
+    },
+    {
+      "id": "REP-001-HOG",
+      "shape": [
+        36,
+        7,
+        7
+      ],
+      "flatten_dim": 1764,
+      "groups": [
+        "hog"
+      ]
+    },
+    {
+      "id": "REP-002-HOG-LBP",
+      "shape": [
+        46,
+        7,
+        7
+      ],
+      "flatten_dim": 2254,
+      "groups": [
+        "hog",
+        "lbp"
+      ]
+    },
+    {
+      "id": "REP-003-ROOTSIFT",
+      "shape": [
+        128,
+        7,
+        7
+      ],
+      "flatten_dim": 6272,
+      "groups": [
+        "rootsift"
+      ]
+    },
+    {
+      "id": "REP-004-ROOTSIFT-LBP",
+      "shape": [
+        138,
+        7,
+        7
+      ],
+      "flatten_dim": 6762,
+      "groups": [
+        "rootsift",
+        "lbp"
+      ]
+    },
+    {
+      "id": "REP-005-ROOTSIFT-LBP-HSV",
+      "shape": [
+        154,
+        7,
+        7
+      ],
+      "flatten_dim": 7546,
+      "groups": [
+        "rootsift",
+        "lbp",
+        "hsv"
+      ]
+    }
+  ],
+  "preprocessing": {
+    "aspect_ratio_preserved": true,
+    "padding": "reflect",
+    "random_augmentation": false
+  },
+  "dependency_versions": {
+    "numpy": "2.5.2",
+    "Pillow": "12.3.0",
+    "scikit-image": "0.26.0",
+    "opencv-python-headless": "5.0.0.93"
+  },
+  "code_commit": "137f7502f421dcc680f4f442220e6b5b105801d9"
+}

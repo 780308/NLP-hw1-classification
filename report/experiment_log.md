@@ -7,6 +7,9 @@
 | 编号 | 日期 | 模型与变更 | 内部验证准确率 | 保留测试准确率 | 本机输出 | Git 记录 |
 |---|---|---|---:|---:|---|---|
 | DNN-001 | 2026-09-30 | 64×64 两隐层 MLP 基线 | 69.50% | 62.60% | `outputs/dnn/` | 本次初始提交，消息包含 `DNN-001` |
+| CTRL-LBOX64 | 2026-10-01 | 保长宽比、反射填充的 DNN 预处理对照 | 65.00% | 未测 | `outputs/stage1/CTRL-LBOX64/` | `S1A-001` 结果提交 |
+| S1A-001 | 2026-10-01 | 6 种初始表示及条件融合，固定 LinearSVC/MLP | 最佳 78.50%（融合） | 未测 | `outputs/stage1/S1A-001/` | 本次提交，消息包含 `S1A-001` |
+| S1B-001 | 待实验 | 两种表示与原始像素对照的三种子确认 | 待测 | 不使用 | 待定 | 待提交 |
 | CNN-001 | 待实验 | 自建 CNN 主实验 | 待测 | 待测 | 待定 | 待提交 |
 | RNN-001 | 待实验 | 按行序列的 `nn.RNN` 主实验 | 待测 | 待测 | 待定 | 待提交 |
 
@@ -20,3 +23,10 @@
 - **复现命令**：`python train.py --model dnn --data-dir data`；`python evaluate.py --checkpoint outputs/dnn/best_model.pt --data-dir data/val`。
 - **已提交的小型产物**：[`experiments/dnn-001/`](experiments/dnn-001/)；图在 [`figures/`](figures/)；分析见[总报告](experiment_report.md)。本机检查点为 `outputs/dnn/best_model.pt`，SHA-256 为 `8a186d96177ef096bed098810f46ae1a0d38ba882ee9f6b83da580ca96c90295`。
 - **状态与限制**：完成。测试结果已被查看，后续 DNN 调参须只用内部验证；若再次测同一批 500 张图，应明确标为重复使用的测试集结果。
+
+## Stage I：手工空间表示
+
+- **协议与实现**：按根目录 `STAGE1-GUIDELINES.md` 执行，代码版本从 `137f750` 开始；`data/train` 的 2000 张图生成 `[2000,190,7,7]` 手工特征库，种子 42 划分与 DNN-001 完全一致。原始缓存约 74.5 MB，保留在 `outputs/stage1/`。
+- **预处理对照**：CTRL-LBOX64 内部验证 65.00%，猫 67.00%，狗 63.00%；相比 DNN-001 同时改变了长宽比处理与 EXIF 方向校正，不能单独归因于几何畸变。
+- **S1A-001**：原始像素 MLP 64.00%，HOG 74.00%，HOG+LBP 76.00%，RootSIFT 71.00%，RootSIFT+LBP 73.00%，RootSIFT+LBP+HSV 74.00%；按预设条件增加的融合为 78.50%。后续仅确认融合与 HOG+LBP 两种候选。完整线性探针、逐类准确率、配置和逐轮指标见 [`stage1/`](stage1/)。
+- **限制**：以上均是种子 42 的 200 张内部验证图，不是 500 张保留测试图；RootSIFT 与 RootSIFT+LBP 的 LinearSVC 在运行时发出未收敛警告，其线性诊断值需谨慎解释。

@@ -111,6 +111,7 @@ def run_linear(
     started = time.perf_counter()
     classifier.fit(x_train, y_train)
     fit_seconds = time.perf_counter() - started
+    iterations = int(np.max(classifier.n_iter_))
     predictions = classifier.predict(x_validation)
     margins = classifier.decision_function(x_validation)
     metrics = {
@@ -120,6 +121,8 @@ def run_linear(
         "train_accuracy": float((classifier.predict(x_train) == y_train).mean()),
         **_metrics(y_validation, predictions),
         "fit_seconds": fit_seconds,
+        "iterations": iterations,
+        "converged": iterations < 10000,
         "status": "complete",
     }
     _write_predictions(output_dir / "predictions.csv", split["internal_validation"], y_validation, predictions, margins)

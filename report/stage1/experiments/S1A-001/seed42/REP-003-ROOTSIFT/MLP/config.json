@@ -1,0 +1,30 @@
+{
+  "experiment_id": "S1A-001-REP-003-ROOTSIFT-MLP-seed42",
+  "batch_id": "S1A-001",
+  "representation_id": "REP-003-ROOTSIFT",
+  "probe": "MLP",
+  "seed": 42,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "representation_shape": [
+    128,
+    7,
+    7
+  ],
+  "flatten_dim": 6272,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "code_commit": "137f7502f421dcc680f4f442220e6b5b105801d9",
+  "architecture": "Flatten -> 6272 -> 256 -> 64 -> 2",
+  "dropout": 0.3,
+  "loss": "CrossEntropyLoss",
+  "optimizer": "AdamW",
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "epochs_max": 30,
+  "early_stopping_patience": 5,
+  "checkpoint_selection": "highest validation accuracy; tie lower validation loss",
+  "train_augmentation": "none",
+  "device": "cuda"
+}
