@@ -21,6 +21,7 @@ from models.cnn_architecture import ARCHITECTURE_IDS, ArchitectureCNN
 from representations.cache import HANDCRAFTED, ROOT, current_commit, sha256_file, validate_cache
 from representations.probes import _metrics
 from training import run_epoch, seed_everything, select_device, write_history, write_json
+from matplotlib import pyplot as plt
 
 BATCH_ID = "CNN-ARCH-001"
 SEEDS = (42, 123, 2026)
@@ -312,22 +313,22 @@ def select_architecture(grouped: dict) -> dict:
     gap = top["mean_validation_accuracy"] - second["mean_validation_accuracy"]
     if gap >= 0.0075 - 1e-12:
         selected = top
-        reason = "Top mean accuracy exceeds runner-up by at least 0.75 percentage point."
+        reason = "最高均值比第二名高至少 0.75 个百分点。"
     else:
         worst_gap = top["worst_seed_accuracy"] - second["worst_seed_accuracy"]
         if abs(worst_gap) >= 0.01 - 1e-12:
             selected = top if worst_gap > 0 else second
-            reason = "Mean gap below 0.75 point; worst-seed accuracy differs by at least 1.0 point."
+            reason = "均值差低于 0.75 个百分点，最差种子准确率差至少 1.0 个百分点。"
         else:
             smaller, larger = sorted((top, second), key=lambda item: (item["parameter_count"], item["architecture_id"]))
             smaller_balance = min(smaller["mean_cat_accuracy"], smaller["mean_dog_accuracy"])
             larger_balance = min(larger["mean_cat_accuracy"], larger["mean_dog_accuracy"])
             if larger_balance - smaller_balance >= 0.02 - 1e-12:
                 selected = larger
-                reason = "Mean and worst-seed gaps are small; larger model improves minimum mean class accuracy by at least 2.0 points."
+                reason = "均值及最差种子差距较小；较大模型的两类平均准确率下界高至少 2.0 个百分点。"
             else:
                 selected = smaller
-                reason = "Mean and worst-seed gaps are small; fewer trainable parameters decide."
+                reason = "均值及最差种子差距较小，按可训练参数量较少者选择。"
     return {"selected_architecture": selected["architecture_id"],
             "top_two_mean_accuracy_gap": gap, "selection_reason": reason,
             "ranked_by_mean_accuracy": [item["architecture_id"] for item in ranked]}
@@ -335,6 +336,32 @@ def select_architecture(grouped: dict) -> dict:
 
 def pct(value: float) -> str:
     return f"{value * 100:.2f}%"
+
+
+def plot_curves() -> None:
+    figure, axes = plt.subplots(3, 2, figsize=(12, 10), sharex=False)
+    colors = {42: "#1f77b4", 123: "#ff7f0e", 2026: "#2ca02c"}
+    for row_index, architecture_id in enumerate(ARCHITECTURE_IDS):
+        for seed in SEEDS:
+            _, history, _ = run_record(architecture_id, seed)
+            epochs = [int(item["epoch"]) for item in history]
+            color = colors[seed]
+            for column, metric in enumerate(("accuracy", "loss")):
+                axis = axes[row_index, column]
+                axis.plot(epochs, [float(item[f"train_{metric}"]) for item in history],
+                          color=color, linestyle="-", linewidth=1.3, label=f"{seed} train")
+                axis.plot(epochs, [float(item[f"validation_{metric}"]) for item in history],
+                          color=color, linestyle="--", linewidth=1.3, label=f"{seed} validation")
+        axes[row_index, 0].set_ylabel(f"{architecture_id}\nAccuracy")
+        axes[row_index, 1].set_ylabel(f"{architecture_id}\nCross-entropy")
+        for axis in axes[row_index]:
+            axis.set_xlabel("Epoch")
+            axis.grid(alpha=0.25)
+            axis.legend(fontsize=7, ncol=2)
+    figure.suptitle("CNN-ARCH-001: train and internal-validation trajectories")
+    figure.tight_layout()
+    figure.savefig(REPORT_ROOT / "training_curves.png", dpi=150)
+    plt.close(figure)
 
 
 def summarize() -> None:
@@ -346,6 +373,7 @@ def summarize() -> None:
         writer.writerows(rows)
     grouped = aggregate(rows)
     selection = select_architecture(grouped)
+    plot_curves()
     dnn = json.loads((ROOT / "report/dnn_architecture/architecture_decision.json").read_text(encoding="utf-8"))["models"]["DNN-ARCH-C"]
     write_json(REPORT_ROOT / "architecture_decision.json", {
         "batch_id": BATCH_ID, "models": grouped, **selection,
@@ -396,14 +424,29 @@ def summarize() -> None:
                      f"{pct(row['final_train_accuracy'])}/{pct(float(final['validation_accuracy']))} | "
                      f"{row['validation_loss']:.4f}→{float(final['validation_loss']):.4f} ({loss_delta:+.4f}) | {signal} |")
     lines += ["", "上述曲线迹象只描述已记录轮次，不把训练准确率高于验证准确率本身当作过拟合证明。", ""]
+    lines += ["![三架构三种子训练与内部验证曲线](training_curves.png)", ""]
     for architecture_id in ARCHITECTURE_IDS:
         item = grouped[architecture_id]
         bias = abs(item["mean_cat_accuracy"] - item["mean_dog_accuracy"])
         lines.append(f"{architecture_id}：猫/狗平均准确率差 {bias * 100:.2f} 个百分点"
                      + ("，存在明显类别偏向。" if bias >= 0.10 else "，未达到 10 个百分点的类别偏向描述阈值。"))
+    selected_id = selection["selected_architecture"]
+    selected_histories = [run_record(selected_id, seed)[1] for seed in SEEDS]
+    late_val_drop = sum(
+        max(float(item["validation_accuracy"]) for item in history) - float(history[-1]["validation_accuracy"]) >= 0.03
+        for history in selected_histories
+    )
+    late_loss_rise = sum(
+        float(history[-1]["validation_loss"]) - min(float(item["validation_loss"]) for item in history) >= 0.10
+        for history in selected_histories
+    )
+    high_train = sum(float(history[-1]["train_accuracy"]) >= 0.90 for history in selected_histories)
+    fastest = min(grouped.values(), key=lambda item: item["mean_fit_seconds"])
     lines += ["", "## 固定选择与 DNN 参照", "",
-        f"按预设规则选定 **{selection['selected_architecture']}**。{selection['selection_reason']} 前两名平均准确率相差 {selection['top_two_mean_accuracy_gap'] * 100:.2f} 个百分点。", "",
-        f"已冻结的 DNN-ARCH-C 内部验证参照为 {pct(dnn['mean_validation_accuracy'])} ± {pct(dnn['sample_std_validation_accuracy'])}。它仅作诊断对照，不参与 CNN 选择；两类模型的学习率及训练协议不同。", "",
+        f"按预设规则选定 **{selection['selected_architecture']}**。{selection['selection_reason']}前两名平均准确率相差 {selection['top_two_mean_accuracy_gap'] * 100:.2f} 个百分点。", "",
+        f"已冻结的 DNN-ARCH-C 内部验证参照为 {pct(dnn['mean_validation_accuracy'])} ± {pct(dnn['sample_std_validation_accuracy'])}。所选 CNN 均值高 {(grouped[selected_id]['mean_validation_accuracy'] - dnn['mean_validation_accuracy']) * 100:.2f} 个百分点；这只是内部划分的描述性差异，不参与 CNN 选择，也不代表最终测试优势。两类模型的学习率及训练协议不同。", "",
+        f"所选架构平均训练 {grouped[selected_id]['mean_fit_seconds']:.2f} 秒；最快的 {fastest['architecture_id']} 为 {fastest['mean_fit_seconds']:.2f} 秒。参数量不能单独代表这组三分支卷积的实际运行耗时。", "",
+        f"所选架构在 {high_train}/3 个种子的最后训练准确率达到至少 90%，在 {late_val_drop}/3 个种子的最后验证准确率比此前峰值低至少 3 个百分点，在 {late_loss_rise}/3 个种子的最后验证损失比此前最低值高至少 0.10。训练端未见明显欠拟合；这些后期差距为单独评估训练策略提供依据，但本阶段不预设策略一定能提高保留集表现。", "",
         "本阶段只选 CNN 架构。没有运行训练策略搜索、最终全量 CNN 训练或 `data/val` 评估。若之后需要策略优化，应另立实验编号及测试前协议。", "",
     ]
     (REPORT_ROOT / "architecture_summary.md").write_text("\n".join(lines), encoding="utf-8")
@@ -435,6 +478,10 @@ def audit() -> None:
                     or config["max_epochs"] != 30 or config["early_stopping_patience"] != 6
                     or config["loss"] != "CrossEntropyLoss" or config["augmentation"] != "none"):
                 raise AssertionError(f"Protocol mismatch: {directory}")
+            expected_parameters = sum(parameter.numel() for parameter in ArchitectureCNN(architecture_id).parameters()
+                                      if parameter.requires_grad)
+            if metrics["parameter_count"] != expected_parameters or config["parameter_count"] != expected_parameters:
+                raise AssertionError(f"Parameter count mismatch: {directory}")
             if (normal["split_sha256"] != split["sha256"]
                     or not np.array_equal(np.asarray(normal["mean"], dtype=np.float32), prepared[seed]["mean"])
                     or not np.array_equal(np.asarray(normal["std"], dtype=np.float32), prepared[seed]["std"])):
@@ -444,18 +491,32 @@ def audit() -> None:
             if len(predictions) != 200 or [row["filename"] for row in predictions] != split["internal_validation"]:
                 raise AssertionError(f"Prediction filenames mismatch: {directory}")
             matrix = [[0, 0], [0, 0]]
+            losses = []
             for row in predictions:
                 true, predicted = int(row["true_label"]), int(row["predicted_label"])
+                logits = np.asarray([float(row["logit_cat"]), float(row["logit_dog"])], dtype=np.float64)
+                shifted = logits - logits.max()
+                probabilities = np.exp(shifted) / np.exp(shifted).sum()
                 if (true != (0 if row["filename"].startswith("cat.") else 1)
                         or predicted not in (0, 1) or int(row["correct"]) != int(true == predicted)
-                        or abs(float(row["prob_cat"]) + float(row["prob_dog"]) - 1) > 1e-6):
+                        or abs(float(row["prob_cat"]) - probabilities[0]) > 1e-6
+                        or abs(float(row["prob_dog"]) - probabilities[1]) > 1e-6):
                     raise AssertionError(f"Invalid prediction: {directory}")
+                losses.append(-np.log(probabilities[true]))
                 matrix[true][predicted] += 1
             if (sum(matrix[0]) != 100 or sum(matrix[1]) != 100
                     or matrix != metrics["confusion_matrix"]
                     or abs((matrix[0][0] + matrix[1][1]) / 200 - metrics["validation_accuracy"]) > 1e-12
                     or abs(float(history[metrics["best_epoch"] - 1]["validation_accuracy"]) - metrics["validation_accuracy"]) > 1e-12):
                 raise AssertionError(f"Prediction or history metrics mismatch: {directory}")
+            f1_cat = 2 * matrix[0][0] / (2 * matrix[0][0] + matrix[0][1] + matrix[1][0])
+            f1_dog = 2 * matrix[1][1] / (2 * matrix[1][1] + matrix[0][1] + matrix[1][0])
+            if (abs(matrix[0][0] / 100 - metrics["cat_accuracy"]) > 1e-12
+                    or abs(matrix[1][1] / 100 - metrics["dog_accuracy"]) > 1e-12
+                    or abs((metrics["cat_accuracy"] + metrics["dog_accuracy"]) / 2 - metrics["balanced_accuracy"]) > 1e-12
+                    or abs((f1_cat + f1_dog) / 2 - metrics["macro_f1"]) > 1e-12
+                    or abs(float(np.mean(losses)) - metrics["validation_loss"]) > 1e-6):
+                raise AssertionError(f"Class-wise, F1 or loss metric mismatch: {directory}")
     print("Audited nine CNN runs, fixed splits/normalization/protocol and 1,800 internal-validation predictions", flush=True)
 
 

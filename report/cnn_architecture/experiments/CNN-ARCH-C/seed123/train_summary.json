@@ -1,0 +1,26 @@
+{
+  "architecture_id": "CNN-ARCH-C",
+  "seed": 123,
+  "epochs_run": 10,
+  "best_epoch": 7,
+  "parameter_count": 89794,
+  "fit_seconds": 12.135290943000001,
+  "best_validation_metrics": {
+    "loss": 0.4043092143535614,
+    "accuracy": 0.83,
+    "cat_accuracy": 0.92,
+    "dog_accuracy": 0.74,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        92,
+        8
+      ],
+      [
+        26,
+        74
+      ]
+    ]
+  },
+  "device": "cuda"
+}

@@ -1,0 +1,72 @@
+{
+  "batch_id": "CNN-ARCH-001",
+  "models": {
+    "CNN-ARCH-A": {
+      "architecture_id": "CNN-ARCH-A",
+      "parameter_count": 123522,
+      "mean_validation_accuracy": 0.79,
+      "sample_std_validation_accuracy": 0.024999999999999967,
+      "worst_seed_accuracy": 0.765,
+      "mean_cat_accuracy": 0.8533333333333334,
+      "mean_dog_accuracy": 0.7266666666666667,
+      "mean_balanced_accuracy": 0.79,
+      "mean_macro_f1": 0.7885073079102058,
+      "median_best_epoch": 7,
+      "mean_fit_seconds": 5.653322317666664,
+      "seed_accuracies": {
+        "42": 0.79,
+        "123": 0.815,
+        "2026": 0.765
+      }
+    },
+    "CNN-ARCH-B": {
+      "architecture_id": "CNN-ARCH-B",
+      "parameter_count": 168962,
+      "mean_validation_accuracy": 0.785,
+      "sample_std_validation_accuracy": 0.02999999999999997,
+      "worst_seed_accuracy": 0.755,
+      "mean_cat_accuracy": 0.85,
+      "mean_dog_accuracy": 0.72,
+      "mean_balanced_accuracy": 0.785,
+      "mean_macro_f1": 0.7833427388099693,
+      "median_best_epoch": 6,
+      "mean_fit_seconds": 6.961772644999996,
+      "seed_accuracies": {
+        "42": 0.755,
+        "123": 0.815,
+        "2026": 0.785
+      }
+    },
+    "CNN-ARCH-C": {
+      "architecture_id": "CNN-ARCH-C",
+      "parameter_count": 89794,
+      "mean_validation_accuracy": 0.7983333333333333,
+      "sample_std_validation_accuracy": 0.028431203515386597,
+      "worst_seed_accuracy": 0.775,
+      "mean_cat_accuracy": 0.8433333333333334,
+      "mean_dog_accuracy": 0.7533333333333333,
+      "mean_balanced_accuracy": 0.7983333333333333,
+      "mean_macro_f1": 0.7977906495236144,
+      "median_best_epoch": 7,
+      "mean_fit_seconds": 12.919186898666672,
+      "seed_accuracies": {
+        "42": 0.79,
+        "123": 0.83,
+        "2026": 0.775
+      }
+    }
+  },
+  "selected_architecture": "CNN-ARCH-C",
+  "top_two_mean_accuracy_gap": 0.008333333333333304,
+  "selection_reason": "最高均值比第二名高至少 0.75 个百分点。",
+  "ranked_by_mean_accuracy": [
+    "CNN-ARCH-C",
+    "CNN-ARCH-A",
+    "CNN-ARCH-B"
+  ],
+  "diagnostic_dnn_reference": {
+    "architecture_id": "DNN-ARCH-C",
+    "mean_validation_accuracy": 0.7816666666666667,
+    "sample_std_validation_accuracy": 0.012583057392117927
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "experiment_id": "CNN-ARCH-001-CNN-ARCH-A-seed123",
+  "batch_id": "CNN-ARCH-001",
+  "architecture_id": "CNN-ARCH-A",
+  "representation_id": "REP-006-FUSION",
+  "seed": 123,
+  "parameter_count": 123522,
+  "best_epoch": 6,
+  "epochs_run": 10,
+  "train_loss_at_best_epoch": 0.3284212930997213,
+  "train_accuracy_at_best_epoch": 0.8538888888888889,
+  "final_train_loss": 0.18753019147449068,
+  "final_train_accuracy": 0.9327777777777778,
+  "validation_loss": 0.43818604230880737,
+  "validation_accuracy": 0.815,
+  "cat_accuracy": 0.85,
+  "dog_accuracy": 0.78,
+  "balanced_accuracy": 0.815,
+  "macro_f1": 0.8147730970438787,
+  "confusion_matrix": [
+    [
+      85,
+      15
+    ],
+    [
+      22,
+      78
+    ]
+  ],
+  "fit_seconds": 5.140301769000004,
+  "split_sha256": "27ee1119bf3fc1ba7bedc4939eb47320edb1df91e61d8c553d049e94194d9d42",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "code_commit": "e20ce815b5e4b11c21cc49a75ecf901b408e0f3e",
+  "status": "complete"
+}

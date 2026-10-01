@@ -1,6 +1,6 @@
 # 猫狗图像分类：DNN、CNN、RNN 实验
 
-本项目按 `synopsis.txt` 实现猫狗二分类。已完成历史 DNN-001 基线和最终 DNN 实验 `DNN-FINAL-001`；CNN、RNN 尚未运行。最终 DNN 在 500 张保留评估图上准确率 **73.80%**（猫 65.60%，狗 82.00%）。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，逐步更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
+本项目按 `synopsis.txt` 实现猫狗二分类。已完成历史 DNN-001、最终 DNN 实验 `DNN-FINAL-001` 和 CNN 架构比较 `CNN-ARCH-001`；最终 CNN 与 RNN 尚未运行。最终 DNN 在 500 张保留评估图上准确率 **73.80%**（猫 65.60%，狗 82.00%）。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，逐步更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
 
 每次实验的编号、配置、结果与对应 Git 提交方式记录在 [report/experiment_log.md](report/experiment_log.md)。公开仓库不包含原始 `data/` 图片或 `outputs/` 检查点；运行前需把课程提供的数据放到下述目录。
 
@@ -22,7 +22,7 @@ python evaluate.py --checkpoint outputs/dnn/best_model.pt --data-dir data/val
 ## 模型与输出
 
 - DNN：64×64 RGB 图像展平后进入 `12288→256→64→2` 的纯全连接网络。
-- CNN：当前架构比较以固定 `[190,7,7]` 手工特征图训练三种浅层卷积网络；最终 CNN 尚未确定。
+- CNN：已用固定 `[190,7,7]` 手工特征图比较三种浅层卷积网络并选定 CNN-ARCH-C；最终训练和保留集评估尚未执行。
 - RNN：计划中的按行输入 `nn.RNN` 网络，待实现。
 
 每个模型的运行产物放在 `outputs/<model>/`，包括 `best_model.pt`、`config.json`、`split.json`、`history.csv`、`train_summary.json`、`test_metrics.json` 和图表。`outputs/` 不纳入版本控制；报告引用的图另存于 `report/figures/`。检查点包含结构配置、类别映射、最佳轮次和内部验证指标，可由 `evaluate.py` 重载。
@@ -93,3 +93,5 @@ python cnn_architecture_experiments.py audit
 ```
 
 正式运行的检查点保存在忽略的 `outputs/cnn_architecture/CNN-ARCH-001/`；配置、逐轮数据和预测归档到 `report/cnn_architecture/`。
+
+九次架构训练已完成，按三种子内部验证选定 **CNN-ARCH-C**：79.83% ± 2.84%，最差种子 77.50%。详见[架构汇总与曲线](report/cnn_architecture/architecture_summary.md)。本阶段没有运行 CNN 最终测试。
