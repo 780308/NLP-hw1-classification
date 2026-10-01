@@ -1,0 +1,38 @@
+{
+  "model": "dnn",
+  "data_dir": "/mnt/e/CircuitWizard/2-NLP/hw/hw1/data",
+  "epochs_max": 30,
+  "patience": 5,
+  "validation_fraction": 0.1,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "seed": 42,
+  "num_workers": 2,
+  "device": "cuda",
+  "optimizer": "AdamW",
+  "loss": "CrossEntropyLoss",
+  "train_augmentation": "RandomHorizontalFlip(p=0.5)",
+  "normalization": {
+    "mean": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "std": [
+      0.5,
+      0.5,
+      0.5
+    ]
+  },
+  "model_config": {
+    "input_size": 64,
+    "hidden_dims": [
+      256,
+      64
+    ],
+    "dropout": 0.3
+  },
+  "max_train_batches": null,
+  "max_validation_batches": null
+}

@@ -1,0 +1,44 @@
+{
+  "model": "dnn",
+  "parameter_count": 3162562,
+  "train_samples": 1800,
+  "internal_validation_samples": 200,
+  "epochs_run": 18,
+  "best_epoch": 11,
+  "best_validation_metrics": {
+    "loss": 0.6778006863594055,
+    "accuracy": 0.695,
+    "cat_accuracy": 0.77,
+    "dog_accuracy": 0.62,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        77,
+        23
+      ],
+      [
+        38,
+        62
+      ]
+    ]
+  },
+  "training_seconds": 66.529074003,
+  "device": "cuda",
+  "test_metrics": {
+    "loss": 0.6730045108795166,
+    "accuracy": 0.626,
+    "cat_accuracy": 0.708,
+    "dog_accuracy": 0.544,
+    "samples": 500,
+    "confusion_matrix": [
+      [
+        177,
+        73
+      ],
+      [
+        114,
+        136
+      ]
+    ]
+  }
+}

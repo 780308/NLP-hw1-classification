@@ -1,0 +1,44 @@
+{
+  "model": "dnn",
+  "checkpoint": "/mnt/e/CircuitWizard/2-NLP/hw/hw1/outputs/dnn/best_model.pt",
+  "checkpoint_epoch": 11,
+  "internal_validation_metrics": {
+    "loss": 0.6778006863594055,
+    "accuracy": 0.695,
+    "cat_accuracy": 0.77,
+    "dog_accuracy": 0.62,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        77,
+        23
+      ],
+      [
+        38,
+        62
+      ]
+    ]
+  },
+  "test_dir": "/mnt/e/CircuitWizard/2-NLP/hw/hw1/data/val",
+  "test_metrics": {
+    "loss": 0.6730045108795166,
+    "accuracy": 0.626,
+    "cat_accuracy": 0.708,
+    "dog_accuracy": 0.544,
+    "samples": 500,
+    "confusion_matrix": [
+      [
+        177,
+        73
+      ],
+      [
+        114,
+        136
+      ]
+    ]
+  },
+  "class_to_idx": {
+    "cat": 0,
+    "dog": 1
+  }
+}
