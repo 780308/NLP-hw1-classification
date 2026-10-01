@@ -452,7 +452,7 @@ def summarize(final: bool = False) -> None:
         write_json(manifest_path, representation_manifest)
     lines = [
         "# Stage I：手工空间表示实验汇总", "",
-        "本文件由 `python stage1.py summarize-screen` 或 `summarize-confirm` 根据实验 JSON/CSV 自动生成。所有选择仅依据 `data/train` 的内部划分；Stage I 未使用 `data/val`。", "",
+        "本文件由 `python handcrafted_feature_experiments.py summarize-screen` 或 `summarize-confirm` 根据实验 JSON/CSV 自动生成。所有选择仅依据 `data/train` 的内部划分；Stage I 未使用 `data/val`。", "",
         "## 历史基线与预处理对照", "",
         "DNN-001：64×64 直接缩放、`12288→256→64→2`、训练时水平翻转；内部验证 69.50%，此前独立测试 62.60%。它是历史作业基线，不与无增强的 REP-000 视作完全相同的训练实验。", "",
     ]
