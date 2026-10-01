@@ -1,0 +1,28 @@
+{
+  "strategy_id": "CNN-TRAIN-T2-DROPOUT",
+  "seed": 2026,
+  "epochs_run": 10,
+  "best_epoch": 10,
+  "fit_seconds": 12.449710514000003,
+  "training_sample_count": 1800,
+  "parameter_count": 89794,
+  "best_validation_metrics": {
+    "loss": 0.5891199207305908,
+    "accuracy": 0.77,
+    "cat_accuracy": 0.84,
+    "dog_accuracy": 0.7,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        84,
+        16
+      ],
+      [
+        30,
+        70
+      ]
+    ]
+  },
+  "scheduler": null,
+  "device": "cuda"
+}

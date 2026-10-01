@@ -1,0 +1,35 @@
+{
+  "experiment_id": "CNN-TRAIN-001-CNN-TRAIN-T3-COSINE-seed42",
+  "strategy_id": "CNN-TRAIN-T3-COSINE",
+  "seed": 42,
+  "parameter_count": 89794,
+  "training_sample_count": 1800,
+  "best_epoch": 6,
+  "epochs_run": 12,
+  "train_accuracy_at_best_epoch": 0.865,
+  "final_train_accuracy": 0.9566666666666667,
+  "validation_loss": 0.49392311096191405,
+  "validation_accuracy": 0.795,
+  "cat_accuracy": 0.82,
+  "dog_accuracy": 0.77,
+  "balanced_accuracy": 0.7949999999999999,
+  "macro_f1": 0.7948717948717949,
+  "confusion_matrix": [
+    [
+      82,
+      18
+    ],
+    [
+      23,
+      77
+    ]
+  ],
+  "fit_seconds": 14.06206118199998,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "",
+  "augmentation": "none",
+  "augmented_training_samples": 0,
+  "code_commit": "0dff4f810043b93e475390e701319dbdd1f24ec8",
+  "status": "complete"
+}

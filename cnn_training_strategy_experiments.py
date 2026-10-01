@@ -434,6 +434,12 @@ def aggregate(rows: list[dict]) -> dict:
         accuracies = [row["validation_accuracy"] for row in subset]
         cat = statistics.mean(row["cat_accuracy"] for row in subset)
         dog = statistics.mean(row["dog_accuracy"] for row in subset)
+        late_loss_rises = 0
+        for row in subset:
+            _, history, _ = record(strategy_id, row["seed"])
+            if (len(history) > row["best_epoch"]
+                    and float(history[-1]["validation_loss"]) - row["validation_loss"] >= 0.10):
+                late_loss_rises += 1
         result[strategy_id] = {
             "strategy_id": strategy_id, "parameter_count": subset[0]["parameter_count"],
             "training_sample_count": subset[0]["training_sample_count"],
@@ -445,6 +451,8 @@ def aggregate(rows: list[dict]) -> dict:
             "mean_balanced_accuracy": statistics.mean(row["balanced_accuracy"] for row in subset),
             "mean_macro_f1": statistics.mean(row["macro_f1"] for row in subset),
             "median_best_epoch": int(statistics.median(row["best_epoch"] for row in subset)),
+            "mean_final_train_accuracy": statistics.mean(row["final_train_accuracy"] for row in subset),
+            "late_validation_loss_rise_runs": late_loss_rises,
             "mean_fit_seconds": statistics.mean(row["fit_seconds"] for row in subset),
             "seed_accuracies": {str(row["seed"]): row["validation_accuracy"] for row in subset},
         }
@@ -520,12 +528,20 @@ def summarize() -> None:
         _, history, _ = record(row["strategy_id"], row["seed"])
         final = history[-1]
         loss_last = float(final["validation_loss"])
-        lr = final.get("learning_rate", "historical artifact has no LR column")
-        lr_text = f"{float(lr):.7f}" if isinstance(lr, str) and lr != "historical artifact has no LR column" else str(lr)
+        lr = final.get("learning_rate")
+        lr_text = f"{float(lr):.7f}" if lr is not None else "历史记录无 LR 列"
         lines.append(f"| {row['strategy_id']} | {row['seed']} | {row['best_epoch']}/{len(history)} | "
                      f"{pct(row['validation_accuracy'])} | {pct(row['train_accuracy_at_best_epoch'])}→{pct(row['final_train_accuracy'])} | "
                      f"{row['validation_loss']:.4f}→{loss_last:.4f} ({loss_last-row['validation_loss']:+.4f}) | {lr_text} |")
     lines += ["", "训练准确率来自训练过程逐批统计（含 BatchNorm/可能的 Dropout），不等于最终检查点对训练集的重评估。后期验证损失上升而训练准确率继续增加时提示过拟合风险；最佳轮后的行为只由实际观察轮次描述。", "",
+        "| 策略 | 最佳轮中位数 | 末轮训练准确率均值 | 最佳轮后验证损失升高至少 0.10 的运行数 | 验证准确率样本标准差 |",
+        "|---|---:|---:|---:|---:|",
+    ]
+    for strategy_id in (T0, *STRATEGIES):
+        item = grouped[strategy_id]
+        lines.append(f"| {strategy_id} | {item['median_best_epoch']} | {pct(item['mean_final_train_accuracy'])} | "
+                     f"{item['late_validation_loss_rise_runs']}/3 | {pct(item['sample_std_validation_accuracy'])} |")
+    lines += ["", "该表用于比较验证峰值是否推迟、末轮训练拟合程度、后期验证损失及种子波动；这些指标本身不替代预设的策略选择规则。", "",
         "## 预设规则判定", ""]
     for strategy_id in STRATEGIES:
         assessment = decision["assessments"][strategy_id]
@@ -568,9 +584,15 @@ def audit() -> None:
                     or config["max_epochs"] != 30 or config["early_stopping_patience"] != 6
                     or config["loss"] != "CrossEntropyLoss"
                     or metrics["training_sample_count"] != (3600 if t1 else 1800)
+                    or config["augmented_training_samples"] != (3600 if t1 else 0)
+                    or config["augmentation"] != ("horizontal_flip" if t1 else "none")
                     or config["dropout2d_p"] != (0.10 if strategy_id == STRATEGIES[1] else 0.0)
                     or (config["scheduler"] is not None) != (strategy_id == STRATEGIES[2])):
                 raise AssertionError(f"Strategy protocol mismatch: {directory}")
+            expected_parameters = sum(parameter.numel() for parameter in model_for(strategy_id).parameters()
+                                      if parameter.requires_grad)
+            if metrics["parameter_count"] != expected_parameters or config["parameter_count"] != expected_parameters:
+                raise AssertionError(f"Frozen CNN parameter count changed: {directory}")
             expected_mean, expected_std = (t1_normalization(prepared[seed]["train_indices"]) if t1
                                            else (prepared[seed]["mean"], prepared[seed]["std"]))
             if (normal["split_sha256"] != split["sha256"]
@@ -583,6 +605,9 @@ def audit() -> None:
                 rates = [float(item["learning_rate"]) for item in history]
                 if config["scheduler"] != {"name": "CosineAnnealingLR", "T_max": 30, "eta_min": 1e-6} or any(next_lr >= lr for lr, next_lr in zip(rates, rates[1:])):
                     raise AssertionError(f"Cosine scheduler configuration/history mismatch: {directory}")
+                checkpoint = torch.load(run_dir(strategy_id, seed) / "best_model.pt", map_location="cpu", weights_only=True)
+                if checkpoint["scheduler_state"] is None or checkpoint["scheduler_state"]["T_max"] != 30 or checkpoint["scheduler_state"]["eta_min"] != 1e-6:
+                    raise AssertionError(f"Cosine scheduler checkpoint state missing: {directory}")
             elif any(float(item["learning_rate"]) != 3e-4 for item in history):
                 raise AssertionError(f"Unscheduled learning rate changed: {directory}")
             with (directory / "predictions.csv").open(newline="", encoding="utf-8") as stream:

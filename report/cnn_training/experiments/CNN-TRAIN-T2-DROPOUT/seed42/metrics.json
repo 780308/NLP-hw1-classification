@@ -1,0 +1,35 @@
+{
+  "experiment_id": "CNN-TRAIN-001-CNN-TRAIN-T2-DROPOUT-seed42",
+  "strategy_id": "CNN-TRAIN-T2-DROPOUT",
+  "seed": 42,
+  "parameter_count": 89794,
+  "training_sample_count": 1800,
+  "best_epoch": 6,
+  "epochs_run": 11,
+  "train_accuracy_at_best_epoch": 0.8594444444444445,
+  "final_train_accuracy": 0.935,
+  "validation_loss": 0.5041991710662842,
+  "validation_accuracy": 0.79,
+  "cat_accuracy": 0.83,
+  "dog_accuracy": 0.75,
+  "balanced_accuracy": 0.79,
+  "macro_f1": 0.7896634615384616,
+  "confusion_matrix": [
+    [
+      83,
+      17
+    ],
+    [
+      25,
+      75
+    ]
+  ],
+  "fit_seconds": 12.255212020999977,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "",
+  "augmentation": "none",
+  "augmented_training_samples": 0,
+  "code_commit": "0dff4f810043b93e475390e701319dbdd1f24ec8",
+  "status": "complete"
+}

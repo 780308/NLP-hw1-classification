@@ -1,0 +1,33 @@
+{
+  "batch_id": "CNN-TRAIN-001",
+  "strategy_id": "CNN-TRAIN-T1-FLIP",
+  "architecture_id": "CNN-ARCH-C",
+  "representation_id": "REP-006-FUSION",
+  "representation_shape": [
+    190,
+    7,
+    7
+  ],
+  "seed": 123,
+  "training_sample_count": 3600,
+  "original_training_samples": 1800,
+  "validation_samples": 200,
+  "parameter_count": 89794,
+  "split_sha256": "27ee1119bf3fc1ba7bedc4939eb47320edb1df91e61d8c553d049e94194d9d42",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "37c0be14b83957bf8674a29aba7e8b4013fdf8fa80c0c6a2c93fe42b01fa8d8c",
+  "augmentation": "horizontal_flip",
+  "augmented_training_samples": 3600,
+  "dropout2d_p": 0.0,
+  "scheduler": null,
+  "optimizer": "AdamW",
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 30,
+  "early_stopping_patience": 6,
+  "loss": "CrossEntropyLoss",
+  "checkpoint_selection": "highest validation accuracy; tie lower validation loss",
+  "device": "cuda",
+  "code_commit": "0dff4f810043b93e475390e701319dbdd1f24ec8"
+}

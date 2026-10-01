@@ -1,0 +1,32 @@
+{
+  "strategy_id": "CNN-TRAIN-T3-COSINE",
+  "seed": 123,
+  "epochs_run": 10,
+  "best_epoch": 4,
+  "fit_seconds": 11.912274217000004,
+  "training_sample_count": 1800,
+  "parameter_count": 89794,
+  "best_validation_metrics": {
+    "loss": 0.395753356218338,
+    "accuracy": 0.83,
+    "cat_accuracy": 0.87,
+    "dog_accuracy": 0.79,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        87,
+        13
+      ],
+      [
+        21,
+        79
+      ]
+    ]
+  },
+  "scheduler": {
+    "name": "CosineAnnealingLR",
+    "T_max": 30,
+    "eta_min": 1e-06
+  },
+  "device": "cuda"
+}

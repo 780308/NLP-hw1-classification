@@ -1,0 +1,35 @@
+{
+  "experiment_id": "CNN-TRAIN-001-CNN-TRAIN-T1-FLIP-seed123",
+  "strategy_id": "CNN-TRAIN-T1-FLIP",
+  "seed": 123,
+  "parameter_count": 89794,
+  "training_sample_count": 3600,
+  "best_epoch": 3,
+  "epochs_run": 10,
+  "train_accuracy_at_best_epoch": 0.8188888888888889,
+  "final_train_accuracy": 0.9391666666666667,
+  "validation_loss": 0.4087786811590195,
+  "validation_accuracy": 0.835,
+  "cat_accuracy": 0.8,
+  "dog_accuracy": 0.87,
+  "balanced_accuracy": 0.835,
+  "macro_f1": 0.8347976270931892,
+  "confusion_matrix": [
+    [
+      80,
+      20
+    ],
+    [
+      13,
+      87
+    ]
+  ],
+  "fit_seconds": 21.769473997999995,
+  "split_sha256": "27ee1119bf3fc1ba7bedc4939eb47320edb1df91e61d8c553d049e94194d9d42",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "37c0be14b83957bf8674a29aba7e8b4013fdf8fa80c0c6a2c93fe42b01fa8d8c",
+  "augmentation": "horizontal_flip",
+  "augmented_training_samples": 3600,
+  "code_commit": "0dff4f810043b93e475390e701319dbdd1f24ec8",
+  "status": "complete"
+}

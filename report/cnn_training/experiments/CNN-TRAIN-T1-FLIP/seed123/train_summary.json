@@ -1,0 +1,28 @@
+{
+  "strategy_id": "CNN-TRAIN-T1-FLIP",
+  "seed": 123,
+  "epochs_run": 10,
+  "best_epoch": 3,
+  "fit_seconds": 21.769473997999995,
+  "training_sample_count": 3600,
+  "parameter_count": 89794,
+  "best_validation_metrics": {
+    "loss": 0.4087786811590195,
+    "accuracy": 0.835,
+    "cat_accuracy": 0.8,
+    "dog_accuracy": 0.87,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        80,
+        20
+      ],
+      [
+        13,
+        87
+      ]
+    ]
+  },
+  "scheduler": null,
+  "device": "cuda"
+}
