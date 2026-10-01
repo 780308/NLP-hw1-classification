@@ -32,3 +32,23 @@ python evaluate.py --checkpoint outputs/dnn/best_model.pt --data-dir data/val
 ## 后续实验的 Git 工作流
 
 新实验使用独立编号和输出目录，例如 `python train.py --model dnn --data-dir data --output-dir outputs/dnn/dnn-002`，避免覆盖 DNN-001。实验完成后，将配置、划分、逐轮记录、汇总和评估 JSON 复制到 `report/experiments/dnn-002/`，更新实验索引、总报告和计划，再执行 `git add`、带编号的 `git commit` 和 `git push origin main`。由 `git log --grep=dnn-002` 可定位当次代码和报告。正式实验未完成或失败也应记录状态；不使用已看过的测试结果选择后续模型。
+
+## 第一阶段：手工空间表示
+
+实验协议见 [STAGE1-GUIDELINES.md](STAGE1-GUIDELINES.md)。第一阶段只使用 `data/train`，共用固定的 90/10 内部划分；`data/val` 不参与表示选择。运行环境仍为 WSL 的 `~/.venvs/hw1`。
+
+```bash
+source ~/.venvs/hw1/bin/activate
+python stage1.py smoke
+python stage1.py build-cache
+python stage1.py validate-cache
+python stage1.py tiny-overfit
+python stage1.py run-control
+python stage1.py run-screen
+python stage1.py summarize-screen
+python stage1.py run-fusion       # 仅当 Phase A 决策触发融合
+python stage1.py run-confirm
+python stage1.py summarize-confirm
+```
+
+特征缓存和检查点保存在 `outputs/stage1/`，不会提交。小型配置、逐轮指标和汇总保存在 `report/stage1/`；脚本会由各次运行的 JSON 重新生成总表。阶段 I 的缓存表示保持 `[C,7,7]` 空间结构，可供后续 DNN、浅层 CNN 和按行输入的 RNN 使用。所需新依赖已经列入 `requirements.txt`。
