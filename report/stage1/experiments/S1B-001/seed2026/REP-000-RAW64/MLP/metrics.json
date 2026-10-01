@@ -1,0 +1,39 @@
+{
+  "experiment_id": "S1B-001-REP-000-RAW64-MLP-seed2026",
+  "batch_id": "S1B-001",
+  "representation_id": "REP-000-RAW64",
+  "probe": "MLP",
+  "seed": 2026,
+  "split_sha256": "ea6e39137fa9269eaabce5bd078ad1d816e89deef834b19e0797d95e3dc57c81",
+  "representation_shape": [
+    3,
+    64,
+    64
+  ],
+  "flatten_dim": 12288,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "91b6ccd974499b4af7622e25a319eff681394fa277e83adb146344a3e75cf6ef",
+  "code_commit": "3ef15ec2433f89a40c3559ecc24aa77c05b01b0e",
+  "parameter_count": 3162562,
+  "best_epoch": 4,
+  "train_accuracy": 0.6461111111111111,
+  "validation_accuracy": 0.625,
+  "cat_accuracy": 0.48,
+  "dog_accuracy": 0.77,
+  "balanced_accuracy": 0.625,
+  "macro_f1": 0.6169462958706811,
+  "confusion_matrix": [
+    [
+      48,
+      52
+    ],
+    [
+      23,
+      77
+    ]
+  ],
+  "validation_loss": 0.6802822351455688,
+  "fit_seconds": 4.1363907019999715,
+  "status": "complete"
+}

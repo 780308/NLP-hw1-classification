@@ -1,0 +1,30 @@
+{
+  "experiment_id": "S1B-001-REP-000-RAW64-MLP-seed2026",
+  "batch_id": "S1B-001",
+  "representation_id": "REP-000-RAW64",
+  "probe": "MLP",
+  "seed": 2026,
+  "split_sha256": "ea6e39137fa9269eaabce5bd078ad1d816e89deef834b19e0797d95e3dc57c81",
+  "representation_shape": [
+    3,
+    64,
+    64
+  ],
+  "flatten_dim": 12288,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "91b6ccd974499b4af7622e25a319eff681394fa277e83adb146344a3e75cf6ef",
+  "code_commit": "3ef15ec2433f89a40c3559ecc24aa77c05b01b0e",
+  "architecture": "Flatten -> 12288 -> 256 -> 64 -> 2",
+  "dropout": 0.3,
+  "loss": "CrossEntropyLoss",
+  "optimizer": "AdamW",
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "epochs_max": 30,
+  "early_stopping_patience": 5,
+  "checkpoint_selection": "highest validation accuracy; tie lower validation loss",
+  "train_augmentation": "none",
+  "device": "cuda"
+}

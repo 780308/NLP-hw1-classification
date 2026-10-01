@@ -81,7 +81,7 @@ def probe_context(batch_id: str, representation_id: str, probe: str, seed: int, 
         "flatten_dim": int(np.prod(shape)),
         "train_samples": len(split["train"]),
         "validation_samples": len(split["internal_validation"]),
-        "feature_cache_manifest_sha256": sha256_file(manifest_path) if representation_id != "CTRL-LBOX64" and manifest_path.exists() else "",
+        "feature_cache_manifest_sha256": sha256_file(manifest_path) if not representation_id.startswith("CTRL-LBOX64") and manifest_path.exists() else "",
         "code_commit": current_commit(),
     }
 

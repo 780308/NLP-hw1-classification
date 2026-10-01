@@ -49,6 +49,7 @@ python stage1.py summarize-screen
 python stage1.py run-fusion       # 仅当 Phase A 决策触发融合
 python stage1.py run-confirm
 python stage1.py summarize-confirm
+python stage1.py audit-results
 ```
 
 特征缓存和检查点保存在 `outputs/stage1/`，不会提交。小型配置、逐轮指标和汇总保存在 `report/stage1/`；脚本会由各次运行的 JSON 重新生成总表。阶段 I 的缓存表示保持 `[C,7,7]` 空间结构，可供后续 DNN、浅层 CNN 和按行输入的 RNN 使用。所需新依赖已经列入 `requirements.txt`。

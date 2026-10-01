@@ -1,0 +1,40 @@
+{
+  "experiment_id": "S1B-001-REP-000-RAW64-LinearSVC-seed42",
+  "batch_id": "S1B-001",
+  "representation_id": "REP-000-RAW64",
+  "probe": "LinearSVC",
+  "seed": 42,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "representation_shape": [
+    3,
+    64,
+    64
+  ],
+  "flatten_dim": 12288,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "91b6ccd974499b4af7622e25a319eff681394fa277e83adb146344a3e75cf6ef",
+  "code_commit": "3ef15ec2433f89a40c3559ecc24aa77c05b01b0e",
+  "parameter_count": null,
+  "best_epoch": null,
+  "train_accuracy": 1.0,
+  "validation_accuracy": 0.55,
+  "cat_accuracy": 0.6,
+  "dog_accuracy": 0.5,
+  "balanced_accuracy": 0.55,
+  "macro_f1": 0.5488721804511278,
+  "confusion_matrix": [
+    [
+      60,
+      40
+    ],
+    [
+      50,
+      50
+    ]
+  ],
+  "fit_seconds": 88.76744971099993,
+  "iterations": 3708,
+  "converged": true,
+  "status": "complete"
+}

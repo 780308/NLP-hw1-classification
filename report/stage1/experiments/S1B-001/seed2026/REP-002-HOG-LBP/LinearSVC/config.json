@@ -1,0 +1,23 @@
+{
+  "experiment_id": "S1B-001-REP-002-HOG-LBP-LinearSVC-seed2026",
+  "batch_id": "S1B-001",
+  "representation_id": "REP-002-HOG-LBP",
+  "probe": "LinearSVC",
+  "seed": 2026,
+  "split_sha256": "ea6e39137fa9269eaabce5bd078ad1d816e89deef834b19e0797d95e3dc57c81",
+  "representation_shape": [
+    46,
+    7,
+    7
+  ],
+  "flatten_dim": 2254,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "code_commit": "3ef15ec2433f89a40c3559ecc24aa77c05b01b0e",
+  "C": 1.0,
+  "class_weight": null,
+  "dual": "auto",
+  "max_iter": 10000,
+  "random_state": 2026
+}

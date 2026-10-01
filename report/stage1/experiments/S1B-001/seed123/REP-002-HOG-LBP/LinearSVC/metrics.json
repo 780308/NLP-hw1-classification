@@ -1,0 +1,40 @@
+{
+  "experiment_id": "S1B-001-REP-002-HOG-LBP-LinearSVC-seed123",
+  "batch_id": "S1B-001",
+  "representation_id": "REP-002-HOG-LBP",
+  "probe": "LinearSVC",
+  "seed": 123,
+  "split_sha256": "27ee1119bf3fc1ba7bedc4939eb47320edb1df91e61d8c553d049e94194d9d42",
+  "representation_shape": [
+    46,
+    7,
+    7
+  ],
+  "flatten_dim": 2254,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "code_commit": "3ef15ec2433f89a40c3559ecc24aa77c05b01b0e",
+  "parameter_count": null,
+  "best_epoch": null,
+  "train_accuracy": 1.0,
+  "validation_accuracy": 0.65,
+  "cat_accuracy": 0.61,
+  "dog_accuracy": 0.69,
+  "balanced_accuracy": 0.6499999999999999,
+  "macro_f1": 0.6494391025641025,
+  "confusion_matrix": [
+    [
+      61,
+      39
+    ],
+    [
+      31,
+      69
+    ]
+  ],
+  "fit_seconds": 4.0827912570000535,
+  "iterations": 1276,
+  "converged": true,
+  "status": "complete"
+}

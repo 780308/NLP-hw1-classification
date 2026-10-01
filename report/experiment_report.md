@@ -91,4 +91,6 @@ python evaluate.py --checkpoint outputs/dnn/best_model.pt --data-dir data/val
 
 此扩展遵循 [`STAGE1-GUIDELINES.md`](../STAGE1-GUIDELINES.md)，不取代上述原始图像的 DNN/CNN/RNN 主实验。仅用 `data/train` 进行内部验证；保留测试集未用于 Stage I 的表示选择。完整自动生成表格、配置和决策依据见 [`stage1/stage1_summary.md`](stage1/stage1_summary.md)。
 
-S1A-001 的固定 MLP 在种子 42 的内部验证上，原始像素对照为 64.00%，HOG+LBP 为 76.00%，条件触发的 HOG+LBP+HSV+RootSIFT 融合为 78.50%。融合与 HOG+LBP 进入三种子确认，结论待 S1B-001 完成后更新。RootSIFT 和 RootSIFT+LBP 的线性探针曾报告未收敛，相关数值只作辅助诊断。
+S1A-001 的固定 MLP 在种子 42 的内部验证上，原始像素对照为 64.00%，HOG+LBP 为 76.00%，条件触发的 HOG+LBP+HSV+RootSIFT 融合为 78.50%。融合与 HOG+LBP 因此进入三种子确认。RootSIFT 和 RootSIFT+LBP 的线性探针曾报告未收敛，相关数值只作辅助诊断。
+
+S1B-001 已完成三种子确认。固定 MLP 的融合表示为 **77.50% ± 2.18%**，HOG+LBP 为 **76.17% ± 0.29%**，原始像素对照为 **62.67% ± 1.26%**。融合的猫/狗平均准确率为 74.33%/80.67%，LinearSVC 平均为 71.33%。按事先规定的均值差至少 1 个百分点规则，选定 `[190,7,7]` 的 `REP-006-FUSION`；它在三个种子上都高于原始像素对照，均值高 14.83 个百分点。严格几何预处理对照 `CTRL-LBOX64-GEOM` 在种子 42 为 66.00%；此前的 65.00% 对照还改变了插值和 EXIF 处理，因此仅保留为历史记录。阶段 I 未运行 PCA，也未评估 500 张保留测试图。

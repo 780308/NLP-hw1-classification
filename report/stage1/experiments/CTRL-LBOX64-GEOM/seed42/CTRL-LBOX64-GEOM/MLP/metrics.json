@@ -1,0 +1,39 @@
+{
+  "experiment_id": "CTRL-LBOX64-GEOM-CTRL-LBOX64-GEOM-MLP-seed42",
+  "batch_id": "CTRL-LBOX64-GEOM",
+  "representation_id": "CTRL-LBOX64-GEOM",
+  "probe": "MLP",
+  "seed": 42,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "representation_shape": [
+    3,
+    64,
+    64
+  ],
+  "flatten_dim": 12288,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "",
+  "code_commit": "3ef15ec2433f89a40c3559ecc24aa77c05b01b0e",
+  "parameter_count": 3162562,
+  "best_epoch": 8,
+  "train_accuracy": 0.6561111111111111,
+  "validation_accuracy": 0.66,
+  "cat_accuracy": 0.58,
+  "dog_accuracy": 0.74,
+  "balanced_accuracy": 0.6599999999999999,
+  "macro_f1": 0.6578099838969405,
+  "confusion_matrix": [
+    [
+      58,
+      42
+    ],
+    [
+      26,
+      74
+    ]
+  ],
+  "validation_loss": 0.6538999390602112,
+  "fit_seconds": 38.263646321,
+  "status": "complete"
+}

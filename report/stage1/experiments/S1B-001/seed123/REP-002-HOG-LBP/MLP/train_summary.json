@@ -1,0 +1,24 @@
+{
+  "epochs_run": 6,
+  "best_epoch": 1,
+  "best_validation_metrics": {
+    "loss": 0.48934098839759826,
+    "accuracy": 0.76,
+    "cat_accuracy": 0.84,
+    "dog_accuracy": 0.68,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        84,
+        16
+      ],
+      [
+        32,
+        68
+      ]
+    ]
+  },
+  "fit_seconds": 2.7386581920000026,
+  "parameter_count": 593858,
+  "device": "cuda"
+}

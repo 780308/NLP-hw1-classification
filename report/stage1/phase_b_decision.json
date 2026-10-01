@@ -1,0 +1,61 @@
+{
+  "batch_id": "S1B-001",
+  "measurements": {
+    "REP-000-RAW64": {
+      "mean_accuracy": 0.6266666666666666,
+      "std_accuracy": 0.012583057392117928,
+      "minimum_accuracy": 0.615,
+      "mean_cat_accuracy": 0.5166666666666667,
+      "mean_dog_accuracy": 0.7366666666666667,
+      "mean_balanced_accuracy": 0.6266666666666666,
+      "mean_macro_f1": 0.6218360212448019,
+      "seed_accuracies": [
+        0.64,
+        0.615,
+        0.625
+      ],
+      "mean_linear_svc_accuracy": 0.5316666666666666
+    },
+    "REP-006-FUSION": {
+      "mean_accuracy": 0.775,
+      "std_accuracy": 0.021794494717703387,
+      "minimum_accuracy": 0.75,
+      "mean_cat_accuracy": 0.7433333333333333,
+      "mean_dog_accuracy": 0.8066666666666666,
+      "mean_balanced_accuracy": 0.775,
+      "mean_macro_f1": 0.7742753480181745,
+      "seed_accuracies": [
+        0.785,
+        0.79,
+        0.75
+      ],
+      "mean_linear_svc_accuracy": 0.7133333333333334
+    },
+    "REP-002-HOG-LBP": {
+      "mean_accuracy": 0.7616666666666667,
+      "std_accuracy": 0.0028867513459481316,
+      "minimum_accuracy": 0.76,
+      "mean_cat_accuracy": 0.7966666666666667,
+      "mean_dog_accuracy": 0.7266666666666666,
+      "mean_balanced_accuracy": 0.7616666666666667,
+      "mean_macro_f1": 0.7611173975726495,
+      "seed_accuracies": [
+        0.76,
+        0.76,
+        0.765
+      ],
+      "mean_linear_svc_accuracy": 0.6733333333333333
+    }
+  },
+  "winner": "REP-006-FUSION",
+  "winner_shape": [
+    190,
+    7,
+    7
+  ],
+  "winner_flatten_dim": 9310,
+  "selection_rationale": "mean accuracy lead >= 1.0 percentage point",
+  "raw_control_improvement": 0.14833333333333343,
+  "seeds_beating_raw_control": 3,
+  "stage1_success_confirmed": true
+}

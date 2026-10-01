@@ -1,0 +1,30 @@
+{
+  "experiment_id": "CTRL-LBOX64-GEOM-CTRL-LBOX64-GEOM-MLP-seed42",
+  "batch_id": "CTRL-LBOX64-GEOM",
+  "representation_id": "CTRL-LBOX64-GEOM",
+  "probe": "MLP",
+  "seed": 42,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "representation_shape": [
+    3,
+    64,
+    64
+  ],
+  "flatten_dim": 12288,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "",
+  "code_commit": "3ef15ec2433f89a40c3559ecc24aa77c05b01b0e",
+  "architecture": "Flatten -> 12288 -> 256 -> 64 -> 2",
+  "dropout": 0.3,
+  "loss": "CrossEntropyLoss",
+  "optimizer": "AdamW",
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "epochs_max": 30,
+  "early_stopping_patience": 5,
+  "checkpoint_selection": "highest validation accuracy; tie lower validation loss",
+  "train_augmentation": "RandomHorizontalFlip(p=0.5)",
+  "device": "cuda"
+}

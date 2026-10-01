@@ -1,0 +1,23 @@
+{
+  "experiment_id": "S1B-001-REP-006-FUSION-LinearSVC-seed123",
+  "batch_id": "S1B-001",
+  "representation_id": "REP-006-FUSION",
+  "probe": "LinearSVC",
+  "seed": 123,
+  "split_sha256": "27ee1119bf3fc1ba7bedc4939eb47320edb1df91e61d8c553d049e94194d9d42",
+  "representation_shape": [
+    190,
+    7,
+    7
+  ],
+  "flatten_dim": 9310,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "code_commit": "3ef15ec2433f89a40c3559ecc24aa77c05b01b0e",
+  "C": 1.0,
+  "class_weight": null,
+  "dual": "auto",
+  "max_iter": 10000,
+  "random_state": 123
+}

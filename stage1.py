@@ -11,6 +11,7 @@ import traceback
 from collections import defaultdict
 from pathlib import Path
 
+import cv2
 import numpy as np
 from PIL import Image, ImageDraw
 from torch.utils.data import Dataset
@@ -40,6 +41,22 @@ RESULT_COLUMNS = (
 )
 
 
+def preprocess_control_letterbox(image: Image.Image, output_size: int = 64) -> Image.Image:
+    """Change only resize geometry relative to DNN-001's bilinear RGB input."""
+    rgb = image.convert("RGB")
+    width, height = rgb.size
+    scale = min(output_size / width, output_size / height)
+    new_width = max(1, min(output_size, round(width * scale)))
+    new_height = max(1, min(output_size, round(height * scale)))
+    resized = np.asarray(rgb.resize((new_width, new_height), Image.Resampling.BILINEAR))
+    left = (output_size - new_width) // 2
+    right = output_size - new_width - left
+    top = (output_size - new_height) // 2
+    bottom = output_size - new_height - top
+    padded = cv2.copyMakeBorder(resized, top, bottom, left, right, cv2.BORDER_REFLECT_101)
+    return Image.fromarray(padded)
+
+
 class LetterboxDataset(Dataset):
     def __init__(self, samples, training: bool) -> None:
         self.samples = samples
@@ -53,7 +70,7 @@ class LetterboxDataset(Dataset):
     def __getitem__(self, index: int):
         path, label = self.samples[index]
         with Image.open(path) as image:
-            letterboxed = Image.fromarray(preprocess_for_handcrafted(image, output_size=64))
+            letterboxed = preprocess_control_letterbox(image)
         return self.transform(letterboxed), label
 
 
@@ -138,16 +155,17 @@ def run_control() -> None:
     train_dataset = LetterboxDataset([sample_lookup[name] for name in split["train"]], training=True)
     validation_dataset = LetterboxDataset([sample_lookup[name] for name in split["internal_validation"]], training=False)
     labels = np.load(HANDCRAFTED / "labels.npy", mmap_mode="r")
-    output_dir = _output_dir("CTRL-LBOX64", 42, "CTRL-LBOX64", "MLP")
+    control_id = "CTRL-LBOX64-GEOM"
+    output_dir = _output_dir(control_id, 42, control_id, "MLP")
     if (output_dir / "metrics.json").exists():
-        _archive(output_dir, "CTRL-LBOX64", 42, "CTRL-LBOX64", "MLP")
+        _archive(output_dir, control_id, 42, control_id, "MLP")
         return
     try:
-        run_mlp("CTRL-LBOX64", "CTRL-LBOX64", None, split, train_indices, validation_indices, labels, None, None, output_dir, train_dataset, validation_dataset, train_augmentation="RandomHorizontalFlip(p=0.5)", num_workers=2)
+        run_mlp(control_id, control_id, None, split, train_indices, validation_indices, labels, None, None, output_dir, train_dataset, validation_dataset, train_augmentation="RandomHorizontalFlip(p=0.5)", num_workers=2)
     except Exception as error:
         write_json(output_dir / "failure.json", {"status": "failed", "error": str(error), "traceback": traceback.format_exc()})
         raise
-    _archive(output_dir, "CTRL-LBOX64", 42, "CTRL-LBOX64", "MLP")
+    _archive(output_dir, control_id, 42, control_id, "MLP")
     rebuild_results()
 
 
@@ -256,7 +274,7 @@ def rebuild_results() -> list[dict]:
         rep_id = metrics["representation_id"]
         shape = metrics["representation_shape"]
         manifest_path = (RAW if rep_id == RAW_REPRESENTATION_ID else HANDCRAFTED) / "manifest.json"
-        if rep_id == "CTRL-LBOX64":
+        if rep_id.startswith("CTRL-LBOX64"):
             manifest = {"extraction_seconds": 0.0, "bytes_on_disk": 0}
         else:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -309,6 +327,56 @@ def write_representation_manifest() -> None:
 
 def _format_percent(value: float) -> str:
     return f"{value * 100:.2f}%"
+
+
+def audit_results() -> None:
+    """Recompute validation counts from every saved prediction CSV."""
+    validate_cache()
+    metrics_paths = sorted((REPORT / "experiments").glob("**/metrics.json"))
+    if not metrics_paths:
+        raise RuntimeError("No archived experiments to audit")
+    splits: dict[int, dict] = {}
+    for path in metrics_paths:
+        metrics = json.loads(path.read_text(encoding="utf-8"))
+        seed = metrics["seed"]
+        if seed not in splits:
+            splits[seed] = ensure_split(seed)
+        split = splits[seed]
+        if metrics["split_sha256"] != split["sha256"]:
+            raise AssertionError(f"Split hash mismatch: {path}")
+        with (path.parent / "predictions.csv").open(newline="", encoding="utf-8") as stream:
+            predictions = list(csv.DictReader(stream))
+        if [row["filename"] for row in predictions] != split["internal_validation"]:
+            raise AssertionError(f"Prediction filename order mismatch: {path}")
+        matrix = [[0, 0], [0, 0]]
+        for row in predictions:
+            actual = int(row["true_label"])
+            predicted = int(row["predicted_label"])
+            if actual != (0 if row["filename"].startswith("cat.") else 1):
+                raise AssertionError(f"Incorrect prediction label: {path}")
+            if predicted not in (0, 1) or int(row["correct"]) != int(actual == predicted):
+                raise AssertionError(f"Invalid prediction row: {path}")
+            if not np.isfinite(float(row["score_or_margin"])):
+                raise AssertionError(f"Non-finite prediction score: {path}")
+            matrix[actual][predicted] += 1
+        if len(predictions) != 200 or matrix != metrics["confusion_matrix"]:
+            raise AssertionError(f"Confusion matrix mismatch: {path}")
+        accuracy = (matrix[0][0] + matrix[1][1]) / 200
+        if abs(accuracy - metrics["validation_accuracy"]) > 1e-9:
+            raise AssertionError(f"Accuracy mismatch: {path}")
+        normalization_data = json.loads((path.parent / "normalization.json").read_text(encoding="utf-8"))
+        if len(normalization_data["mean"]) != metrics["representation_shape"][0] or len(normalization_data["std"]) != metrics["representation_shape"][0]:
+            raise AssertionError(f"Normalization dimension mismatch: {path}")
+        if metrics["probe"] == "MLP":
+            with (path.parent / "history.csv").open(newline="", encoding="utf-8") as stream:
+                history = list(csv.DictReader(stream))
+            best = history[metrics["best_epoch"] - 1]
+            if abs(float(best["validation_accuracy"]) - accuracy) > 1e-9:
+                raise AssertionError(f"Best epoch differs from predictions: {path}")
+    rows = rebuild_results()
+    if len(rows) != len(metrics_paths):
+        raise AssertionError("Results CSV row count differs from archived runs")
+    print(f"Audited {len(metrics_paths)} runs and {len(metrics_paths) * 200} validation predictions", flush=True)
 
 
 def _phase_b_decision(phase_a: dict) -> dict:
@@ -369,16 +437,32 @@ def summarize(final: bool = False) -> None:
     if all((_output_dir("S1A-001", 42, rep.identifier, "MLP") / "metrics.json").exists() for rep in INITIAL_REPRESENTATIONS):
         phase_a = _phase_a_decision()
     phase_b = _phase_b_decision(phase_a) if final and phase_a else None
+    if phase_b:
+        manifest_path = REPORT / "representation_manifest.json"
+        representation_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if phase_a["fusion_triggered"]:
+            fusion = _fusion_representation(phase_a)
+            representation_manifest["conditional_fusion"] = {
+                "id": fusion.identifier,
+                "groups": list(fusion.groups),
+                "shape": list(fusion.shape),
+                "flatten_dim": fusion.flatten_dim,
+            }
+        representation_manifest["selected_representation_id"] = phase_b["winner"]
+        write_json(manifest_path, representation_manifest)
     lines = [
         "# Stage I：手工空间表示实验汇总", "",
         "本文件由 `python stage1.py summarize-screen` 或 `summarize-confirm` 根据实验 JSON/CSV 自动生成。所有选择仅依据 `data/train` 的内部划分；Stage I 未使用 `data/val`。", "",
         "## 历史基线与预处理对照", "",
         "DNN-001：64×64 直接缩放、`12288→256→64→2`、训练时水平翻转；内部验证 69.50%，此前独立测试 62.60%。它是历史作业基线，不与无增强的 REP-000 视作完全相同的训练实验。", "",
     ]
-    control_rows = [row for row in rows if row["batch_id"] == "CTRL-LBOX64"]
+    control_rows = [row for row in rows if row["batch_id"] == "CTRL-LBOX64-GEOM"]
     if control_rows:
         row = control_rows[0]
-        lines.append(f"CTRL-LBOX64：保留长宽比、反射填充至 64×64，其他 DNN-001 训练设置不变；种子 42 内部验证 {_format_percent(float(row['validation_accuracy']))}，猫 {_format_percent(float(row['cat_accuracy']))}，狗 {_format_percent(float(row['dog_accuracy']))}。此预处理还执行 EXIF 方向校正。")
+        lines.append(f"CTRL-LBOX64-GEOM：使用与 DNN-001 相同的 RGB、双线性插值和训练配置，仅保留长宽比并反射填充至 64×64；种子 42 内部验证 {_format_percent(float(row['validation_accuracy']))}，猫 {_format_percent(float(row['cat_accuracy']))}，狗 {_format_percent(float(row['dog_accuracy']))}。")
+        earlier = next((item for item in rows if item["batch_id"] == "CTRL-LBOX64"), None)
+        if earlier:
+            lines.append(f"早期 CTRL-LBOX64 运行得到 {_format_percent(float(earlier['validation_accuracy']))}，但同时使用 EXIF 校正与 LANCZOS 插值，仅保留为有混杂因素的历史记录，不用于几何对照结论。")
     else:
         lines.append("CTRL-LBOX64：尚未运行。")
     lines += ["", "## Phase A：种子 42", "", "| 表示 | LinearSVC | MLP | 猫 / 狗（MLP） | 维度 |", "|---|---:|---:|---:|---:|"]
@@ -400,6 +484,15 @@ def summarize(final: bool = False) -> None:
             overlap = phase_a["prediction_overlap"]
             lines.append(f"两分支预测重叠：A 对/B 错 {overlap['A_correct_B_wrong']}，A 错/B 对 {overlap['A_wrong_B_correct']}，都对 {overlap['both_correct']}，都错 {overlap['both_wrong']}，预测正确性分歧率 {_format_percent(overlap['prediction_disagreement_rate'])}。")
         lines.append(f"Phase B 候选：{', '.join(phase_a['selected_for_phase_b']) if phase_a['selected_for_phase_b'] else '等待融合或规则复核'}。")
+        hog_lbp_gain = phase_a["phase_a_accuracy"]["REP-002-HOG-LBP"] - phase_a["phase_a_accuracy"]["REP-001-HOG"]
+        sift_lbp_gain = phase_a["phase_a_accuracy"]["REP-004-ROOTSIFT-LBP"] - phase_a["phase_a_accuracy"]["REP-003-ROOTSIFT"]
+        fusion_accuracy = phase_a["phase_a_accuracy"].get("REP-006-FUSION")
+        lines.append(
+            f"取舍依据：LBP 在 HOG 和 RootSIFT 分支分别改变 {hog_lbp_gain * 100:+.2f}、{sift_lbp_gain * 100:+.2f} 个百分点；"
+            f"HSV 在 RootSIFT+LBP 分支改变 {phase_a['hsv_accuracy_gain'] * 100:+.2f} 个百分点。"
+            f"HOG 与 RootSIFT 分支存在互补错误；条件融合后的 MLP 为 {_format_percent(fusion_accuracy) if fusion_accuracy is not None else '待测'}。"
+            "最终通道去留仅依据上述预定规则与三种子结果。"
+        )
     lines += ["", "## Phase B：三种子确认", ""]
     if phase_b:
         lines += ["标准差为三种子样本标准差。", "", "| 表示 | MLP 平均 ± 标准差 | 最差种子 | 猫 / 狗平均 | LinearSVC 平均 |", "|---|---:|---:|---:|---:|"]
@@ -409,6 +502,7 @@ def summarize(final: bool = False) -> None:
             f"选择 **{phase_b['winner']}**，形状 **{phase_b['winner_shape']}**，展平维度 **{phase_b['winner_flatten_dim']}**。规则依据：{phase_b['selection_rationale']}。相对 REP-000 的平均准确率差为 {phase_b['raw_control_improvement'] * 100:+.2f} 个百分点，3 个种子中有 {phase_b['seeds_beating_raw_control']} 个超过原始像素对照。",
             f"按预先定义的阈值，手工表示改进{'已确认' if phase_b['stage1_success_confirmed'] else '未确认；按指南需进入单独的回退实验'}。",
             "DNN：展平 `[C,7,7]`；CNN：直接输入 `[C,7,7]`，使用适合 7×7 的浅层 CNN；RNN：每行为一个时间步，`[7,7*C]`。原始图像的 CNN/RNN 作业基线仍需独立完成。", "",
+            "胜出表示包含 128 通道 RootSIFT。可在单独的 S1C-001 中测试只用训练描述子拟合的 PCA64 压缩；仅在三种子平均准确率下降不超过 0.5 个百分点且确实缩减维度时保留。当前未运行 PCA。", "",
             "## 局限", "",
             "仅使用 2000 张开发图像的三个 90/10 内部划分；重复划分存在样本重叠。DNN-001 的 500 张测试图已在早前被查看，本阶段严格未触碰，不能将其当作本阶段独立调参证据。分类器容量随输入维度改变，但层宽、优化器和训练资源固定。", "",
         ]
@@ -421,7 +515,7 @@ def summarize(final: bool = False) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("smoke", "build-cache", "validate-cache", "tiny-overfit", "run-control", "run-screen", "summarize-screen", "run-fusion", "run-confirm", "summarize-confirm"))
+    parser.add_argument("command", choices=("smoke", "build-cache", "validate-cache", "tiny-overfit", "run-control", "run-screen", "summarize-screen", "run-fusion", "run-confirm", "summarize-confirm", "audit-results"))
     args = parser.parse_args()
     if args.command == "smoke":
         diagnostic_contact_sheet()
@@ -462,6 +556,8 @@ def main() -> None:
         run_confirm()
     elif args.command == "summarize-confirm":
         summarize(final=True)
+    elif args.command == "audit-results":
+        audit_results()
 
 
 if __name__ == "__main__":
