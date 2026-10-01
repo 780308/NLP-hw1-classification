@@ -1,5 +1,7 @@
 # DNN 架构选择：DNN-ARCH-001
 
+后续 `DNN-FINAL-001` 在最终保留集评估前依据已有三条曲线的固定轮次比较，将本报告当时提出的 6 轮全量训练建议修订为 3 轮。架构选择仍为 C；修订依据见[冻结协议](../dnn_final/frozen_protocol.md)。以下保留当时的架构选择记录。
+
 输入固定为 Stage I 选定的 `REP-006-FUSION`：HOG+LBP+HSV+RootSIFT 拼接后的 `[190,7,7]`，展平为 9310 维。预处理、缓存、三份划分和训练集归一化均未改变。
 
 DNN-ARCH-BASE 直接引用 `report/stage1/experiments/S1B-001/seed*/REP-006-FUSION/MLP/`，没有重新训练。A、B、C 每种在种子 42、123、2026 上各训练一次。没有使用 `data/val`。

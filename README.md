@@ -1,12 +1,12 @@
 # 猫狗图像分类：DNN、CNN、RNN 实验
 
-本项目按 `synopsis.txt` 实现猫狗二分类。当前已完成 **DNN 主实验**；CNN、RNN 和单独的预训练扩展实验尚未运行。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，逐步更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
+本项目按 `synopsis.txt` 实现猫狗二分类。已完成历史 DNN-001 基线和最终 DNN 实验 `DNN-FINAL-001`；CNN、RNN 尚未运行。最终 DNN 在 500 张保留评估图上准确率 **73.80%**（猫 65.60%，狗 82.00%）。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，逐步更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
 
 每次实验的编号、配置、结果与对应 Git 提交方式记录在 [report/experiment_log.md](report/experiment_log.md)。公开仓库不包含原始 `data/` 图片或 `outputs/` 检查点；运行前需把课程提供的数据放到下述目录。
 
 ## 数据与环境
 
-数据保持原样放在 `data/train/` 和 `data/val/`。两个目录均为平铺的 `cat.N.jpg`、`dog.N.jpg` 文件；程序固定 `cat=0`、`dog=1`。`data/train` 有 2000 张，`data/val` 有 500 张，后者仅用于最终测试。
+数据保持原样放在 `data/train/` 和 `data/val/`。两个目录均为平铺的 `cat.N.jpg`、`dog.N.jpg` 文件；程序固定 `cat=0`、`dog=1`。`data/train` 有 2000 张，`data/val` 有 500 张。后者曾用于历史 DNN-001 评估，未参与 Stage I 表示选择或 DNN 架构选择；最终 DNN 配置在本次保留集评估前冻结。
 
 以下命令在 WSL Ubuntu 中，从项目目录 `/mnt/e/CircuitWizard/2-NLP/hw/hw1` 执行。已有环境可直接激活；首次安装命令列在实验计划中。
 
@@ -65,4 +65,17 @@ python dnn_architecture_experiments.py audit
 
 运行顺序为先提交固定代码版本，再执行 `run-all`，以便每次运行记录对应的 Git 提交。候选结构、选择规则与最终 DNN 的后续评估协议见 `report/dnn_architecture/architecture_summary.md`（运行 `summarize` 后生成）。
 
-`DNN-ARCH-001` 已完成九次新训练；四模型比较选定 **DNN-ARCH-C**（三种子内部验证 78.17% ± 1.26%，最差种子 77.00%）。完整记录见 [架构汇总](report/dnn_architecture/architecture_summary.md)。最终全量 DNN 训练和 500 张图评估尚未执行。
+`DNN-ARCH-001` 已完成九次新训练；四模型比较选定 **DNN-ARCH-C**（三种子内部验证 78.17% ± 1.26%，最差种子 77.00%）。完整记录见 [架构汇总](report/dnn_architecture/architecture_summary.md)。其最初的 6 轮建议在最终评估前经固定轮次比较修订为 3 轮，详见下一节。
+
+## 最终 DNN：DNN-FINAL-001
+
+测试前的[冻结协议](report/dnn_final/frozen_protocol.md)将训练轮数由架构报告原建议的 6 轮修订为匹配固定轮次比较支持的 **3 轮**。最终训练复用 `REP-006-FUSION`，以全部 2000 张训练图拟合归一化并训练 DNN-ARCH-C；随后对 `data/val` 的 500 张图评估一次。结果为总体 **73.80%**、猫 **65.60%**、狗 **82.00%**、Macro F1 **73.62%**。完整指标、混淆矩阵与历史对照见[最终汇总](report/dnn_final/final_summary.md)。
+
+以下命令用于复现全流程；现有 `DNN-FINAL-001` 产物已经生成，脚本会拒绝覆盖最终训练或再次评估。原始数据和 Stage I 特征缓存需在本机可用。
+
+```bash
+python dnn_final_experiment.py smoke
+python dnn_final_experiment.py train
+python dnn_final_experiment.py evaluate
+python dnn_final_experiment.py archive
+```

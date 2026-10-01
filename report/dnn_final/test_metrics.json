@@ -1,0 +1,28 @@
+{
+  "experiment_id": "DNN-FINAL-001",
+  "test_dataset": "data/val",
+  "checkpoint_sha256": "af1dfc145e8f38604373797fd3b5f2dc0821dcfbd1b993520f45ece7727b4f5d",
+  "val_cache_manifest_sha256": "bb83d6d7c285f3c38887ceac370f782333c8831b7ee63e57148fcb4391a34af2",
+  "train_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "checkpoint_reloaded_for_evaluation": true,
+  "samples": 500,
+  "cat_samples": 250,
+  "dog_samples": 250,
+  "loss": 0.5241814913749695,
+  "accuracy": 0.738,
+  "cat_accuracy": 0.656,
+  "dog_accuracy": 0.82,
+  "balanced_accuracy": 0.738,
+  "macro_f1": 0.7362263862209497,
+  "confusion_matrix": [
+    [
+      164,
+      86
+    ],
+    [
+      45,
+      205
+    ]
+  ],
+  "status": "complete"
+}

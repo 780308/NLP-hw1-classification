@@ -1,0 +1,15 @@
+{
+  "experiment_id": "DNN-FINAL-001",
+  "epochs_completed": 3,
+  "training_samples": 2000,
+  "fit_seconds": 2.247339552999989,
+  "final_epoch": {
+    "epoch": 3,
+    "train_loss": 0.3413796224594116,
+    "train_accuracy": 0.8535,
+    "cat_accuracy": 0.866,
+    "dog_accuracy": 0.841
+  },
+  "checkpoint_sha256": "af1dfc145e8f38604373797fd3b5f2dc0821dcfbd1b993520f45ece7727b4f5d",
+  "status": "training_complete"
+}

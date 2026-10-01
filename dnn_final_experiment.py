@@ -159,7 +159,7 @@ def train() -> None:
         "experiment_id": EXPERIMENT_ID, "epochs_completed": len(history),
         "training_samples": len(dataset), "fit_seconds": fit_seconds,
         "final_epoch": history[-1], "checkpoint_sha256": sha256_file(OUTPUT / "final_model.pt"),
-        "status": "trained_not_evaluated",
+        "status": "training_complete",
     })
 
 
@@ -301,6 +301,10 @@ def audit() -> None:
     metrics = json.loads((OUTPUT / "test_metrics.json").read_text(encoding="utf-8"))
     normal = json.loads((OUTPUT / "normalization.json").read_text(encoding="utf-8"))
     manifest, names = build_val_cache()
+    expected_mean, expected_std = full_normalization()
+    if (not np.array_equal(expected_mean, np.asarray(normal["mean"], dtype=np.float32))
+            or not np.array_equal(expected_std, np.asarray(normal["std"], dtype=np.float32))):
+        raise AssertionError("Saved normalization differs from all-2000 training-only calculation")
     if (config["training_samples"] != 2000 or config["training_class_counts"] != {"cat": 1000, "dog": 1000}
             or config["epochs"] != EPOCHS or config["early_stopping"]
             or summary["epochs_completed"] != EPOCHS or normal["source"] != "all 2000 data/train samples only"
@@ -316,16 +320,32 @@ def audit() -> None:
     if len(rows) != 500 or [row["filename"] for row in rows] != names:
         raise AssertionError("Held-out predictions are incomplete or out of order")
     matrix = [[0, 0], [0, 0]]
+    row_losses = []
     for row in rows:
         true, predicted = int(row["true_label"]), int(row["predicted_label"])
         if true not in (0, 1) or predicted not in (0, 1) or int(row["correct"]) != int(true == predicted):
             raise AssertionError("Invalid prediction row")
-        if abs(float(row["prob_cat"]) + float(row["prob_dog"]) - 1) > 1e-6:
+        logits = np.asarray([float(row["logit_cat"]), float(row["logit_dog"])], dtype=np.float64)
+        shifted = logits - logits.max()
+        probabilities = np.exp(shifted) / np.exp(shifted).sum()
+        if (abs(float(row["prob_cat"]) + float(row["prob_dog"]) - 1) > 1e-6
+                or abs(float(row["prob_cat"]) - probabilities[0]) > 1e-6
+                or abs(float(row["prob_dog"]) - probabilities[1]) > 1e-6):
             raise AssertionError("Invalid softmax probabilities")
+        row_losses.append(-np.log(probabilities[true]))
         matrix[true][predicted] += 1
     if (matrix != metrics["confusion_matrix"] or sum(matrix[0]) != 250 or sum(matrix[1]) != 250
             or abs((matrix[0][0] + matrix[1][1]) / 500 - metrics["accuracy"]) > 1e-12):
         raise AssertionError("Held-out predictions and aggregate metrics differ")
+    if (abs(matrix[0][0] / 250 - metrics["cat_accuracy"]) > 1e-12
+            or abs(matrix[1][1] / 250 - metrics["dog_accuracy"]) > 1e-12
+            or abs((metrics["cat_accuracy"] + metrics["dog_accuracy"]) / 2 - metrics["balanced_accuracy"]) > 1e-12):
+        raise AssertionError("Class-wise or balanced accuracy differs from predictions")
+    f1_cat = 2 * matrix[0][0] / (2 * matrix[0][0] + matrix[0][1] + matrix[1][0])
+    f1_dog = 2 * matrix[1][1] / (2 * matrix[1][1] + matrix[0][1] + matrix[1][0])
+    if (abs((f1_cat + f1_dog) / 2 - metrics["macro_f1"]) > 1e-12
+            or abs(float(np.mean(row_losses)) - metrics["loss"]) > 1e-6):
+        raise AssertionError("Macro F1 or cross-entropy loss differs from saved logits")
     print("Audited frozen full-data training, reloaded checkpoint evaluation and all 500 predictions", flush=True)
 
 

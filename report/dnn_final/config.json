@@ -1,0 +1,34 @@
+{
+  "experiment_id": "DNN-FINAL-001",
+  "architecture_id": "DNN-ARCH-C",
+  "representation_id": "REP-006-FUSION",
+  "representation_shape": [
+    190,
+    7,
+    7
+  ],
+  "flatten_dim": 9310,
+  "class_to_idx": {
+    "cat": 0,
+    "dog": 1
+  },
+  "training_seed": 42,
+  "training_samples": 2000,
+  "training_class_counts": {
+    "cat": 1000,
+    "dog": 1000
+  },
+  "epochs": 3,
+  "early_stopping": false,
+  "optimizer": "AdamW",
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "loss": "CrossEntropyLoss",
+  "augmentation": "none",
+  "checkpoint_selection": "final state after exactly three full-data epochs",
+  "parameter_count": 2417538,
+  "device": "cuda",
+  "train_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "code_commit": "4aca4f311ed0653ae720a4307035b514d57a8b93"
+}
