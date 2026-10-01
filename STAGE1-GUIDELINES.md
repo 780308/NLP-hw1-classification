@@ -1798,25 +1798,25 @@ Prefer one explicit orchestration script rather than many ad-hoc commands.
 Recommended:
 
 ```text
-stage1.py
+handcrafted_feature_experiments.py
 ```
 
 Required commands conceptually:
 
 ```bash
-python stage1.py build-cache --data-dir data/train
+python handcrafted_feature_experiments.py build-cache
 
-python stage1.py validate-cache
+python handcrafted_feature_experiments.py validate-cache
 
-python stage1.py run-control --seed 42
+python handcrafted_feature_experiments.py run-control
 
-python stage1.py run-screen --seed 42
+python handcrafted_feature_experiments.py run-screen
 
-python stage1.py summarize-screen
+python handcrafted_feature_experiments.py summarize-screen
 
-python stage1.py run-confirm --seeds 42 123 2026
+python handcrafted_feature_experiments.py run-confirm
 
-python stage1.py summarize-confirm
+python handcrafted_feature_experiments.py summarize-confirm
 ```
 
 Exact argparse subcommand implementation may differ slightly, but:

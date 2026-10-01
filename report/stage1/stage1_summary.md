@@ -1,6 +1,6 @@
 # Stage I：手工空间表示实验汇总
 
-本文件由 `python stage1.py summarize-screen` 或 `summarize-confirm` 根据实验 JSON/CSV 自动生成。所有选择仅依据 `data/train` 的内部划分；Stage I 未使用 `data/val`。
+本文件由 `python handcrafted_feature_experiments.py summarize-screen` 或 `summarize-confirm` 根据实验 JSON/CSV 自动生成。所有选择仅依据 `data/train` 的内部划分；Stage I 未使用 `data/val`。
 
 ## 历史基线与预处理对照
 

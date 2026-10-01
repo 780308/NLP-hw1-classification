@@ -39,17 +39,28 @@ python evaluate.py --checkpoint outputs/dnn/best_model.pt --data-dir data/val
 
 ```bash
 source ~/.venvs/hw1/bin/activate
-python stage1.py smoke
-python stage1.py build-cache
-python stage1.py validate-cache
-python stage1.py tiny-overfit
-python stage1.py run-control
-python stage1.py run-screen
-python stage1.py summarize-screen
-python stage1.py run-fusion       # 仅当 Phase A 决策触发融合
-python stage1.py run-confirm
-python stage1.py summarize-confirm
-python stage1.py audit-results
+python handcrafted_feature_experiments.py smoke
+python handcrafted_feature_experiments.py build-cache
+python handcrafted_feature_experiments.py validate-cache
+python handcrafted_feature_experiments.py tiny-overfit
+python handcrafted_feature_experiments.py run-control
+python handcrafted_feature_experiments.py run-screen
+python handcrafted_feature_experiments.py summarize-screen
+python handcrafted_feature_experiments.py run-fusion       # 仅当 Phase A 决策触发融合
+python handcrafted_feature_experiments.py run-confirm
+python handcrafted_feature_experiments.py summarize-confirm
+python handcrafted_feature_experiments.py audit-results
 ```
 
 特征缓存和检查点保存在 `outputs/stage1/`，不会提交。小型配置、逐轮指标和汇总保存在 `report/stage1/`；脚本会由各次运行的 JSON 重新生成总表。阶段 I 的缓存表示保持 `[C,7,7]` 空间结构，可供后续 DNN、浅层 CNN 和按行输入的 RNN 使用。所需新依赖已经列入 `requirements.txt`。
+
+Stage I 已按三种子内部验证选择 `REP-006-FUSION`（`[190,7,7]`，展平 9310 维）。DNN 架构实验固定这一表示、已有特征缓存、划分及训练集归一化，只比较纯全连接网络结构。Stage I 的固定 MLP 结果直接用作 `DNN-ARCH-BASE`，不会重新训练。运行以下命令将新增 A、B、C 各三个种子的实验，结果写入 `report/dnn_architecture/`；本阶段不读取 `data/val`。
+
+```bash
+python dnn_architecture_experiments.py smoke
+python dnn_architecture_experiments.py run-all
+python dnn_architecture_experiments.py summarize
+python dnn_architecture_experiments.py audit
+```
+
+运行顺序为先提交固定代码版本，再执行 `run-all`，以便每次运行记录对应的 Git 提交。候选结构、选择规则与最终 DNN 的后续评估协议见 `report/dnn_architecture/architecture_summary.md`（运行 `summarize` 后生成）。
