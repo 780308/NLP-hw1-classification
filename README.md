@@ -22,7 +22,7 @@ python evaluate.py --checkpoint outputs/dnn/best_model.pt --data-dir data/val
 ## 模型与输出
 
 - DNN：64×64 RGB 图像展平后进入 `12288→256→64→2` 的纯全连接网络。
-- CNN：计划中的自建 VGG 风格卷积网络，待实现。
+- CNN：当前架构比较以固定 `[190,7,7]` 手工特征图训练三种浅层卷积网络；最终 CNN 尚未确定。
 - RNN：计划中的按行输入 `nn.RNN` 网络，待实现。
 
 每个模型的运行产物放在 `outputs/<model>/`，包括 `best_model.pt`、`config.json`、`split.json`、`history.csv`、`train_summary.json`、`test_metrics.json` 和图表。`outputs/` 不纳入版本控制；报告引用的图另存于 `report/figures/`。检查点包含结构配置、类别映射、最佳轮次和内部验证指标，可由 `evaluate.py` 重载。
@@ -79,3 +79,17 @@ python dnn_final_experiment.py train
 python dnn_final_experiment.py evaluate
 python dnn_final_experiment.py archive
 ```
+
+## CNN 架构比较：CNN-ARCH-001
+
+仅使用 `data/train` 的三份既有 1800/200 内部划分，冻结 `REP-006-FUSION`、缓存及逐划分归一化；只比较浅层普通 CNN、浅层残差 CNN 和三尺度 CNN。`data/val` 不参与本阶段。
+
+```bash
+python cnn_architecture_experiments.py smoke
+python cnn_architecture_experiments.py tiny-overfit
+python cnn_architecture_experiments.py run-all
+python cnn_architecture_experiments.py summarize
+python cnn_architecture_experiments.py audit
+```
+
+正式运行的检查点保存在忽略的 `outputs/cnn_architecture/CNN-ARCH-001/`；配置、逐轮数据和预测归档到 `report/cnn_architecture/`。
