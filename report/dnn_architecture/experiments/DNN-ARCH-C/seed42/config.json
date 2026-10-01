@@ -1,0 +1,30 @@
+{
+  "batch_id": "DNN-ARCH-001",
+  "architecture_id": "DNN-ARCH-C",
+  "representation_id": "REP-006-FUSION",
+  "representation_shape": [
+    190,
+    7,
+    7
+  ],
+  "flatten_dim": 9310,
+  "seed": 42,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "parameter_count": 2417538,
+  "dropout": 0.3,
+  "loss": "CrossEntropyLoss",
+  "optimizer": "AdamW",
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "epochs_max": 30,
+  "early_stopping_patience": 5,
+  "checkpoint_selection": "highest validation accuracy, tie lower validation loss",
+  "train_augmentation": "none",
+  "device": "cuda",
+  "code_commit": "88aa40da02b2f66f7f3100746b2e04b547097a55",
+  "config_sha256": "942db18540400075fdd579bb83a9178a82a9aefc5efe5c7d511b197448f38fe3"
+}

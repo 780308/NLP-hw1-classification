@@ -1,0 +1,37 @@
+{
+  "experiment_id": "DNN-ARCH-001-DNN-ARCH-B-seed42",
+  "batch_id": "DNN-ARCH-001",
+  "architecture_id": "DNN-ARCH-B",
+  "representation_id": "REP-006-FUSION",
+  "seed": 42,
+  "parameter_count": 1196002,
+  "best_epoch": 10,
+  "epochs_run": 12,
+  "train_accuracy_at_best_epoch": 0.8538888888888889,
+  "final_train_accuracy": 0.8466666666666667,
+  "validation_loss": 0.5452578210830689,
+  "final_validation_loss": 0.6947689962387085,
+  "validation_accuracy": 0.79,
+  "cat_accuracy": 0.78,
+  "dog_accuracy": 0.8,
+  "balanced_accuracy": 0.79,
+  "macro_f1": 0.78997899789979,
+  "confusion_matrix": [
+    [
+      78,
+      22
+    ],
+    [
+      20,
+      80
+    ]
+  ],
+  "fit_seconds": 4.281165505000001,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "config_sha256": "56c503a9bc366059dcf80ff734751ed7e28c78d83bcb1979c99d19c6c6e52869",
+  "code_commit": "88aa40da02b2f66f7f3100746b2e04b547097a55",
+  "status": "complete"
+}

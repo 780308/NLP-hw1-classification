@@ -1,0 +1,26 @@
+{
+  "architecture_id": "DNN-ARCH-A",
+  "seed": 123,
+  "epochs_run": 7,
+  "best_epoch": 1,
+  "parameter_count": 2384130,
+  "fit_seconds": 2.7693197020000007,
+  "best_validation_metrics": {
+    "loss": 0.47241868734359743,
+    "accuracy": 0.775,
+    "cat_accuracy": 0.83,
+    "dog_accuracy": 0.72,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        83,
+        17
+      ],
+      [
+        28,
+        72
+      ]
+    ]
+  },
+  "device": "cuda"
+}

@@ -1,0 +1,79 @@
+{
+  "batch_id": "DNN-ARCH-001",
+  "models": {
+    "DNN-ARCH-BASE": {
+      "architecture_id": "DNN-ARCH-BASE",
+      "parameter_count": 2400194,
+      "mean_validation_accuracy": 0.775,
+      "sample_std_validation_accuracy": 0.021794494717703387,
+      "worst_seed_accuracy": 0.75,
+      "mean_cat_accuracy": 0.7433333333333334,
+      "mean_dog_accuracy": 0.8066666666666666,
+      "mean_macro_f1": 0.7742753480181747,
+      "median_best_epoch": 5,
+      "seed_accuracies": {
+        "42": 0.785,
+        "123": 0.79,
+        "2026": 0.75
+      }
+    },
+    "DNN-ARCH-A": {
+      "architecture_id": "DNN-ARCH-A",
+      "parameter_count": 2384130,
+      "mean_validation_accuracy": 0.77,
+      "sample_std_validation_accuracy": 0.018027756377319962,
+      "worst_seed_accuracy": 0.75,
+      "mean_cat_accuracy": 0.7566666666666667,
+      "mean_dog_accuracy": 0.7833333333333333,
+      "mean_macro_f1": 0.768735624386883,
+      "median_best_epoch": 5,
+      "seed_accuracies": {
+        "42": 0.785,
+        "123": 0.775,
+        "2026": 0.75
+      }
+    },
+    "DNN-ARCH-B": {
+      "architecture_id": "DNN-ARCH-B",
+      "parameter_count": 1196002,
+      "mean_validation_accuracy": 0.7716666666666667,
+      "sample_std_validation_accuracy": 0.027537852736430536,
+      "worst_seed_accuracy": 0.74,
+      "mean_cat_accuracy": 0.72,
+      "mean_dog_accuracy": 0.8233333333333334,
+      "mean_macro_f1": 0.7701536922896777,
+      "median_best_epoch": 5,
+      "seed_accuracies": {
+        "42": 0.79,
+        "123": 0.785,
+        "2026": 0.74
+      }
+    },
+    "DNN-ARCH-C": {
+      "architecture_id": "DNN-ARCH-C",
+      "parameter_count": 2417538,
+      "mean_validation_accuracy": 0.7816666666666667,
+      "sample_std_validation_accuracy": 0.012583057392117927,
+      "worst_seed_accuracy": 0.77,
+      "mean_cat_accuracy": 0.79,
+      "mean_dog_accuracy": 0.7733333333333333,
+      "mean_macro_f1": 0.7813291338287721,
+      "median_best_epoch": 6,
+      "seed_accuracies": {
+        "42": 0.795,
+        "123": 0.78,
+        "2026": 0.77
+      }
+    }
+  },
+  "selected_architecture": "DNN-ARCH-C",
+  "final_epochs_for_future_full_train": 6,
+  "top_two_mean_accuracy_gap": 0.00666666666666671,
+  "selection_reason": "Mean accuracy gap is below 0.75 point; larger model has at least 2.0 points better worst-seed accuracy.",
+  "ranked_by_mean_accuracy": [
+    "DNN-ARCH-C",
+    "DNN-ARCH-BASE",
+    "DNN-ARCH-B",
+    "DNN-ARCH-A"
+  ]
+}

@@ -64,3 +64,5 @@ python dnn_architecture_experiments.py audit
 ```
 
 运行顺序为先提交固定代码版本，再执行 `run-all`，以便每次运行记录对应的 Git 提交。候选结构、选择规则与最终 DNN 的后续评估协议见 `report/dnn_architecture/architecture_summary.md`（运行 `summarize` 后生成）。
+
+`DNN-ARCH-001` 已完成九次新训练；四模型比较选定 **DNN-ARCH-C**（三种子内部验证 78.17% ± 1.26%，最差种子 77.00%）。完整记录见 [架构汇总](report/dnn_architecture/architecture_summary.md)。最终全量 DNN 训练和 500 张图评估尚未执行。
