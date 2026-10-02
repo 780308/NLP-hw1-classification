@@ -30,6 +30,7 @@ SEEDS = (42, 123, 2026)
 T0 = "RNN-TRAIN-T0-BASE"
 STRATEGIES = ("RNN-TRAIN-T1-FLIP", "RNN-TRAIN-T2-DROPOUT", "RNN-TRAIN-T3-WD")
 ALL_STRATEGIES = (T0, *STRATEGIES)
+COMBINATION_STRATEGY = "RNN-TRAIN-T4-FLIP-WD"
 OUTPUT = ROOT / "outputs/rnn_training" / BATCH_ID
 REPORT = ROOT / "report/rnn_training"
 BASE_REPORT = ROOT / "report/rnn2d_architecture/experiments" / ARCHITECTURE_ID
@@ -38,12 +39,12 @@ ARTIFACTS = ("config.json", "normalization.json", "history.csv", "metrics.json",
 
 
 def strategy_settings(strategy_id: str) -> dict:
-    if strategy_id not in STRATEGIES:
+    if strategy_id not in (*STRATEGIES, COMBINATION_STRATEGY):
         raise ValueError(f"Unknown training strategy: {strategy_id}")
     return {
-        "augmentation": "horizontal_flip" if strategy_id == STRATEGIES[0] else "none",
+        "augmentation": "horizontal_flip" if strategy_id in (STRATEGIES[0], COMBINATION_STRATEGY) else "none",
         "dropout_probability": 0.10 if strategy_id == STRATEGIES[1] else 0.0,
-        "weight_decay": 5e-4 if strategy_id == STRATEGIES[2] else 1e-4,
+        "weight_decay": 5e-4 if strategy_id in (STRATEGIES[2], COMBINATION_STRATEGY) else 1e-4,
     }
 
 
@@ -114,12 +115,13 @@ def archive_run(strategy_id: str, seed: int) -> None:
         shutil.copy2(source / name, target / name)
 
 
-def train_one(strategy_id: str, seed: int, prepared: dict, channels: tuple[int, ...], directory: Path) -> None:
+def train_one(strategy_id: str, seed: int, prepared: dict, channels: tuple[int, ...], directory: Path,
+              batch_id: str = BATCH_ID) -> None:
     seed_everything(seed)
     device = select_device("auto")
     split = prepared["split"]
     settings = strategy_settings(strategy_id)
-    t1 = strategy_id == STRATEGIES[0]
+    t1 = settings["augmentation"] == "horizontal_flip"
     mean, std = t1_normalization(prepared["train_indices"]) if t1 else (prepared["mean"], prepared["std"])
     train_original = make_dataset(prepared["train_indices"], channels, mean, std)
     if t1:
@@ -140,7 +142,7 @@ def train_one(strategy_id: str, seed: int, prepared: dict, channels: tuple[int, 
         raise AssertionError("RNN training strategy altered model size or sample counts")
     flip_hash = sha256_file(FLIP_CACHE / "manifest.json") if t1 else ""
     config = {
-        "batch_id": BATCH_ID, "strategy_id": strategy_id, "architecture_id": ARCHITECTURE_ID,
+        "batch_id": batch_id, "strategy_id": strategy_id, "architecture_id": ARCHITECTURE_ID,
         "representation_id": REPRESENTATION_ID, "representation_shape": [190, 7, 7],
         **ARCHITECTURES[ARCHITECTURE_ID], **settings,
         "seed": seed, "training_sample_count": len(train_dataset), "validation_samples": 200,
@@ -210,7 +212,7 @@ def train_one(strategy_id: str, seed: int, prepared: dict, channels: tuple[int, 
         raise AssertionError("Reloaded RNN strategy checkpoint changed validation accuracy")
     best_epoch = checkpoint["epoch"]
     write_json(directory / "metrics.json", {
-        "experiment_id": f"{BATCH_ID}-{strategy_id}-seed{seed}",
+        "experiment_id": f"{batch_id}-{strategy_id}-seed{seed}",
         "strategy_id": strategy_id, "architecture_id": ARCHITECTURE_ID,
         "representation_id": REPRESENTATION_ID, "seed": seed,
         "parameter_count": count, "training_sample_count": len(train_dataset),
