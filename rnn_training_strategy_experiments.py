@@ -116,7 +116,8 @@ def archive_run(strategy_id: str, seed: int) -> None:
 
 
 def train_one(strategy_id: str, seed: int, prepared: dict, channels: tuple[int, ...], directory: Path,
-              batch_id: str = BATCH_ID) -> None:
+              batch_id: str = BATCH_ID, architecture_id: str = ARCHITECTURE_ID,
+              experiment_subject: str | None = None) -> None:
     seed_everything(seed)
     device = select_device("auto")
     split = prepared["split"]
@@ -135,16 +136,18 @@ def train_one(strategy_id: str, seed: int, prepared: dict, channels: tuple[int, 
     train_loader = DataLoader(train_dataset, shuffle=True,
                               generator=torch.Generator().manual_seed(seed), **loader_args)
     validation_loader = DataLoader(validation_dataset, shuffle=False, **loader_args)
-    model = model_for(strategy_id).to(device)
+    model = VisionRNN2DClassifier(architecture_id,
+                                  dropout_probability=settings["dropout_probability"]).to(device)
     count = sum(p.numel() for p in model.parameters() if p.requires_grad)
     baseline_count = json.loads((BASE_REPORT / f"seed{seed}" / "metrics.json").read_text(encoding="utf-8"))["parameter_count"]
-    if count != baseline_count or len(train_dataset) != (3600 if t1 else 1800) or len(validation_dataset) != 200:
+    if ((architecture_id == ARCHITECTURE_ID and count != baseline_count)
+            or len(train_dataset) != (3600 if t1 else 1800) or len(validation_dataset) != 200):
         raise AssertionError("RNN training strategy altered model size or sample counts")
     flip_hash = sha256_file(FLIP_CACHE / "manifest.json") if t1 else ""
     config = {
-        "batch_id": batch_id, "strategy_id": strategy_id, "architecture_id": ARCHITECTURE_ID,
+        "batch_id": batch_id, "strategy_id": strategy_id, "architecture_id": architecture_id,
         "representation_id": REPRESENTATION_ID, "representation_shape": [190, 7, 7],
-        **ARCHITECTURES[ARCHITECTURE_ID], **settings,
+        **ARCHITECTURES[architecture_id], **settings,
         "seed": seed, "training_sample_count": len(train_dataset), "validation_samples": 200,
         "parameter_count": count, "class_to_idx": {"cat": 0, "dog": 1},
         "split_sha256": split["sha256"],
@@ -212,11 +215,11 @@ def train_one(strategy_id: str, seed: int, prepared: dict, channels: tuple[int, 
         raise AssertionError("Reloaded RNN strategy checkpoint changed validation accuracy")
     best_epoch = checkpoint["epoch"]
     write_json(directory / "metrics.json", {
-        "experiment_id": f"{batch_id}-{strategy_id}-seed{seed}",
-        "strategy_id": strategy_id, "architecture_id": ARCHITECTURE_ID,
+        "experiment_id": f"{batch_id}-{experiment_subject or strategy_id}-seed{seed}",
+        "strategy_id": strategy_id, "architecture_id": architecture_id,
         "representation_id": REPRESENTATION_ID, "seed": seed,
         "parameter_count": count, "training_sample_count": len(train_dataset),
-        "best_epoch": best_epoch, "epochs_run": len(history),
+        "best_epoch": best_epoch, "epochs_run": len(history), "final_epoch": len(history),
         "train_accuracy_at_best_epoch": history[best_epoch - 1]["train_accuracy"],
         "final_train_accuracy": history[-1]["train_accuracy"],
         "validation_loss": checkpoint["validation_metrics"]["loss"], **measured,

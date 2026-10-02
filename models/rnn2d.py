@@ -9,8 +9,10 @@ ARCHITECTURES = {
     "RNN2D-ARCH-S": {"embed_dim": 192, "rnn_hidden_size": 48, "num_blocks": 2},
     "RNN2D-ARCH-M": {"embed_dim": 256, "rnn_hidden_size": 64, "num_blocks": 3},
     "RNN2D-ARCH-L": {"embed_dim": 320, "rnn_hidden_size": 80, "num_blocks": 3},
+    "RNN2D-ARCH-WIDE": {"embed_dim": 384, "rnn_hidden_size": 96, "num_blocks": 3},
+    "RNN2D-ARCH-XWIDE": {"embed_dim": 448, "rnn_hidden_size": 112, "num_blocks": 3},
 }
-ARCHITECTURE_IDS = tuple(ARCHITECTURES)
+ARCHITECTURE_IDS = ("RNN2D-ARCH-S", "RNN2D-ARCH-M", "RNN2D-ARCH-L")
 
 
 def horizontal_sequences(x: Tensor) -> Tensor:
