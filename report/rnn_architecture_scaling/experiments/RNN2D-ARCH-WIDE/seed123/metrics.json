@@ -1,0 +1,41 @@
+{
+  "experiment_id": "RNN-ARCH-003-RNN2D-ARCH-WIDE-seed123",
+  "strategy_id": "RNN-TRAIN-T1-FLIP",
+  "architecture_id": "RNN2D-ARCH-WIDE",
+  "representation_id": "REP-006-FUSION",
+  "seed": 123,
+  "parameter_count": 2851970,
+  "training_sample_count": 3600,
+  "best_epoch": 11,
+  "epochs_run": 12,
+  "final_epoch": 12,
+  "train_accuracy_at_best_epoch": 0.9419444444444445,
+  "final_train_accuracy": 0.9502777777777778,
+  "validation_loss": 0.4740953779220581,
+  "validation_accuracy": 0.85,
+  "cat_accuracy": 0.8,
+  "dog_accuracy": 0.9,
+  "balanced_accuracy": 0.8500000000000001,
+  "macro_f1": 0.849624060150376,
+  "confusion_matrix": [
+    [
+      80,
+      20
+    ],
+    [
+      10,
+      90
+    ]
+  ],
+  "fit_seconds": 38.30591070199999,
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0001,
+  "dropout_probability": 0.0,
+  "augmentation": "horizontal_flip",
+  "gradient_clip_norm": 1.0,
+  "split_sha256": "27ee1119bf3fc1ba7bedc4939eb47320edb1df91e61d8c553d049e94194d9d42",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "37c0be14b83957bf8674a29aba7e8b4013fdf8fa80c0c6a2c93fe42b01fa8d8c",
+  "code_commit": "408008ad52e330ed03b2c33349af7019d93bab7c",
+  "status": "complete"
+}

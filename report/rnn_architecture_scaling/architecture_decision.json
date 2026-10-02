@@ -1,0 +1,125 @@
+{
+  "batch_id": "RNN-ARCH-003",
+  "baseline_source": "report/rnn_training/experiments/RNN-TRAIN-T1-FLIP",
+  "models": {
+    "RNN2D-ARCH-BASE": {
+      "architecture_id": "RNN2D-ARCH-BASE",
+      "parameter_count": 1992642,
+      "embed_dim": 320,
+      "rnn_hidden_size": 80,
+      "num_blocks": 3,
+      "training_sample_count": 3600,
+      "mean_validation_accuracy": 0.84,
+      "sample_std_validation_accuracy": 0.03774917217635372,
+      "worst_seed_accuracy": 0.8,
+      "best_seed_accuracy": 0.875,
+      "mean_cat_accuracy": 0.8533333333333334,
+      "mean_dog_accuracy": 0.8266666666666667,
+      "absolute_cat_dog_gap": 0.026666666666666727,
+      "mean_balanced_accuracy": 0.84,
+      "mean_macro_f1": 0.8398230878837087,
+      "median_best_epoch": 10,
+      "mean_final_train_accuracy": 0.9491666666666667,
+      "mean_final_validation_accuracy": 0.8216666666666667,
+      "mean_train_validation_gap": 0.12750000000000006,
+      "late_validation_loss_rise_runs": 3,
+      "mean_fit_seconds": 41.73272529033334,
+      "seed_accuracies": {
+        "42": 0.845,
+        "123": 0.875,
+        "2026": 0.8
+      },
+      "relative_to_base": {
+        "mean_accuracy_gain": 0.0,
+        "worst_seed_gain": 0.0,
+        "std_change": 0.0,
+        "parameter_multiplier": 1.0
+      }
+    },
+    "RNN2D-ARCH-WIDE": {
+      "architecture_id": "RNN2D-ARCH-WIDE",
+      "parameter_count": 2851970,
+      "embed_dim": 384,
+      "rnn_hidden_size": 96,
+      "num_blocks": 3,
+      "training_sample_count": 3600,
+      "mean_validation_accuracy": 0.8283333333333334,
+      "sample_std_validation_accuracy": 0.02565800719723438,
+      "worst_seed_accuracy": 0.8,
+      "best_seed_accuracy": 0.85,
+      "mean_cat_accuracy": 0.8200000000000001,
+      "mean_dog_accuracy": 0.8366666666666667,
+      "absolute_cat_dog_gap": 0.016666666666666607,
+      "mean_balanced_accuracy": 0.8283333333333334,
+      "mean_macro_f1": 0.8281889749317237,
+      "median_best_epoch": 11,
+      "mean_final_train_accuracy": 0.960925925925926,
+      "mean_final_validation_accuracy": 0.8083333333333333,
+      "mean_train_validation_gap": 0.1525925925925926,
+      "late_validation_loss_rise_runs": 3,
+      "mean_fit_seconds": 45.468903422,
+      "seed_accuracies": {
+        "42": 0.835,
+        "123": 0.85,
+        "2026": 0.8
+      },
+      "relative_to_base": {
+        "mean_accuracy_gain": -0.011666666666666603,
+        "worst_seed_gain": 0.0,
+        "std_change": -0.01209116497911934,
+        "parameter_multiplier": 1.4312505708501577
+      }
+    },
+    "RNN2D-ARCH-XWIDE": {
+      "architecture_id": "RNN2D-ARCH-XWIDE",
+      "parameter_count": 3864898,
+      "embed_dim": 448,
+      "rnn_hidden_size": 112,
+      "num_blocks": 3,
+      "training_sample_count": 3600,
+      "mean_validation_accuracy": 0.8383333333333333,
+      "sample_std_validation_accuracy": 0.020207259421636918,
+      "worst_seed_accuracy": 0.82,
+      "best_seed_accuracy": 0.86,
+      "mean_cat_accuracy": 0.8533333333333333,
+      "mean_dog_accuracy": 0.8233333333333334,
+      "absolute_cat_dog_gap": 0.029999999999999916,
+      "mean_balanced_accuracy": 0.8383333333333334,
+      "mean_macro_f1": 0.8382511713741111,
+      "median_best_epoch": 10,
+      "mean_final_train_accuracy": 0.9585185185185185,
+      "mean_final_validation_accuracy": 0.825,
+      "mean_train_validation_gap": 0.1335185185185186,
+      "late_validation_loss_rise_runs": 3,
+      "mean_fit_seconds": 51.44604698133333,
+      "seed_accuracies": {
+        "42": 0.835,
+        "123": 0.86,
+        "2026": 0.82
+      },
+      "relative_to_base": {
+        "mean_accuracy_gain": -0.0016666666666667052,
+        "worst_seed_gain": 0.019999999999999907,
+        "std_change": -0.017541912754716803,
+        "parameter_multiplier": 1.9395847322298736
+      }
+    }
+  },
+  "selected_architecture": "RNN2D-ARCH-BASE",
+  "selection_rule": "no_meaningful_width_gain",
+  "qualification": {
+    "RNN2D-ARCH-WIDE": {
+      "qualifies": false,
+      "reason": "no_meaningful_gain"
+    },
+    "RNN2D-ARCH-XWIDE": {
+      "qualifies": false,
+      "reason": "no_meaningful_gain"
+    }
+  },
+  "scaling_classification": "saturation",
+  "outcome": "B",
+  "architecture_optimization_complete": true,
+  "frozen_training_recipe": "RNN-TRAIN-T1-FLIP",
+  "next_stage": "separate RNN training-setting optimization"
+}

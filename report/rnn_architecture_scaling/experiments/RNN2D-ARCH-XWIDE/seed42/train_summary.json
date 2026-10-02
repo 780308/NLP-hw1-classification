@@ -1,0 +1,27 @@
+{
+  "strategy_id": "RNN-TRAIN-T1-FLIP",
+  "seed": 42,
+  "epochs_run": 16,
+  "best_epoch": 16,
+  "parameter_count": 3864898,
+  "training_sample_count": 3600,
+  "fit_seconds": 56.19399482700001,
+  "best_validation_metrics": {
+    "loss": 0.8066800260543823,
+    "accuracy": 0.835,
+    "cat_accuracy": 0.83,
+    "dog_accuracy": 0.84,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        83,
+        17
+      ],
+      [
+        16,
+        84
+      ]
+    ]
+  },
+  "device": "cuda"
+}

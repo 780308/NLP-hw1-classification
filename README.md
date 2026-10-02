@@ -1,6 +1,6 @@
 # 猫狗图像分类：DNN、CNN、RNN 实验
 
-本项目按 `synopsis.txt` 实现猫狗二分类。已完成最终 DNN `DNN-FINAL-001`、最终 CNN `CNN-FINAL-001`、两阶段 RNN 架构比较及 RNN 训练策略和单次组合比较；RNN 最终训练与保留集评估尚未运行。500 张保留图上的最终 DNN 准确率为 **73.80%**，最终 CNN 为 **81.20%**。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，持续更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
+本项目按 `synopsis.txt` 实现猫狗二分类。已完成最终 DNN `DNN-FINAL-001`、最终 CNN `CNN-FINAL-001`、RNN 架构与训练策略比较；RNN 架构优化已结束，最终训练与保留集评估尚未运行。500 张保留图上的最终 DNN 准确率为 **73.80%**，最终 CNN 为 **81.20%**。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，持续更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
 
 每次实验的编号、配置、结果与对应 Git 提交方式记录在 [report/experiment_log.md](report/experiment_log.md)。公开仓库不包含原始 `data/` 图片或 `outputs/` 检查点；运行前需把课程提供的数据放到下述目录。
 
@@ -181,4 +181,17 @@ python rnn_training_combination_experiments.py summarize
 python rnn_training_combination_experiments.py audit
 ```
 
-T4 的内部验证均值为 83.33% ± 3.51%，低于 T1 的 84.00% ± 3.77%；两者最差种子均为 80.00%。按预设门槛，**未来 RNN-ARCH-003 冻结 T1 配方：RGB 水平镜像增强、学习率 `3e-4`、权重衰减 `1e-4`、无 Dropout**。结果与逐次审计见[组合实验汇总](report/rnn_training_combination/combination_summary.md)。检查点保存在忽略的 `outputs/rnn_training/RNN-TRAIN-002/`，本阶段未启动 RNN-ARCH-003。
+T4 的内部验证均值为 83.33% ± 3.51%，低于 T1 的 84.00% ± 3.77%；两者最差种子均为 80.00%。按预设门槛，**随后 RNN-ARCH-003 使用 T1 配方：RGB 水平镜像增强、学习率 `3e-4`、权重衰减 `1e-4`、无 Dropout**。结果与逐次审计见[组合实验汇总](report/rnn_training_combination/combination_summary.md)。检查点保存在忽略的 `outputs/rnn_training/RNN-TRAIN-002/`。
+
+## RNN 最终宽度比较：RNN-ARCH-003
+
+固定 `REP-006-FUSION` 与 T1 镜像配方，只比较三块双轴 RNN2D 的 BASE `C320/H80`、WIDE `C384/H96` 和 XWIDE `C448/H112`。BASE 导入 T1 原结果，不重训；WIDE/XWIDE 各运行三个既有种子。所有验证只用 `data/train` 的内部划分。
+
+```bash
+python rnn_architecture_scaling_experiments.py smoke
+python rnn_architecture_scaling_experiments.py run-all
+python rnn_architecture_scaling_experiments.py summarize
+python rnn_architecture_scaling_experiments.py audit
+```
+
+BASE/WIDE/XWIDE 的内部验证均值为 **84.00%/82.83%/83.83%**。两种加宽模型都未达到预设的实质均值增益门槛，因此判定宽度缩放饱和（Outcome B），**最终架构保留 RNN2D-ARCH-L（报告中称 BASE）**。架构优化到此结束，下一步应另立训练设置优化阶段。完整记录见[宽度比较汇总](report/rnn_architecture_scaling/architecture_summary.md)；检查点保存在忽略的 `outputs/rnn_architecture/RNN-ARCH-003/`。

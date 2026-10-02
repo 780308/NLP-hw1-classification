@@ -147,7 +147,10 @@ def decide(groups: dict) -> dict:
         unstable = any(group["relative_to_base"]["std_change"] > 0.015 and
                        group["relative_to_base"]["worst_seed_gain"] <= 0
                        for group in apparent)
-        if unstable:
+        if all(groups[key]["relative_to_base"]["mean_accuracy_gain"] < 0.005 - 1e-12
+               for key in exp.NEW_ARCHITECTURES):
+            scaling, outcome = "saturation", "B"
+        elif unstable:
             scaling, outcome = "unstable scaling", "C"
         elif all(groups[key]["relative_to_base"]["mean_accuracy_gain"] <= 0
                  for key in exp.NEW_ARCHITECTURES):
@@ -229,12 +232,20 @@ def summarize() -> None:
     for architecture_id in exp.ALL_ARCHITECTURES:
         group = groups[architecture_id]
         lines.append(f"| {architecture_id} | {pct(group['mean_final_train_accuracy'])} | {pct(group['mean_final_validation_accuracy'])} | {100 * group['mean_train_validation_gap']:.2f} pp | {group['late_validation_loss_rise_runs']}/3 | {group['mean_fit_seconds']:.2f} |")
+    lines += ["", "| 架构 | 种子 | 最佳/末轮 | 最佳轮训练准确率 | 末轮训练/验证准确率 | 最佳验证准确率 | 后期损失回升 |",
+              "|---|---:|---:|---:|---:|---:|---:|"]
+    for architecture_id in exp.ALL_ARCHITECTURES:
+        for seed in exp.SEEDS:
+            metrics, history, _, _, _ = record(architecture_id, seed)
+            final = history[-1]
+            lines.append(f"| {architecture_id} | {seed} | {metrics['best_epoch']}/{len(history)} | {pct(metrics['train_accuracy_at_best_epoch'])} | {pct(metrics['final_train_accuracy'])}/{pct(float(final['validation_accuracy']))} | {pct(metrics['validation_accuracy'])} | {'是' if late_loss_rise(history) else '否'} |")
     lines += ["", "![三种宽度的训练轨迹](training_curves.png)", "",
               "## 缩放判断与冻结结论", ""]
     base, wide, xwide = (groups[key] for key in exp.ALL_ARCHITECTURES)
     lines += [
         f"BASE→WIDE：均值变化 {100 * wide['relative_to_base']['mean_accuracy_gain']:+.2f} pp，最差种子变化 {100 * wide['relative_to_base']['worst_seed_gain']:+.2f} pp，猫狗差变化 {100 * (wide['absolute_cat_dog_gap'] - base['absolute_cat_dog_gap']):+.2f} pp，标准差变化 {100 * wide['relative_to_base']['std_change']:+.2f} pp。", "",
         f"WIDE→XWIDE：均值变化 {100 * (xwide['mean_validation_accuracy'] - wide['mean_validation_accuracy']):+.2f} pp，最差种子变化 {100 * (xwide['worst_seed_accuracy'] - wide['worst_seed_accuracy']):+.2f} pp，猫狗差变化 {100 * (xwide['absolute_cat_dog_gap'] - wide['absolute_cat_dog_gap']):+.2f} pp，标准差变化 {100 * (xwide['sample_std_validation_accuracy'] - wide['sample_std_validation_accuracy']):+.2f} pp。", "",
+        f"BASE、WIDE、XWIDE 的最佳轮中位数分别为 {base['median_best_epoch']}/{wide['median_best_epoch']}/{xwide['median_best_epoch']}，没有随宽度增大而明显提前。末轮训练准确率均值分别为 {pct(base['mean_final_train_accuracy'])}/{pct(wide['mean_final_train_accuracy'])}/{pct(xwide['mean_final_train_accuracy'])}；WIDE 和 XWIDE 的训练/验证差距相对 BASE 分别变化 {100 * (wide['mean_train_validation_gap'] - base['mean_train_validation_gap']):+.2f}/{100 * (xwide['mean_train_validation_gap'] - base['mean_train_validation_gap']):+.2f} pp。三个架构均有 3/3 次后期验证损失回升。XWIDE 的最差种子与标准差改善，但平均准确率仍低于 BASE，因此没有形成可复现的正向均值缩放收益。", "",
         f"根据预设均值、最差种子与方差保护规则，缩放行为判为 **{decision['scaling_classification']}**；选择 **{decision['selected_architecture']}**（`{decision['selection_rule']}`），Outcome **{decision['outcome']}**。", "",
         "架构优化到此结束。下一步是独立的 RNN 训练设置优化阶段；本任务没有进一步加宽、改深、调参、全量训练或评估 `data/val`。", "",
     ]
