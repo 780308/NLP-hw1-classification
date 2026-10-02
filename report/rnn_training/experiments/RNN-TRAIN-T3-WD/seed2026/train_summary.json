@@ -1,0 +1,27 @@
+{
+  "strategy_id": "RNN-TRAIN-T3-WD",
+  "seed": 2026,
+  "epochs_run": 13,
+  "best_epoch": 11,
+  "parameter_count": 1992642,
+  "training_sample_count": 1800,
+  "fit_seconds": 21.62796914100005,
+  "best_validation_metrics": {
+    "loss": 0.7596722111105919,
+    "accuracy": 0.8,
+    "cat_accuracy": 0.78,
+    "dog_accuracy": 0.82,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        78,
+        22
+      ],
+      [
+        18,
+        82
+      ]
+    ]
+  },
+  "device": "cuda"
+}

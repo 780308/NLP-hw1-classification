@@ -1,6 +1,6 @@
 # 猫狗图像分类：DNN、CNN、RNN 实验
 
-本项目按 `synopsis.txt` 实现猫狗二分类。已完成最终 DNN `DNN-FINAL-001`、最终 CNN `CNN-FINAL-001` 和两阶段 RNN 架构比较；RNN 最终训练与保留集评估尚未运行。500 张保留图上的最终 DNN 准确率为 **73.80%**，最终 CNN 为 **81.20%**。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，持续更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
+本项目按 `synopsis.txt` 实现猫狗二分类。已完成最终 DNN `DNN-FINAL-001`、最终 CNN `CNN-FINAL-001`、两阶段 RNN 架构比较及 RNN 有限训练策略比较；RNN 最终训练与保留集评估尚未运行。500 张保留图上的最终 DNN 准确率为 **73.80%**，最终 CNN 为 **81.20%**。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，持续更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
 
 每次实验的编号、配置、结果与对应 Git 提交方式记录在 [report/experiment_log.md](report/experiment_log.md)。公开仓库不包含原始 `data/` 图片或 `outputs/` 检查点；运行前需把课程提供的数据放到下述目录。
 
@@ -156,3 +156,16 @@ python rnn2d_architecture_experiments.py audit
 ```
 
 九次正式运行已完成；S/M/L 的三种子内部验证均值分别为 80.33%/79.50%/81.83%，按冻结规则选定 **RNN2D-ARCH-L**（Category A）。完整结果、曲线和审计依据见[Stage II 汇总](report/rnn2d_architecture/architecture_summary.md)。检查点保存在忽略的 `outputs/rnn2d_architecture/RNN-ARCH-002/`，小型运行记录保存在 `report/rnn2d_architecture/`。已有结果只需运行 `summarize`、`audit` 复核。
+
+## RNN 训练策略比较：RNN-TRAIN-001
+
+固定 `RNN2D-ARCH-L` 与 `REP-006-FUSION`。T0 直接导入上一阶段结果；T1 使用 RGB 水平镜像后重新提取的既有特征缓存，将每份训练集扩至 3600 张；T2 只在各残差块指定位置加入 `nn.Dropout(0.10)`；T3 只把 AdamW 权重衰减改为 `5e-4`。各新策略分别运行三个原有种子，只用 `data/train` 的内部验证划分。
+
+```bash
+python rnn_training_strategy_experiments.py smoke
+python rnn_training_strategy_experiments.py run-all
+python rnn_training_strategy_experiments.py summarize
+python rnn_training_strategy_experiments.py audit
+```
+
+T0/T1/T2/T3 的三种子内部验证均值为 81.83%/84.00%/81.17%/82.17%。选定 **RNN-TRAIN-T1-FLIP**，Outcome A；T1 与 T3 使一次组合实验具备资格，但本阶段未运行组合。结果、曲线和逐次预测见[训练策略汇总](report/rnn_training/training_strategy_summary.md)。大检查点保存在忽略的 `outputs/rnn_training/RNN-TRAIN-001/`；已有结果只需用 `summarize`、`audit` 复核。

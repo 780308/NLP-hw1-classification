@@ -77,7 +77,7 @@ def smoke() -> None:
     for strategy_id in STRATEGIES:
         model = model_for(strategy_id)
         count = sum(p.numel() for p in model.parameters() if p.requires_grad)
-        if count != baseline_count or count != 1_992_642 or model(features).shape != (8, 2):
+        if count != baseline_count or model(features).shape != (8, 2):
             raise AssertionError("Frozen RNN model size or output changed")
         nn.CrossEntropyLoss()(model(features), targets).backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)

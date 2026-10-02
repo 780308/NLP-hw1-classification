@@ -1,0 +1,27 @@
+{
+  "strategy_id": "RNN-TRAIN-T2-DROPOUT",
+  "seed": 2026,
+  "epochs_run": 13,
+  "best_epoch": 9,
+  "parameter_count": 1992642,
+  "training_sample_count": 1800,
+  "fit_seconds": 22.361474510999983,
+  "best_validation_metrics": {
+    "loss": 0.6523649311065673,
+    "accuracy": 0.805,
+    "cat_accuracy": 0.85,
+    "dog_accuracy": 0.76,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        85,
+        15
+      ],
+      [
+        24,
+        76
+      ]
+    ]
+  },
+  "device": "cuda"
+}

@@ -1,0 +1,39 @@
+{
+  "batch_id": "RNN-TRAIN-001",
+  "strategy_id": "RNN-TRAIN-T3-WD",
+  "architecture_id": "RNN2D-ARCH-L",
+  "representation_id": "REP-006-FUSION",
+  "representation_shape": [
+    190,
+    7,
+    7
+  ],
+  "embed_dim": 320,
+  "rnn_hidden_size": 80,
+  "num_blocks": 3,
+  "augmentation": "none",
+  "dropout_probability": 0.0,
+  "weight_decay": 0.0005,
+  "seed": 42,
+  "training_sample_count": 1800,
+  "validation_samples": 200,
+  "parameter_count": 1992642,
+  "class_to_idx": {
+    "cat": 0,
+    "dog": 1
+  },
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "",
+  "optimizer": "AdamW",
+  "learning_rate": 0.0003,
+  "batch_size": 32,
+  "max_epochs": 40,
+  "early_stopping_patience": 8,
+  "gradient_clip_norm": 1.0,
+  "loss": "CrossEntropyLoss",
+  "scheduler": null,
+  "checkpoint_selection": "highest internal-validation accuracy; tie lower validation loss",
+  "device": "cuda",
+  "code_commit": "5c4d4631ec1ead116e3d055480790e1ad0c16fca"
+}

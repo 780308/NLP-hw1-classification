@@ -1,0 +1,40 @@
+{
+  "experiment_id": "RNN-TRAIN-001-RNN-TRAIN-T3-WD-seed123",
+  "strategy_id": "RNN-TRAIN-T3-WD",
+  "architecture_id": "RNN2D-ARCH-L",
+  "representation_id": "REP-006-FUSION",
+  "seed": 123,
+  "parameter_count": 1992642,
+  "training_sample_count": 1800,
+  "best_epoch": 12,
+  "epochs_run": 12,
+  "train_accuracy_at_best_epoch": 0.9322222222222222,
+  "final_train_accuracy": 0.9322222222222222,
+  "validation_loss": 0.4716831529140472,
+  "validation_accuracy": 0.855,
+  "cat_accuracy": 0.87,
+  "dog_accuracy": 0.84,
+  "balanced_accuracy": 0.855,
+  "macro_f1": 0.854967367657723,
+  "confusion_matrix": [
+    [
+      87,
+      13
+    ],
+    [
+      16,
+      84
+    ]
+  ],
+  "fit_seconds": 19.382692424000027,
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0005,
+  "dropout_probability": 0.0,
+  "augmentation": "none",
+  "gradient_clip_norm": 1.0,
+  "split_sha256": "27ee1119bf3fc1ba7bedc4939eb47320edb1df91e61d8c553d049e94194d9d42",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "",
+  "code_commit": "5c4d4631ec1ead116e3d055480790e1ad0c16fca",
+  "status": "complete"
+}

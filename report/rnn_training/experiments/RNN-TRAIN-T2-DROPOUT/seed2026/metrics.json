@@ -1,0 +1,40 @@
+{
+  "experiment_id": "RNN-TRAIN-001-RNN-TRAIN-T2-DROPOUT-seed2026",
+  "strategy_id": "RNN-TRAIN-T2-DROPOUT",
+  "architecture_id": "RNN2D-ARCH-L",
+  "representation_id": "REP-006-FUSION",
+  "seed": 2026,
+  "parameter_count": 1992642,
+  "training_sample_count": 1800,
+  "best_epoch": 9,
+  "epochs_run": 13,
+  "train_accuracy_at_best_epoch": 0.865,
+  "final_train_accuracy": 0.9294444444444444,
+  "validation_loss": 0.6523649311065673,
+  "validation_accuracy": 0.805,
+  "cat_accuracy": 0.85,
+  "dog_accuracy": 0.76,
+  "balanced_accuracy": 0.8049999999999999,
+  "macro_f1": 0.8046043237556051,
+  "confusion_matrix": [
+    [
+      85,
+      15
+    ],
+    [
+      24,
+      76
+    ]
+  ],
+  "fit_seconds": 22.361474510999983,
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0001,
+  "dropout_probability": 0.1,
+  "augmentation": "none",
+  "gradient_clip_norm": 1.0,
+  "split_sha256": "ea6e39137fa9269eaabce5bd078ad1d816e89deef834b19e0797d95e3dc57c81",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "",
+  "code_commit": "5c4d4631ec1ead116e3d055480790e1ad0c16fca",
+  "status": "complete"
+}

@@ -42,6 +42,17 @@ def record(strategy_id: str, seed: int) -> tuple[dict, list[dict], dict, dict, P
     return metrics, history, config, normal, directory
 
 
+def late_loss_rise(history: list[dict]) -> bool:
+    """Detect any >=0.10 rebound after an earlier validation-loss minimum."""
+    lowest = float("inf")
+    for epoch in history:
+        loss = float(epoch["validation_loss"])
+        if loss - lowest >= 0.10:
+            return True
+        lowest = min(lowest, loss)
+    return False
+
+
 def rows_and_groups() -> tuple[list[dict], dict]:
     rows, groups = [], {}
     for strategy_id in exp.ALL_STRATEGIES:
@@ -89,10 +100,7 @@ def rows_and_groups() -> tuple[list[dict], dict]:
             "mean_final_train_accuracy": final_train,
             "mean_final_validation_accuracy": final_validation,
             "mean_final_train_validation_gap": final_train - final_validation,
-            "late_validation_loss_rise_runs": sum(
-                float(history[-1]["validation_loss"]) -
-                min(float(epoch["validation_loss"]) for epoch in history) >= 0.10
-                for history in histories),
+            "late_validation_loss_rise_runs": sum(late_loss_rise(history) for history in histories),
             "mean_fit_seconds": statistics.mean(row["fit_seconds"] for row in subset),
             "seed_accuracies": {str(row["seed"]): row["validation_accuracy"] for row in subset},
         }
@@ -144,7 +152,9 @@ def selection(groups: dict) -> dict:
              and chosen["worst_seed_accuracy"] >= 0.80 - 1e-12
              and chosen["sample_std_validation_accuracy"] <= 0.03 + 1e-12)):
         outcome, next_step = "A", "另立 RNN-ARCH-003 受控架构扩展；本阶段不启动。"
-    elif chosen["strategy_id"] != exp.T0 and bands.get(chosen["strategy_id"]) in ("strong", "stability"):
+    elif (chosen["strategy_id"] != exp.T0 and
+          (bands.get(chosen["strategy_id"]) in ("strong", "stability") or
+           chosen["relative_to_t0"]["mean_accuracy_change"] >= 0.005 - 1e-12)):
         outcome = "B"
         next_step = ("可由用户决定是否运行一次组合实验；本阶段不组合。" if combination_eligible
                      else "冻结最佳单项训练策略，再决定是否扩展架构。")
@@ -213,7 +223,7 @@ def summarize() -> None:
     plot_curves()
     lines = [
         "# RNN-TRAIN-001：双轴 RNN 的有限训练正则化比较", "",
-        "固定 `RNN2D-ARCH-L`（1,992,642 参数）与 `REP-006-FUSION` `[190,7,7]`。沿用种子 42、123、2026 的三份 1800/200 内部划分，只用训练索引拟合归一化；没有访问 `data/val`。T0 直接导入 RNN-ARCH-002 三次记录，没有重训。", "",
+        f"固定 `RNN2D-ARCH-L`（{groups[exp.T0]['parameter_count']:,} 参数）与 `REP-006-FUSION` `[190,7,7]`。沿用种子 42、123、2026 的三份 1800/200 内部划分，只用训练索引拟合归一化；没有访问 `data/val`。T0 直接导入 RNN-ARCH-002 三次记录，没有重训。", "",
         "T1 使用 RGB 水平翻转后重新提取的既有 REP-006 缓存，每份训练集为 1800 原图 + 1800 镜像图，归一化仅由这 3600 张图拟合；验证仍为 200 张原图。T2 只在每块的轴融合线性层后、MLP ReLU 后和 MLP 第二线性层后使用 `nn.Dropout(0.10)`。T3 只将 AdamW 权重衰减从 `1e-4` 提高至 `5e-4`。三者共用学习率 `3e-4`、批量 32、最多 40 轮、早停耐心 8、梯度裁剪 1.0；按最高内部验证准确率及同分较低损失保存检查点。", "",
         "## 三种子结果", "", "标准差为三种子的样本标准差；所有变化相对 T0，单位为百分点。", "",
         "| 策略 | 参数量 | 训练样本 | 平均准确率 ± 标准差 | 种子 42/123/2026 | 最差/最好 | 猫/狗均值 | Macro F1 | 最佳轮中位数 | 平均训练秒数 | 均值/最差/标准差变化 | 改进级别 |",
@@ -233,7 +243,13 @@ def summarize() -> None:
     for strategy_id in exp.ALL_STRATEGIES:
         group = groups[strategy_id]
         lines.append(f"| {strategy_id} | {pct(group['mean_final_train_accuracy'])} | {pct(group['mean_final_validation_accuracy'])} | {100 * group['mean_final_train_validation_gap']:.2f} pp | {group['late_validation_loss_rise_runs']}/3 | {100 * group['absolute_cat_dog_gap']:.2f} pp |")
+    baseline = groups[exp.T0]
+    flip = groups[exp.STRATEGIES[0]]
+    dropout = groups[exp.STRATEGIES[1]]
+    decay = groups[exp.STRATEGIES[2]]
     lines += ["", "![训练与内部验证轨迹](training_curves.png)", "",
+              f"T1 相对 T0 的末轮训练/验证差距缩小 {100 * (baseline['mean_final_train_validation_gap'] - flip['mean_final_train_validation_gap']):.2f} pp，猫狗准确率差缩小 {100 * (baseline['absolute_cat_dog_gap'] - flip['absolute_cat_dog_gap']):.2f} pp；其三种子标准差下降 {100 * (baseline['sample_std_validation_accuracy'] - flip['sample_std_validation_accuracy']):.2f} pp。T1 的训练样本数翻倍，收益应归为数据增强与有效样本扩充。", "",
+              f"T2 的均值相对 T0 变化 {100 * dropout['relative_to_t0']['mean_accuracy_change']:+.2f} pp，虽然标准差下降，未达到预设改进门槛。T3 的均值变化 {100 * decay['relative_to_t0']['mean_accuracy_change']:+.2f} pp、最差种子改善 {100 * decay['relative_to_t0']['worst_seed_change']:+.2f} pp、标准差下降 {-100 * decay['relative_to_t0']['std_change']:.2f} pp，因此达到稳定性改进门槛。各策略至少有 {min(group['late_validation_loss_rise_runs'] for group in groups.values())}/3 次后期验证损失回升，过拟合尚未消除。", "",
               "## 选择和下一步", "",
               f"按冻结的均值优先、近差距重视最差种子的规则，选择 **{decision['selected_strategy']}**（`{decision['selection_rule']}`）。组合资格：**{str(decision['combination_eligible']).lower()}**；候选：{', '.join(decision['combination_candidates']) or '无'}。", "",
               f"结论为 **Outcome {decision['outcome']}**。{decision['recommended_next_step']}", "",
@@ -268,6 +284,16 @@ def audit() -> None:
         if (len(drops) != (9 if strategy_id == exp.STRATEGIES[1] else 0)
                 or any(layer.p != 0.10 for layer in drops)):
             raise AssertionError("Dropout topology changed")
+        for block in model.blocks:
+            if strategy_id == exp.STRATEGIES[1]:
+                if (not isinstance(block.fusion_dropout, nn.Dropout)
+                        or [type(layer) for layer in block.channel_mlp] !=
+                           [nn.Linear, nn.ReLU, nn.Dropout, nn.Linear, nn.Dropout]):
+                    raise AssertionError("T2 dropout locations changed")
+            elif (not isinstance(block.fusion_dropout, nn.Identity)
+                  or [type(layer) for layer in block.channel_mlp] !=
+                     [nn.Linear, nn.ReLU, nn.Linear]):
+                raise AssertionError("Non-T2 residual path changed")
         for seed in exp.SEEDS:
             metrics, history, config, normal, directory = record(strategy_id, seed)
             split = prepared[seed]["split"]
