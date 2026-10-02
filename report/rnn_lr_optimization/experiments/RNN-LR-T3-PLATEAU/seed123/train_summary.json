@@ -1,0 +1,67 @@
+{
+  "strategy_id": "RNN-LR-T3-PLATEAU",
+  "seed": 123,
+  "epochs_run": 12,
+  "best_epoch": 11,
+  "parameter_count": 1992642,
+  "training_sample_count": 3600,
+  "fit_seconds": 42.32831671399998,
+  "best_validation_metrics": {
+    "loss": 0.6011687684059143,
+    "accuracy": 0.865,
+    "cat_accuracy": 0.88,
+    "dog_accuracy": 0.85,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        88,
+        12
+      ],
+      [
+        15,
+        85
+      ]
+    ]
+  },
+  "scheduler_config": {
+    "type": "ReduceLROnPlateau",
+    "mode": "min",
+    "factor": 0.3,
+    "patience": 2,
+    "min_lr": 1e-05
+  },
+  "scheduler_state_at_best": {
+    "factor": 0.3,
+    "min_lrs": [
+      1e-05
+    ],
+    "patience": 2,
+    "verbose": false,
+    "cooldown": 0,
+    "cooldown_counter": 0,
+    "mode": "min",
+    "threshold": 0.0001,
+    "threshold_mode": "rel",
+    "eps": 1e-08,
+    "last_epoch": 11,
+    "_last_lr": [
+      2.6999999999999996e-05
+    ],
+    "mode_worse": Infinity,
+    "best": 0.36623796701431277,
+    "num_bad_epochs": 1
+  },
+  "device": "cuda",
+  "final_learning_rate": 2.6999999999999996e-05,
+  "minimum_learning_rate_reached": 2.6999999999999996e-05,
+  "learning_rate_at_best_epoch": 2.6999999999999996e-05,
+  "number_of_lr_reductions": 2,
+  "epochs_of_lr_reductions": [
+    7,
+    10
+  ],
+  "learning_rates_after_reduction": [
+    8.999999999999999e-05,
+    2.6999999999999996e-05
+  ]
+}

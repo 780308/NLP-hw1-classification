@@ -1,0 +1,372 @@
+{
+  "batch_id": "RNN-TRAIN-003",
+  "baseline_source": "report/rnn_training/experiments/RNN-TRAIN-T1-FLIP",
+  "models": {
+    "RNN-LR-T0-CONST-3E4": {
+      "strategy_id": "RNN-LR-T0-CONST-3E4",
+      "parameter_count": 1992642,
+      "training_sample_count": 3600,
+      "mean_validation_accuracy": 0.84,
+      "sample_std_validation_accuracy": 0.03774917217635372,
+      "worst_seed_accuracy": 0.8,
+      "best_seed_accuracy": 0.875,
+      "mean_cat_accuracy": 0.8533333333333334,
+      "mean_dog_accuracy": 0.8266666666666667,
+      "absolute_cat_dog_gap": 0.026666666666666727,
+      "mean_balanced_accuracy": 0.84,
+      "mean_macro_f1": 0.8398230878837087,
+      "median_best_epoch": 10,
+      "mean_final_train_accuracy": 0.9491666666666667,
+      "mean_final_validation_accuracy": 0.8216666666666667,
+      "mean_train_validation_gap": 0.12750000000000006,
+      "mean_fit_seconds": 41.73272529033334,
+      "seed_accuracies": {
+        "42": 0.845,
+        "123": 0.875,
+        "2026": 0.8
+      },
+      "late_validation_loss_rise_runs": 3,
+      "relative_to_t0": {
+        "mean_accuracy_change": 0.0,
+        "worst_seed_change": 0.0,
+        "best_seed_change": 0.0,
+        "std_change": 0.0,
+        "cat_dog_gap_change": 0.0,
+        "train_validation_gap_change": 0.0
+      }
+    },
+    "RNN-LR-T1-CONST-1P5E4": {
+      "strategy_id": "RNN-LR-T1-CONST-1P5E4",
+      "parameter_count": 1992642,
+      "training_sample_count": 3600,
+      "mean_validation_accuracy": 0.83,
+      "sample_std_validation_accuracy": 0.034999999999999976,
+      "worst_seed_accuracy": 0.795,
+      "best_seed_accuracy": 0.865,
+      "mean_cat_accuracy": 0.8566666666666667,
+      "mean_dog_accuracy": 0.8033333333333333,
+      "absolute_cat_dog_gap": 0.053333333333333344,
+      "mean_balanced_accuracy": 0.83,
+      "mean_macro_f1": 0.8291650812933696,
+      "median_best_epoch": 12,
+      "mean_final_train_accuracy": 0.9617592592592593,
+      "mean_final_validation_accuracy": 0.8183333333333334,
+      "mean_train_validation_gap": 0.14342592592592596,
+      "mean_fit_seconds": 46.91573080933332,
+      "seed_accuracies": {
+        "42": 0.83,
+        "123": 0.865,
+        "2026": 0.795
+      },
+      "late_validation_loss_rise_runs": 3,
+      "relative_to_t0": {
+        "mean_accuracy_change": -0.010000000000000009,
+        "worst_seed_change": -0.0050000000000000044,
+        "best_seed_change": -0.010000000000000009,
+        "std_change": -0.0027491721763537452,
+        "cat_dog_gap_change": 0.026666666666666616,
+        "train_validation_gap_change": 0.0159259259259259
+      }
+    },
+    "RNN-LR-T2-COSINE": {
+      "strategy_id": "RNN-LR-T2-COSINE",
+      "parameter_count": 1992642,
+      "training_sample_count": 3600,
+      "mean_validation_accuracy": 0.8316666666666667,
+      "sample_std_validation_accuracy": 0.033291640592396934,
+      "worst_seed_accuracy": 0.795,
+      "best_seed_accuracy": 0.86,
+      "mean_cat_accuracy": 0.8766666666666667,
+      "mean_dog_accuracy": 0.7866666666666667,
+      "absolute_cat_dog_gap": 0.08999999999999997,
+      "mean_balanced_accuracy": 0.8316666666666667,
+      "mean_macro_f1": 0.8313086688878066,
+      "median_best_epoch": 10,
+      "mean_final_train_accuracy": 0.9788888888888888,
+      "mean_final_validation_accuracy": 0.805,
+      "mean_train_validation_gap": 0.17388888888888876,
+      "mean_fit_seconds": 46.01133917466667,
+      "seed_accuracies": {
+        "42": 0.84,
+        "123": 0.86,
+        "2026": 0.795
+      },
+      "late_validation_loss_rise_runs": 3,
+      "relative_to_t0": {
+        "mean_accuracy_change": -0.008333333333333304,
+        "worst_seed_change": -0.0050000000000000044,
+        "best_seed_change": -0.015000000000000013,
+        "std_change": -0.004457531583956786,
+        "cat_dog_gap_change": 0.06333333333333324,
+        "train_validation_gap_change": 0.0463888888888887
+      }
+    },
+    "RNN-LR-T3-PLATEAU": {
+      "strategy_id": "RNN-LR-T3-PLATEAU",
+      "parameter_count": 1992642,
+      "training_sample_count": 3600,
+      "mean_validation_accuracy": 0.8266666666666667,
+      "sample_std_validation_accuracy": 0.037527767497325656,
+      "worst_seed_accuracy": 0.79,
+      "best_seed_accuracy": 0.865,
+      "mean_cat_accuracy": 0.8333333333333334,
+      "mean_dog_accuracy": 0.82,
+      "absolute_cat_dog_gap": 0.01333333333333342,
+      "mean_balanced_accuracy": 0.8266666666666667,
+      "mean_macro_f1": 0.8266154002297575,
+      "median_best_epoch": 8,
+      "mean_final_train_accuracy": 0.9764814814814815,
+      "mean_final_validation_accuracy": 0.8183333333333334,
+      "mean_train_validation_gap": 0.15814814814814815,
+      "mean_fit_seconds": 40.301512906000006,
+      "seed_accuracies": {
+        "42": 0.825,
+        "123": 0.865,
+        "2026": 0.79
+      },
+      "late_validation_loss_rise_runs": 3,
+      "relative_to_t0": {
+        "mean_accuracy_change": -0.013333333333333308,
+        "worst_seed_change": -0.010000000000000009,
+        "best_seed_change": -0.010000000000000009,
+        "std_change": -0.00022140467902806438,
+        "cat_dog_gap_change": -0.013333333333333308,
+        "train_validation_gap_change": 0.03064814814814809
+      }
+    }
+  },
+  "diagnostics": {
+    "RNN-LR-T0-CONST-3E4": {
+      "42": {
+        "minimum_validation_loss_epoch": 8,
+        "maximum_accuracy_first_epoch": 15,
+        "validation_loss_rise_after_minimum": 0.29868918895721436,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 15,
+        "final_epoch": 16,
+        "final_train_accuracy": 0.9719444444444445,
+        "final_validation_accuracy": 0.815,
+        "final_train_validation_gap": 0.15694444444444455,
+        "learning_rate_at_best_epoch": 0.0003,
+        "final_learning_rate": 0.0003,
+        "number_of_lr_reductions": null,
+        "epochs_of_lr_reductions": [],
+        "learning_rates_after_reduction": []
+      },
+      "123": {
+        "minimum_validation_loss_epoch": 4,
+        "maximum_accuracy_first_epoch": 10,
+        "validation_loss_rise_after_minimum": 0.1646687221527099,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 10,
+        "final_epoch": 12,
+        "final_train_accuracy": 0.9463888888888888,
+        "final_validation_accuracy": 0.865,
+        "final_train_validation_gap": 0.08138888888888884,
+        "learning_rate_at_best_epoch": 0.0003,
+        "final_learning_rate": 0.0003,
+        "number_of_lr_reductions": null,
+        "epochs_of_lr_reductions": [],
+        "learning_rates_after_reduction": []
+      },
+      "2026": {
+        "minimum_validation_loss_epoch": 3,
+        "maximum_accuracy_first_epoch": 10,
+        "validation_loss_rise_after_minimum": 0.2886405122280121,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 10,
+        "final_epoch": 11,
+        "final_train_accuracy": 0.9291666666666667,
+        "final_validation_accuracy": 0.785,
+        "final_train_validation_gap": 0.14416666666666667,
+        "learning_rate_at_best_epoch": 0.0003,
+        "final_learning_rate": 0.0003,
+        "number_of_lr_reductions": null,
+        "epochs_of_lr_reductions": [],
+        "learning_rates_after_reduction": []
+      }
+    },
+    "RNN-LR-T1-CONST-1P5E4": {
+      "42": {
+        "minimum_validation_loss_epoch": 8,
+        "maximum_accuracy_first_epoch": 11,
+        "validation_loss_rise_after_minimum": 0.8031067633628846,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 11,
+        "final_epoch": 16,
+        "final_train_accuracy": 0.9783333333333334,
+        "final_validation_accuracy": 0.795,
+        "final_train_validation_gap": 0.18333333333333335,
+        "learning_rate_at_best_epoch": 0.00015,
+        "final_learning_rate": 0.00015,
+        "number_of_lr_reductions": null,
+        "epochs_of_lr_reductions": [],
+        "learning_rates_after_reduction": []
+      },
+      "123": {
+        "minimum_validation_loss_epoch": 4,
+        "maximum_accuracy_first_epoch": 12,
+        "validation_loss_rise_after_minimum": 0.16519406557083133,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 12,
+        "final_epoch": 12,
+        "final_train_accuracy": 0.9530555555555555,
+        "final_validation_accuracy": 0.865,
+        "final_train_validation_gap": 0.08805555555555555,
+        "learning_rate_at_best_epoch": 0.00015,
+        "final_learning_rate": 0.00015,
+        "number_of_lr_reductions": null,
+        "epochs_of_lr_reductions": [],
+        "learning_rates_after_reduction": []
+      },
+      "2026": {
+        "minimum_validation_loss_epoch": 4,
+        "maximum_accuracy_first_epoch": 12,
+        "validation_loss_rise_after_minimum": 0.2860873591899872,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 12,
+        "final_epoch": 12,
+        "final_train_accuracy": 0.9538888888888889,
+        "final_validation_accuracy": 0.795,
+        "final_train_validation_gap": 0.15888888888888886,
+        "learning_rate_at_best_epoch": 0.00015,
+        "final_learning_rate": 0.00015,
+        "number_of_lr_reductions": null,
+        "epochs_of_lr_reductions": [],
+        "learning_rates_after_reduction": []
+      }
+    },
+    "RNN-LR-T2-COSINE": {
+      "42": {
+        "minimum_validation_loss_epoch": 8,
+        "maximum_accuracy_first_epoch": 14,
+        "validation_loss_rise_after_minimum": 0.7558613109588623,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 14,
+        "final_epoch": 16,
+        "final_train_accuracy": 0.9997222222222222,
+        "final_validation_accuracy": 0.805,
+        "final_train_validation_gap": 0.19472222222222213,
+        "learning_rate_at_best_epoch": 8.91713775377657e-05,
+        "final_learning_rate": 3.769253581563263e-05,
+        "number_of_lr_reductions": null,
+        "epochs_of_lr_reductions": [],
+        "learning_rates_after_reduction": []
+      },
+      "123": {
+        "minimum_validation_loss_epoch": 4,
+        "maximum_accuracy_first_epoch": 10,
+        "validation_loss_rise_after_minimum": 0.33436894237995146,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 10,
+        "final_epoch": 12,
+        "final_train_accuracy": 0.9755555555555555,
+        "final_validation_accuracy": 0.845,
+        "final_train_validation_gap": 0.13055555555555554,
+        "learning_rate_at_best_epoch": 0.00017768299743083345,
+        "final_learning_rate": 0.00011019253581563262,
+        "number_of_lr_reductions": null,
+        "epochs_of_lr_reductions": [],
+        "learning_rates_after_reduction": []
+      },
+      "2026": {
+        "minimum_validation_loss_epoch": 3,
+        "maximum_accuracy_first_epoch": 10,
+        "validation_loss_rise_after_minimum": 0.4999890470504761,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 10,
+        "final_epoch": 11,
+        "final_train_accuracy": 0.9613888888888888,
+        "final_validation_accuracy": 0.765,
+        "final_train_validation_gap": 0.19638888888888884,
+        "learning_rate_at_best_epoch": 0.00017768299743083345,
+        "final_learning_rate": 0.00013231700256916655,
+        "number_of_lr_reductions": null,
+        "epochs_of_lr_reductions": [],
+        "learning_rates_after_reduction": []
+      }
+    },
+    "RNN-LR-T3-PLATEAU": {
+      "42": {
+        "minimum_validation_loss_epoch": 3,
+        "maximum_accuracy_first_epoch": 8,
+        "validation_loss_rise_after_minimum": 0.25677412271499633,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 8,
+        "final_epoch": 11,
+        "final_train_accuracy": 0.9661111111111111,
+        "final_validation_accuracy": 0.825,
+        "final_train_validation_gap": 0.1411111111111112,
+        "learning_rate_at_best_epoch": 8.999999999999999e-05,
+        "final_learning_rate": 2.6999999999999996e-05,
+        "number_of_lr_reductions": 2,
+        "epochs_of_lr_reductions": [
+          6,
+          9
+        ],
+        "learning_rates_after_reduction": [
+          8.999999999999999e-05,
+          2.6999999999999996e-05
+        ],
+        "best_accuracy_relative_to_first_reduction": "after"
+      },
+      "123": {
+        "minimum_validation_loss_epoch": 4,
+        "maximum_accuracy_first_epoch": 11,
+        "validation_loss_rise_after_minimum": 0.2799575805664062,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 11,
+        "final_epoch": 12,
+        "final_train_accuracy": 0.9911111111111112,
+        "final_validation_accuracy": 0.855,
+        "final_train_validation_gap": 0.13611111111111118,
+        "learning_rate_at_best_epoch": 2.6999999999999996e-05,
+        "final_learning_rate": 2.6999999999999996e-05,
+        "number_of_lr_reductions": 2,
+        "epochs_of_lr_reductions": [
+          7,
+          10
+        ],
+        "learning_rates_after_reduction": [
+          8.999999999999999e-05,
+          2.6999999999999996e-05
+        ],
+        "best_accuracy_relative_to_first_reduction": "after"
+      },
+      "2026": {
+        "minimum_validation_loss_epoch": 3,
+        "maximum_accuracy_first_epoch": 8,
+        "validation_loss_rise_after_minimum": 0.39525634765625006,
+        "validation_loss_rise_ge_0p10": true,
+        "best_epoch": 8,
+        "final_epoch": 11,
+        "final_train_accuracy": 0.9722222222222222,
+        "final_validation_accuracy": 0.775,
+        "final_train_validation_gap": 0.1972222222222222,
+        "learning_rate_at_best_epoch": 8.999999999999999e-05,
+        "final_learning_rate": 2.6999999999999996e-05,
+        "number_of_lr_reductions": 2,
+        "epochs_of_lr_reductions": [
+          6,
+          9
+        ],
+        "learning_rates_after_reduction": [
+          8.999999999999999e-05,
+          2.6999999999999996e-05
+        ],
+        "best_accuracy_relative_to_first_reduction": "after"
+      }
+    }
+  },
+  "selected_strategy": "RNN-LR-T0-CONST-3E4",
+  "selection_rule": "no_new_strategy_qualified",
+  "qualifying_reasons": {
+    "RNN-LR-T1-CONST-1P5E4": [],
+    "RNN-LR-T2-COSINE": [],
+    "RNN-LR-T3-PLATEAU": []
+  },
+  "eligible_strategies": [],
+  "meaningful_lr_policy_improvement": false,
+  "recommended_next_step": "Derive a fixed final epoch from existing three-seed curves, then separately run RNN-FINAL-001.",
+  "matched_epoch_source": "selected_policy_matched_epochs.csv"
+}

@@ -1,0 +1,47 @@
+{
+  "experiment_id": "RNN-TRAIN-003-RNN-LR-T2-COSINE-seed123",
+  "strategy_id": "RNN-LR-T2-COSINE",
+  "architecture_id": "RNN2D-ARCH-L",
+  "representation_id": "REP-006-FUSION",
+  "seed": 123,
+  "parameter_count": 1992642,
+  "training_sample_count": 3600,
+  "initial_learning_rate": 0.0003,
+  "scheduler_type": "CosineAnnealingLR",
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "gradient_clip_norm": 1.0,
+  "best_epoch": 10,
+  "final_epoch": 12,
+  "epochs_run": 12,
+  "train_accuracy_at_best_epoch": 0.9438888888888889,
+  "final_train_accuracy": 0.9755555555555555,
+  "validation_loss": 0.5040144228935242,
+  "validation_accuracy": 0.86,
+  "cat_accuracy": 0.93,
+  "dog_accuracy": 0.79,
+  "balanced_accuracy": 0.8600000000000001,
+  "macro_f1": 0.8593106220480353,
+  "confusion_matrix": [
+    [
+      93,
+      7
+    ],
+    [
+      21,
+      79
+    ]
+  ],
+  "fit_seconds": 40.48502107899998,
+  "split_sha256": "27ee1119bf3fc1ba7bedc4939eb47320edb1df91e61d8c553d049e94194d9d42",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "37c0be14b83957bf8674a29aba7e8b4013fdf8fa80c0c6a2c93fe42b01fa8d8c",
+  "code_commit": "272bba804f8f7a18a280fbb00b3801f10883d901",
+  "status": "complete",
+  "final_learning_rate": 0.00011019253581563262,
+  "minimum_learning_rate_reached": 0.00013231700256916655,
+  "learning_rate_at_best_epoch": 0.00017768299743083345,
+  "number_of_lr_reductions": null,
+  "epochs_of_lr_reductions": [],
+  "learning_rates_after_reduction": []
+}

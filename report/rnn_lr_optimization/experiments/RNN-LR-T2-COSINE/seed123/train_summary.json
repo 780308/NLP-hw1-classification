@@ -1,0 +1,52 @@
+{
+  "strategy_id": "RNN-LR-T2-COSINE",
+  "seed": 123,
+  "epochs_run": 12,
+  "best_epoch": 10,
+  "parameter_count": 1992642,
+  "training_sample_count": 3600,
+  "fit_seconds": 40.48502107899998,
+  "best_validation_metrics": {
+    "loss": 0.5040144228935242,
+    "accuracy": 0.86,
+    "cat_accuracy": 0.93,
+    "dog_accuracy": 0.79,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        93,
+        7
+      ],
+      [
+        21,
+        79
+      ]
+    ]
+  },
+  "scheduler_config": {
+    "type": "CosineAnnealingLR",
+    "T_max": 20,
+    "eta_min": 1e-05
+  },
+  "scheduler_state_at_best": {
+    "T_max": 20,
+    "eta_min": 1e-05,
+    "base_lrs": [
+      0.0003
+    ],
+    "last_epoch": 10,
+    "verbose": false,
+    "_step_count": 11,
+    "_get_lr_called_within_step": false,
+    "_last_lr": [
+      0.00015499999999999997
+    ]
+  },
+  "device": "cuda",
+  "final_learning_rate": 0.00011019253581563262,
+  "minimum_learning_rate_reached": 0.00013231700256916655,
+  "learning_rate_at_best_epoch": 0.00017768299743083345,
+  "number_of_lr_reductions": null,
+  "epochs_of_lr_reductions": [],
+  "learning_rates_after_reduction": []
+}

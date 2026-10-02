@@ -1,0 +1,35 @@
+{
+  "strategy_id": "RNN-LR-T1-CONST-1P5E4",
+  "seed": 42,
+  "epochs_run": 16,
+  "best_epoch": 11,
+  "parameter_count": 1992642,
+  "training_sample_count": 3600,
+  "fit_seconds": 54.697732716999994,
+  "best_validation_metrics": {
+    "loss": 0.6991532182693482,
+    "accuracy": 0.83,
+    "cat_accuracy": 0.93,
+    "dog_accuracy": 0.73,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        93,
+        7
+      ],
+      [
+        27,
+        73
+      ]
+    ]
+  },
+  "scheduler_config": null,
+  "scheduler_state_at_best": null,
+  "device": "cuda",
+  "final_learning_rate": 0.00015,
+  "minimum_learning_rate_reached": 0.00015,
+  "learning_rate_at_best_epoch": 0.00015,
+  "number_of_lr_reductions": null,
+  "epochs_of_lr_reductions": [],
+  "learning_rates_after_reduction": []
+}

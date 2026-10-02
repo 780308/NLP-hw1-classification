@@ -1,0 +1,53 @@
+{
+  "experiment_id": "RNN-TRAIN-003-RNN-LR-T3-PLATEAU-seed42",
+  "strategy_id": "RNN-LR-T3-PLATEAU",
+  "architecture_id": "RNN2D-ARCH-L",
+  "representation_id": "REP-006-FUSION",
+  "seed": 42,
+  "parameter_count": 1992642,
+  "training_sample_count": 3600,
+  "initial_learning_rate": 0.0003,
+  "scheduler_type": "ReduceLROnPlateau",
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "gradient_clip_norm": 1.0,
+  "best_epoch": 8,
+  "final_epoch": 11,
+  "epochs_run": 11,
+  "train_accuracy_at_best_epoch": 0.9222222222222223,
+  "final_train_accuracy": 0.9661111111111111,
+  "validation_loss": 0.5526966381072999,
+  "validation_accuracy": 0.825,
+  "cat_accuracy": 0.81,
+  "dog_accuracy": 0.84,
+  "balanced_accuracy": 0.825,
+  "macro_f1": 0.8249606161386311,
+  "confusion_matrix": [
+    [
+      81,
+      19
+    ],
+    [
+      16,
+      84
+    ]
+  ],
+  "fit_seconds": 39.20740587,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "37c0be14b83957bf8674a29aba7e8b4013fdf8fa80c0c6a2c93fe42b01fa8d8c",
+  "code_commit": "272bba804f8f7a18a280fbb00b3801f10883d901",
+  "status": "complete",
+  "final_learning_rate": 2.6999999999999996e-05,
+  "minimum_learning_rate_reached": 2.6999999999999996e-05,
+  "learning_rate_at_best_epoch": 8.999999999999999e-05,
+  "number_of_lr_reductions": 2,
+  "epochs_of_lr_reductions": [
+    6,
+    9
+  ],
+  "learning_rates_after_reduction": [
+    8.999999999999999e-05,
+    2.6999999999999996e-05
+  ]
+}

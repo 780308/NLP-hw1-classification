@@ -195,3 +195,16 @@ python rnn_architecture_scaling_experiments.py audit
 ```
 
 BASE/WIDE/XWIDE 的内部验证均值为 **84.00%/82.83%/83.83%**。两种加宽模型都未达到预设的实质均值增益门槛，因此判定宽度缩放饱和（Outcome B），**最终架构保留 RNN2D-ARCH-L（报告中称 BASE）**。架构优化到此结束，下一步应另立训练设置优化阶段。完整记录见[宽度比较汇总](report/rnn_architecture_scaling/architecture_summary.md)；检查点保存在忽略的 `outputs/rnn_architecture/RNN-ARCH-003/`。
+
+## RNN 学习率策略：RNN-TRAIN-003
+
+固定 `RNN2D-ARCH-BASE`（代码标识 `RNN2D-ARCH-L`）、REP-006、RGB 水平镜像和三份内部划分。T0 从既有镜像增强记录导入；T1 恒定 `1.5e-4`、T2 余弦退火、T3 验证损失平台降率各运行三个种子。每轮 `history.csv` 记录实际训练学习率。仅使用 `data/train` 的内部验证。
+
+```bash
+python rnn_lr_optimization_experiments.py smoke
+python rnn_lr_optimization_experiments.py run-all
+python rnn_lr_optimization_experiments.py summarize
+python rnn_lr_optimization_experiments.py audit
+```
+
+T0/T1/T2/T3 三种子平均内部验证准确率为 **84.00%/83.00%/83.17%/82.67%**。三个新策略均未通过预设的均值、最差种子或稳定性改进门槛，最终学习率政策保留 **恒定 `3e-4`**。详细结果、调度器事件、曲线和选定政策的共同轮次表见[学习率实验汇总](report/rnn_lr_optimization/lr_summary.md)。下一步单独推导固定最终轮次，再执行 `RNN-FINAL-001`；本阶段未评估 RNN 留出测试集。
