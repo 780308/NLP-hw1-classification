@@ -1,0 +1,26 @@
+{
+  "architecture_id": "RNN2D-ARCH-S",
+  "seed": 2026,
+  "epochs_run": 12,
+  "best_epoch": 9,
+  "parameter_count": 502466,
+  "fit_seconds": 14.534292846,
+  "best_validation_metrics": {
+    "loss": 0.64573237657547,
+    "accuracy": 0.775,
+    "cat_accuracy": 0.84,
+    "dog_accuracy": 0.71,
+    "samples": 200,
+    "confusion_matrix": [
+      [
+        84,
+        16
+      ],
+      [
+        29,
+        71
+      ]
+    ]
+  },
+  "device": "cuda"
+}

@@ -1,0 +1,37 @@
+{
+  "experiment_id": "RNN-ARCH-002-RNN2D-ARCH-L-seed123",
+  "architecture_id": "RNN2D-ARCH-L",
+  "representation_id": "REP-006-FUSION",
+  "spatial_representation": "two_axis_7x7_grid",
+  "seed": 123,
+  "parameter_count": 1992642,
+  "embed_dim": 320,
+  "rnn_hidden_size": 80,
+  "num_blocks": 3,
+  "best_epoch": 15,
+  "epochs_run": 15,
+  "train_accuracy_at_best_epoch": 0.9666666666666667,
+  "final_train_accuracy": 0.9666666666666667,
+  "validation_loss": 0.6266339653730393,
+  "validation_accuracy": 0.865,
+  "cat_accuracy": 0.96,
+  "dog_accuracy": 0.77,
+  "balanced_accuracy": 0.865,
+  "macro_f1": 0.8637705290244456,
+  "confusion_matrix": [
+    [
+      96,
+      4
+    ],
+    [
+      23,
+      77
+    ]
+  ],
+  "fit_seconds": 23.849035402999988,
+  "gradient_clip_norm": 1.0,
+  "split_sha256": "27ee1119bf3fc1ba7bedc4939eb47320edb1df91e61d8c553d049e94194d9d42",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "code_commit": "83fec3bc0497d869038e1f1aea191b3cb8880b47",
+  "status": "complete"
+}
