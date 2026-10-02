@@ -1,6 +1,6 @@
 # 猫狗图像分类：DNN、CNN、RNN 实验
 
-本项目按 `synopsis.txt` 实现猫狗二分类。已完成最终 DNN `DNN-FINAL-001`、最终 CNN `CNN-FINAL-001`、两阶段 RNN 架构比较及 RNN 有限训练策略比较；RNN 最终训练与保留集评估尚未运行。500 张保留图上的最终 DNN 准确率为 **73.80%**，最终 CNN 为 **81.20%**。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，持续更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
+本项目按 `synopsis.txt` 实现猫狗二分类。已完成最终 DNN `DNN-FINAL-001`、最终 CNN `CNN-FINAL-001`、两阶段 RNN 架构比较及 RNN 训练策略和单次组合比较；RNN 最终训练与保留集评估尚未运行。500 张保留图上的最终 DNN 准确率为 **73.80%**，最终 CNN 为 **81.20%**。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，持续更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
 
 每次实验的编号、配置、结果与对应 Git 提交方式记录在 [report/experiment_log.md](report/experiment_log.md)。公开仓库不包含原始 `data/` 图片或 `outputs/` 检查点；运行前需把课程提供的数据放到下述目录。
 
@@ -169,3 +169,16 @@ python rnn_training_strategy_experiments.py audit
 ```
 
 T0/T1/T2/T3 的三种子内部验证均值为 81.83%/84.00%/81.17%/82.17%。选定 **RNN-TRAIN-T1-FLIP**，Outcome A；T1 与 T3 使一次组合实验具备资格，但本阶段未运行组合。结果、曲线和逐次预测见[训练策略汇总](report/rnn_training/training_strategy_summary.md)。大检查点保存在忽略的 `outputs/rnn_training/RNN-TRAIN-001/`；已有结果只需用 `summarize`、`audit` 复核。
+
+## RNN 单次组合比较：RNN-TRAIN-002
+
+只比较 T1 镜像增强与 T4 镜像增强加 AdamW 权重衰减 `5e-4`。T4 延用 T1 的 3600 张训练特征、训练集归一化、200 张原图内部验证和三个固定种子；没有访问 `data/val`。
+
+```bash
+python rnn_training_combination_experiments.py smoke
+python rnn_training_combination_experiments.py run-all
+python rnn_training_combination_experiments.py summarize
+python rnn_training_combination_experiments.py audit
+```
+
+T4 的内部验证均值为 83.33% ± 3.51%，低于 T1 的 84.00% ± 3.77%；两者最差种子均为 80.00%。按预设门槛，**未来 RNN-ARCH-003 冻结 T1 配方：RGB 水平镜像增强、学习率 `3e-4`、权重衰减 `1e-4`、无 Dropout**。结果与逐次审计见[组合实验汇总](report/rnn_training_combination/combination_summary.md)。检查点保存在忽略的 `outputs/rnn_training/RNN-TRAIN-002/`，本阶段未启动 RNN-ARCH-003。

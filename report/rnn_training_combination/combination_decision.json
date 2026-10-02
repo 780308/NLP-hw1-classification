@@ -1,0 +1,143 @@
+{
+  "batch_id": "RNN-TRAIN-002",
+  "strategy_id": "RNN-TRAIN-T4-FLIP-WD",
+  "t4": {
+    "strategy_id": "RNN-TRAIN-T4-FLIP-WD",
+    "parameter_count": 1992642,
+    "training_sample_count": 3600,
+    "mean_validation_accuracy": 0.8333333333333334,
+    "sample_std_validation_accuracy": 0.035118845842842444,
+    "worst_seed_accuracy": 0.8,
+    "best_seed_accuracy": 0.87,
+    "mean_cat_accuracy": 0.8366666666666667,
+    "mean_dog_accuracy": 0.83,
+    "absolute_cat_dog_gap": 0.00666666666666671,
+    "mean_balanced_accuracy": 0.8333333333333334,
+    "mean_macro_f1": 0.8333009887623416,
+    "median_best_epoch": 10,
+    "mean_final_train_accuracy": 0.9527777777777777,
+    "mean_final_validation_accuracy": 0.83,
+    "mean_train_validation_gap": 0.12277777777777776,
+    "late_validation_loss_rise_runs": 3,
+    "mean_fit_seconds": 42.30732544266666,
+    "seed_accuracies": {
+      "42": 0.83,
+      "123": 0.87,
+      "2026": 0.8
+    }
+  },
+  "historical_references": {
+    "RNN-TRAIN-T0-BASE": {
+      "strategy_id": "RNN-TRAIN-T0-BASE",
+      "parameter_count": 1992642,
+      "training_sample_count": 1800,
+      "mean_validation_accuracy": 0.8183333333333334,
+      "sample_std_validation_accuracy": 0.04310839052125852,
+      "worst_seed_accuracy": 0.78,
+      "best_seed_accuracy": 0.865,
+      "mean_cat_accuracy": 0.87,
+      "mean_dog_accuracy": 0.7666666666666667,
+      "absolute_cat_dog_gap": 0.10333333333333328,
+      "mean_balanced_accuracy": 0.8183333333333334,
+      "mean_macro_f1": 0.8176946859092592,
+      "median_best_epoch": 15,
+      "mean_final_train_accuracy": 0.9507407407407408,
+      "mean_final_validation_accuracy": 0.8083333333333333,
+      "mean_final_train_validation_gap": 0.14240740740740743,
+      "late_validation_loss_rise_runs": 3,
+      "mean_fit_seconds": 23.641645849666663,
+      "seed_accuracies": {
+        "42": 0.81,
+        "123": 0.865,
+        "2026": 0.78
+      },
+      "relative_to_t0": {
+        "mean_accuracy_change": 0.0,
+        "worst_seed_change": 0.0,
+        "std_change": 0.0,
+        "cat_dog_gap_change": 0.0
+      }
+    },
+    "RNN-TRAIN-T1-FLIP": {
+      "strategy_id": "RNN-TRAIN-T1-FLIP",
+      "parameter_count": 1992642,
+      "training_sample_count": 3600,
+      "mean_validation_accuracy": 0.84,
+      "sample_std_validation_accuracy": 0.03774917217635372,
+      "worst_seed_accuracy": 0.8,
+      "best_seed_accuracy": 0.875,
+      "mean_cat_accuracy": 0.8533333333333334,
+      "mean_dog_accuracy": 0.8266666666666667,
+      "absolute_cat_dog_gap": 0.026666666666666727,
+      "mean_balanced_accuracy": 0.84,
+      "mean_macro_f1": 0.8398230878837087,
+      "median_best_epoch": 10,
+      "mean_final_train_accuracy": 0.9491666666666667,
+      "mean_final_validation_accuracy": 0.8216666666666667,
+      "mean_final_train_validation_gap": 0.12750000000000006,
+      "late_validation_loss_rise_runs": 3,
+      "mean_fit_seconds": 41.73272529033334,
+      "seed_accuracies": {
+        "42": 0.845,
+        "123": 0.875,
+        "2026": 0.8
+      },
+      "relative_to_t0": {
+        "mean_accuracy_change": 0.021666666666666612,
+        "worst_seed_change": 0.020000000000000018,
+        "std_change": -0.005359218344904798,
+        "cat_dog_gap_change": -0.07666666666666655
+      }
+    },
+    "RNN-TRAIN-T3-WD": {
+      "strategy_id": "RNN-TRAIN-T3-WD",
+      "parameter_count": 1992642,
+      "training_sample_count": 1800,
+      "mean_validation_accuracy": 0.8216666666666667,
+      "sample_std_validation_accuracy": 0.029297326385411538,
+      "worst_seed_accuracy": 0.8,
+      "best_seed_accuracy": 0.855,
+      "mean_cat_accuracy": 0.8433333333333334,
+      "mean_dog_accuracy": 0.7999999999999999,
+      "absolute_cat_dog_gap": 0.043333333333333446,
+      "mean_balanced_accuracy": 0.8216666666666667,
+      "mean_macro_f1": 0.8213172504271791,
+      "median_best_epoch": 12,
+      "mean_final_train_accuracy": 0.9390740740740741,
+      "mean_final_validation_accuracy": 0.8066666666666666,
+      "mean_final_train_validation_gap": 0.13240740740740742,
+      "late_validation_loss_rise_runs": 3,
+      "mean_fit_seconds": 22.39833753000001,
+      "seed_accuracies": {
+        "42": 0.81,
+        "123": 0.855,
+        "2026": 0.8
+      },
+      "relative_to_t0": {
+        "mean_accuracy_change": 0.0033333333333332993,
+        "worst_seed_change": 0.020000000000000018,
+        "std_change": -0.01381106413584698,
+        "cat_dog_gap_change": -0.05999999999999983
+      }
+    }
+  },
+  "relative_to_t1": {
+    "mean_accuracy_change": -0.006666666666666599,
+    "worst_seed_change": 0.0,
+    "best_seed_change": -0.0050000000000000044,
+    "std_change": -0.0026303263335112764,
+    "cat_dog_gap_change": -0.020000000000000018,
+    "train_validation_gap_change": -0.004722222222222294
+  },
+  "selected_training_recipe": "RNN-TRAIN-T1-FLIP",
+  "selection_rule": "combination_did_not_meet_predeclared_threshold",
+  "frozen_recipe": {
+    "architecture_id": "RNN2D-ARCH-L",
+    "representation_id": "REP-006-FUSION",
+    "horizontal_flip": true,
+    "weight_decay": 0.0001,
+    "learning_rate": 0.0003,
+    "dropout_probability": 0.0
+  },
+  "next_stage": "RNN-ARCH-003 controlled width scaling"
+}

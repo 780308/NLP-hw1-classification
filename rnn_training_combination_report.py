@@ -192,6 +192,7 @@ def summarize() -> None:
     lines += ["", "![T1 与 T4 训练曲线](training_curves.png)", "",
               "## 冻结决策", "",
               f"相对 T1：平均准确率变化 {100 * changes['mean_accuracy_change']:+.2f} pp，最差种子变化 {100 * changes['worst_seed_change']:+.2f} pp，最好种子变化 {100 * changes['best_seed_change']:+.2f} pp，样本标准差变化 {100 * changes['std_change']:+.2f} pp，猫狗准确率差变化 {100 * changes['cat_dog_gap_change']:+.2f} pp，末轮训练/验证差距变化 {100 * changes['train_validation_gap_change']:+.2f} pp。", "",
+              f"T4 的平均准确率{'提高' if changes['mean_accuracy_change'] > 0 else '下降'}，最差种子{'改善' if changes['worst_seed_change'] > 0 else '未改善'}；种子标准差{'下降' if changes['std_change'] < 0 else '上升'}。猫狗准确率差从 {100 * t1['absolute_cat_dog_gap']:.2f} pp 变为 {100 * t4['absolute_cat_dog_gap']:.2f} pp，类别平衡得以保持。末轮训练/验证差距仅变化 {100 * changes['train_validation_gap_change']:+.2f} pp，且 T1 与 T4 的后期验证损失回升分别为 {t1['late_validation_loss_rise_runs']}/3 和 {t4['late_validation_loss_rise_runs']}/3；没有证据表明更强权重衰减实质消除了过拟合。", "",
               f"按预设规则选择 **{choice['selected_training_recipe']}**（`{choice['selection_rule']}`）。冻结未来架构比较的配方为 RGB 水平镜像增强、学习率 `3e-4`、AdamW 权重衰减 `{choice['frozen_recipe']['weight_decay']}`、无 Dropout。下一阶段可另立 `RNN-ARCH-003` 受控宽度扩展；本任务没有启动。", "",
               "本阶段仅新增 T4 三个种子的训练；没有访问 `data/val`、运行 RNN 最终训练、额外策略或架构扩展。", ""]
     (exp.REPORT / "combination_summary.md").write_text("\n".join(lines), encoding="utf-8")
