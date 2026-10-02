@@ -1,0 +1,29 @@
+{
+  "experiment_id": "CNN-FINAL-001",
+  "test_dataset": "data/val",
+  "samples": 500,
+  "cat_samples": 250,
+  "dog_samples": 250,
+  "loss": 0.43889572978019714,
+  "accuracy": 0.812,
+  "cat_accuracy": 0.812,
+  "dog_accuracy": 0.812,
+  "balanced_accuracy": 0.812,
+  "macro_f1": 0.812,
+  "confusion_matrix": [
+    [
+      203,
+      47
+    ],
+    [
+      47,
+      203
+    ]
+  ],
+  "checkpoint_sha256": "c400381eb6355819c018a10a02c1d9271152aaad340bc2e6742e9f58e15a45d9",
+  "train_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "37c0be14b83957bf8674a29aba7e8b4013fdf8fa80c0c6a2c93fe42b01fa8d8c",
+  "val_cache_manifest_sha256": "bb83d6d7c285f3c38887ceac370f782333c8831b7ee63e57148fcb4391a34af2",
+  "checkpoint_reloaded_for_evaluation": true,
+  "status": "complete"
+}

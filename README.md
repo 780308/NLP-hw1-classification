@@ -1,6 +1,6 @@
 # 猫狗图像分类：DNN、CNN、RNN 实验
 
-本项目按 `synopsis.txt` 实现猫狗二分类。已完成历史 DNN-001、最终 DNN 实验 `DNN-FINAL-001`、CNN 架构比较 `CNN-ARCH-001` 和 CNN 训练策略比较 `CNN-TRAIN-001`；最终 CNN 与 RNN 尚未运行。最终 DNN 在 500 张保留评估图上准确率 **73.80%**（猫 65.60%，狗 82.00%）。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，逐步更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
+本项目按 `synopsis.txt` 实现猫狗二分类。已完成最终 DNN `DNN-FINAL-001`、CNN 架构比较 `CNN-ARCH-001`、CNN 训练策略比较 `CNN-TRAIN-001` 和最终 CNN `CNN-FINAL-001`；RNN 尚未运行。500 张保留图上的最终 DNN 准确率为 **73.80%**，最终 CNN 为 **81.20%**。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，持续更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
 
 每次实验的编号、配置、结果与对应 Git 提交方式记录在 [report/experiment_log.md](report/experiment_log.md)。公开仓库不包含原始 `data/` 图片或 `outputs/` 检查点；运行前需把课程提供的数据放到下述目录。
 
@@ -22,7 +22,7 @@ python evaluate.py --checkpoint outputs/dnn/best_model.pt --data-dir data/val
 ## 模型与输出
 
 - DNN：64×64 RGB 图像展平后进入 `12288→256→64→2` 的纯全连接网络。
-- CNN：已用固定 `[190,7,7]` 手工特征图比较三种浅层卷积网络并选定 CNN-ARCH-C；最终训练和保留集评估尚未执行。
+- CNN：在固定 `[190,7,7]` 手工特征图上选定 CNN-ARCH-C 和原图水平镜像策略；最终使用 4000 张原图及镜像特征图训练 4 轮，保留集准确率 81.20%。
 - RNN：计划中的按行输入 `nn.RNN` 网络，待实现。
 
 每个模型的运行产物放在 `outputs/<model>/`，包括 `best_model.pt`、`config.json`、`split.json`、`history.csv`、`train_summary.json`、`test_metrics.json` 和图表。`outputs/` 不纳入版本控制；报告引用的图另存于 `report/figures/`。检查点包含结构配置、类别映射、最佳轮次和内部验证指标，可由 `evaluate.py` 重载。
@@ -112,3 +112,19 @@ python cnn_training_strategy_experiments.py audit
 镜像特征缓存保存在忽略的 `outputs/stage1/cache/handcrafted128_flipped/`；正式运行检查点保存在 `outputs/cnn_training/CNN-TRAIN-001/`；小型记录归档在 `report/cnn_training/`。命令中的 `run-all` 用于首次执行九次训练；复核已有结果时只运行 `summarize` 和 `audit`。
 
 九次新训练和三次历史 T0 记录已通过审计。T0/T1/T2/T3 的三种子内部验证均值分别为 79.83%/80.50%/80.00%/80.00%；按预设规则选定 **T1 原图水平镜像**。没有单策略达到相对 T0 至少 +1.0 个百分点，因此不运行组合实验。详见[策略汇总](report/cnn_training/training_strategy_summary.md)。本阶段没有执行 CNN 的 500 张保留图测试。
+
+## 最终 CNN：CNN-FINAL-001
+
+按[评估前冻结协议](report/cnn_final/frozen_protocol.md)，复用原始与镜像 REP-006 缓存，全部 4000 张训练图拟合归一化，固定种子 42 和 4 轮训练。重载最终检查点后对 `data/val` 原图评估一次：损失 0.4389，总体、猫和狗准确率均为 **81.20%**，Macro F1 为 81.20%。详见[最终汇总](report/cnn_final/final_summary.md)。这 500 张图曾用于历史 DNN 评估，但没有参与 CNN 架构或训练策略选择。
+
+在 WSL Ubuntu 的项目根目录依次运行以下命令。`train` 会拒绝覆盖已有最终运行；`evaluate` 会拒绝第二次保留集评估。已有结果可用 `audit` 复核。
+
+```bash
+python cnn_final_experiment.py smoke
+python cnn_final_experiment.py train
+python cnn_final_experiment.py evaluate
+python cnn_final_experiment.py archive
+python cnn_final_experiment.py audit
+```
+
+大检查点保存在忽略的 `outputs/cnn_final/CNN-FINAL-001/`，小型配置、逐轮指标和 500 行预测保存在 `report/cnn_final/`。

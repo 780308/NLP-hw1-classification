@@ -1,0 +1,41 @@
+{
+  "experiment_id": "CNN-FINAL-001",
+  "model_family": "cnn",
+  "architecture_id": "CNN-ARCH-C",
+  "representation_id": "REP-006-FUSION",
+  "representation_shape": [
+    190,
+    7,
+    7
+  ],
+  "strategy_id": "CNN-TRAIN-T1-FLIP",
+  "class_to_idx": {
+    "cat": 0,
+    "dog": 1
+  },
+  "training_seed": 42,
+  "original_training_samples": 2000,
+  "flipped_training_samples": 2000,
+  "effective_training_samples": 4000,
+  "training_class_counts": {
+    "cat": 2000,
+    "dog": 2000
+  },
+  "epochs": 4,
+  "early_stopping": false,
+  "internal_validation_samples": 0,
+  "optimizer": "AdamW",
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "loss": "CrossEntropyLoss",
+  "scheduler": null,
+  "augmentation": "deterministic_horizontal_flip",
+  "dropout2d_p": 0.0,
+  "checkpoint_selection": "final state after exactly four full-data epochs",
+  "parameter_count": 89794,
+  "device": "cuda",
+  "code_commit": "3200fba69d8de8cbb8c2ecae39618ec062e7c13c",
+  "train_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "37c0be14b83957bf8674a29aba7e8b4013fdf8fa80c0c6a2c93fe42b01fa8d8c"
+}

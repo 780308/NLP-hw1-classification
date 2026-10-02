@@ -1,0 +1,23 @@
+{
+  "experiment_id": "CNN-FINAL-001",
+  "architecture_id": "CNN-ARCH-C",
+  "representation_id": "REP-006-FUSION",
+  "parameter_count": 89794,
+  "original_training_samples": 2000,
+  "flipped_training_samples": 2000,
+  "effective_training_samples": 4000,
+  "epochs": 4,
+  "seed": 42,
+  "training_seconds": 15.012953357999997,
+  "final_train_loss": 0.36104339921474454,
+  "final_train_accuracy": 0.84025,
+  "final_train_cat_accuracy": 0.845,
+  "final_train_dog_accuracy": 0.8355,
+  "optimizer": "AdamW",
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "augmentation": "deterministic_horizontal_flip",
+  "checkpoint_sha256": "c400381eb6355819c018a10a02c1d9271152aaad340bc2e6742e9f58e15a45d9",
+  "status": "training_complete"
+}
