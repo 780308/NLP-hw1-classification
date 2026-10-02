@@ -1,0 +1,40 @@
+{
+  "batch_id": "RNN-ARCH-001",
+  "architecture_id": "RNN-ARCH-B",
+  "representation_id": "REP-006-FUSION",
+  "representation_shape": [
+    190,
+    7,
+    7
+  ],
+  "sequence_representation": "row",
+  "sequence_length": 7,
+  "rnn_input_size": 1330,
+  "hidden_size": 96,
+  "num_layers": 1,
+  "bidirectional": true,
+  "seed": 42,
+  "train_samples": 1800,
+  "validation_samples": 200,
+  "class_to_idx": {
+    "cat": 0,
+    "dog": 1
+  },
+  "parameter_count": 274562,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "optimizer": "AdamW",
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0001,
+  "batch_size": 32,
+  "max_epochs": 30,
+  "early_stopping_patience": 6,
+  "gradient_clip_norm": 1.0,
+  "rnn_dropout": 0.0,
+  "loss": "CrossEntropyLoss",
+  "augmentation": "none",
+  "scheduler": null,
+  "checkpoint_selection": "highest internal-validation accuracy; tie lower validation loss",
+  "device": "cuda",
+  "code_commit": "f4f789bca99afce211865587704f9f8fe7604a16"
+}

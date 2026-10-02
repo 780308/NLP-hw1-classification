@@ -1,0 +1,75 @@
+{
+  "batch_id": "RNN-ARCH-001",
+  "models": {
+    "RNN-ARCH-A": {
+      "architecture_id": "RNN-ARCH-A",
+      "parameter_count": 187138,
+      "mean_validation_accuracy": 0.7533333333333333,
+      "sample_std_validation_accuracy": 0.020207259421636918,
+      "worst_seed_accuracy": 0.735,
+      "mean_cat_accuracy": 0.8166666666666667,
+      "mean_dog_accuracy": 0.69,
+      "absolute_cat_dog_gap": 0.1266666666666667,
+      "mean_balanced_accuracy": 0.7533333333333333,
+      "mean_macro_f1": 0.7519594485309316,
+      "median_best_epoch": 9,
+      "mean_fit_seconds": 4.507746608333334,
+      "seed_accuracies": {
+        "42": 0.75,
+        "123": 0.775,
+        "2026": 0.735
+      }
+    },
+    "RNN-ARCH-B": {
+      "architecture_id": "RNN-ARCH-B",
+      "parameter_count": 274562,
+      "mean_validation_accuracy": 0.76,
+      "sample_std_validation_accuracy": 0.025000000000000022,
+      "worst_seed_accuracy": 0.735,
+      "mean_cat_accuracy": 0.7233333333333334,
+      "mean_dog_accuracy": 0.7966666666666666,
+      "absolute_cat_dog_gap": 0.07333333333333325,
+      "mean_balanced_accuracy": 0.76,
+      "mean_macro_f1": 0.7576955536781936,
+      "median_best_epoch": 11,
+      "mean_fit_seconds": 5.379592332666665,
+      "seed_accuracies": {
+        "42": 0.76,
+        "123": 0.785,
+        "2026": 0.735
+      }
+    },
+    "RNN-ARCH-C": {
+      "architecture_id": "RNN-ARCH-C",
+      "parameter_count": 82434,
+      "mean_validation_accuracy": 0.7566666666666667,
+      "sample_std_validation_accuracy": 0.005773502691896263,
+      "worst_seed_accuracy": 0.75,
+      "mean_cat_accuracy": 0.8066666666666666,
+      "mean_dog_accuracy": 0.7066666666666667,
+      "absolute_cat_dog_gap": 0.09999999999999998,
+      "mean_balanced_accuracy": 0.7566666666666667,
+      "mean_macro_f1": 0.7557574385017989,
+      "median_best_epoch": 7,
+      "mean_fit_seconds": 4.955146740333333,
+      "seed_accuracies": {
+        "42": 0.76,
+        "123": 0.76,
+        "2026": 0.75
+      }
+    }
+  },
+  "selected_architecture": "RNN-ARCH-C",
+  "selection_rule": "worst_seed_gap_at_least_1.0_pp",
+  "top_two_mean_accuracy_gap": 0.0033333333333332993,
+  "ranked_by_mean_accuracy": [
+    "RNN-ARCH-B",
+    "RNN-ARCH-C",
+    "RNN-ARCH-A"
+  ],
+  "descriptive_internal_references": {
+    "DNN-ARCH-C": 0.7816666666666667,
+    "CNN-ARCH-C": 0.7983333333333333,
+    "CNN-TRAIN-T1-FLIP": 0.805
+  }
+}

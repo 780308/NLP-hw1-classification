@@ -421,7 +421,18 @@ def summarize() -> None:
         _, history, _ = record(row["architecture_id"], row["seed"])
         final = history[-1]
         lines.append(f"| {row['architecture_id']} | {row['seed']} | {row['best_epoch']}/{len(history)} | {pct(row['validation_accuracy'])} | {pct(row['final_train_accuracy'])} | {row['validation_loss']:.4f}→{float(final['validation_loss']):.4f} |")
-    lines += ["", "![三架构训练和内部验证曲线](training_curves.png)", "",
+    lines += ["", "| 架构 | 末轮训练准确率均值 | 末轮验证准确率均值 | 末轮训练/验证差距 | 最低验证损失后升高 ≥ 0.10 的运行数 |",
+              "|---|---:|---:|---:|---:|"]
+    for architecture_id in ARCHITECTURE_IDS:
+        histories = [record(architecture_id, seed)[1] for seed in SEEDS]
+        mean_train = statistics.mean(float(history[-1]["train_accuracy"]) for history in histories)
+        mean_validation = statistics.mean(float(history[-1]["validation_accuracy"]) for history in histories)
+        loss_rises = sum(float(history[-1]["validation_loss"]) -
+                         min(float(epoch["validation_loss"]) for epoch in history) >= 0.10
+                         for history in histories)
+        lines.append(f"| {architecture_id} | {pct(mean_train)} | {pct(mean_validation)} | {(mean_train - mean_validation) * 100:.2f} pp | {loss_rises}/3 |")
+    lines += ["", "A/B 的末轮训练准确率明显高于内部验证；C 的差距较小，但三个种子的训练准确率仍持续升高。验证损失在部分运行中回升，说明值得另立训练策略阶段检验正则化或增强；本阶段不执行该搜索。", "",
+              "![三架构训练和内部验证曲线](training_curves.png)", "",
               "## 预设规则与参照", "",
               f"按预设规则选定 **{selection['selected_architecture']}**；规则代码 `{selection['selection_rule']}`，前两名平均准确率相差 {selection['top_two_mean_accuracy_gap'] * 100:.2f} 个百分点。", "",
               f"A→B（同为行序列）均值变化 {(grouped['RNN-ARCH-B']['mean_validation_accuracy'] - grouped['RNN-ARCH-A']['mean_validation_accuracy']) * 100:+.2f} pp、最差种子变化 {(grouped['RNN-ARCH-B']['worst_seed_accuracy'] - grouped['RNN-ARCH-A']['worst_seed_accuracy']) * 100:+.2f} pp、类别差变化 {(grouped['RNN-ARCH-B']['absolute_cat_dog_gap'] - grouped['RNN-ARCH-A']['absolute_cat_dog_gap']) * 100:+.2f} pp。B→C（双向 RNN，7 行变 49 单元）均值变化 {(grouped['RNN-ARCH-C']['mean_validation_accuracy'] - grouped['RNN-ARCH-B']['mean_validation_accuracy']) * 100:+.2f} pp、最差种子变化 {(grouped['RNN-ARCH-C']['worst_seed_accuracy'] - grouped['RNN-ARCH-B']['worst_seed_accuracy']) * 100:+.2f} pp、类别差变化 {(grouped['RNN-ARCH-C']['absolute_cat_dog_gap'] - grouped['RNN-ARCH-B']['absolute_cat_dog_gap']) * 100:+.2f} pp。", "",

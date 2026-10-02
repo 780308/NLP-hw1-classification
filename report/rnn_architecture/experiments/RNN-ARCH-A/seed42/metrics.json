@@ -1,0 +1,39 @@
+{
+  "experiment_id": "RNN-ARCH-001-RNN-ARCH-A-seed42",
+  "architecture_id": "RNN-ARCH-A",
+  "representation_id": "REP-006-FUSION",
+  "sequence_representation": "row",
+  "seed": 42,
+  "parameter_count": 187138,
+  "sequence_length": 7,
+  "rnn_input_size": 1330,
+  "hidden_size": 128,
+  "num_layers": 1,
+  "bidirectional": false,
+  "best_epoch": 13,
+  "epochs_run": 14,
+  "train_accuracy_at_best_epoch": 0.9722222222222222,
+  "final_train_accuracy": 0.9872222222222222,
+  "validation_loss": 0.6963276290893554,
+  "validation_accuracy": 0.75,
+  "cat_accuracy": 0.78,
+  "dog_accuracy": 0.72,
+  "balanced_accuracy": 0.75,
+  "macro_f1": 0.7497747973175859,
+  "confusion_matrix": [
+    [
+      78,
+      22
+    ],
+    [
+      28,
+      72
+    ]
+  ],
+  "fit_seconds": 5.667575752000001,
+  "gradient_clip_norm": 1.0,
+  "split_sha256": "c5eb3f17c06f69647d11edfab4dcab3114069b55b4c4b79f64a41d4947692ac6",
+  "feature_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "code_commit": "f4f789bca99afce211865587704f9f8fe7604a16",
+  "status": "complete"
+}

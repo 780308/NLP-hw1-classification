@@ -1,6 +1,6 @@
 # 猫狗图像分类：DNN、CNN、RNN 实验
 
-本项目按 `synopsis.txt` 实现猫狗二分类。已完成最终 DNN `DNN-FINAL-001`、CNN 架构比较 `CNN-ARCH-001`、CNN 训练策略比较 `CNN-TRAIN-001` 和最终 CNN `CNN-FINAL-001`；RNN 尚未运行。500 张保留图上的最终 DNN 准确率为 **73.80%**，最终 CNN 为 **81.20%**。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，持续更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
+本项目按 `synopsis.txt` 实现猫狗二分类。已完成最终 DNN `DNN-FINAL-001`、最终 CNN `CNN-FINAL-001` 和 RNN 架构比较 `RNN-ARCH-001`；RNN 最终训练与保留集评估尚未运行。500 张保留图上的最终 DNN 准确率为 **73.80%**，最终 CNN 为 **81.20%**。实验方案见 [EXPERIMENT_PLAN.md](EXPERIMENT_PLAN.md)，持续更新的实测报告见 [report/experiment_report.md](report/experiment_report.md)。
 
 每次实验的编号、配置、结果与对应 Git 提交方式记录在 [report/experiment_log.md](report/experiment_log.md)。公开仓库不包含原始 `data/` 图片或 `outputs/` 检查点；运行前需把课程提供的数据放到下述目录。
 
@@ -23,7 +23,7 @@ python evaluate.py --checkpoint outputs/dnn/best_model.pt --data-dir data/val
 
 - DNN：64×64 RGB 图像展平后进入 `12288→256→64→2` 的纯全连接网络。
 - CNN：在固定 `[190,7,7]` 手工特征图上选定 CNN-ARCH-C 和原图水平镜像策略；最终使用 4000 张原图及镜像特征图训练 4 轮，保留集准确率 81.20%。
-- RNN：计划中的按行输入 `nn.RNN` 网络，待实现。
+- RNN：已比较单向行序列、双向行序列和双向栅格单元序列三种标准 `nn.RNN`，选定 RNN-ARCH-C；最终训练和保留集评估待执行。
 
 每个模型的运行产物放在 `outputs/<model>/`，包括 `best_model.pt`、`config.json`、`split.json`、`history.csv`、`train_summary.json`、`test_metrics.json` 和图表。`outputs/` 不纳入版本控制；报告引用的图另存于 `report/figures/`。检查点包含结构配置、类别映射、最佳轮次和内部验证指标，可由 `evaluate.py` 重载。
 
@@ -128,3 +128,17 @@ python cnn_final_experiment.py audit
 ```
 
 大检查点保存在忽略的 `outputs/cnn_final/CNN-FINAL-001/`，小型配置、逐轮指标和 500 行预测保存在 `report/cnn_final/`。
+
+## RNN 架构比较：RNN-ARCH-001
+
+固定 `REP-006-FUSION` `[190,7,7]`，A/B 将每张特征图转为自上而下的 7 行序列 `[B,7,1330]`，C 将其转为行优先的 49 单元序列 `[B,49,190]`；三者均为单层标准 `nn.RNN`，按最终隐藏态分类。只用 `data/train` 的三份既有 1800/200 内部划分，使用相同优化设置与梯度裁剪。三架构各运行三个种子，共九次；没有访问 `data/val`。
+
+```bash
+python rnn_architecture_experiments.py smoke
+python rnn_architecture_experiments.py tiny-overfit
+python rnn_architecture_experiments.py run-all
+python rnn_architecture_experiments.py summarize
+python rnn_architecture_experiments.py audit
+```
+
+`run-all` 用于首次执行九次训练，已有结果可用 `summarize`、`audit` 复核。A/B/C 内部验证均值分别为 75.33%/76.00%/75.67%；按预设最差种子规则选定 **RNN-ARCH-C**。完整结果与曲线见[架构汇总](report/rnn_architecture/architecture_summary.md)。大检查点留在忽略的 `outputs/rnn_architecture/RNN-ARCH-001/`，小型记录保存在 `report/rnn_architecture/`。
