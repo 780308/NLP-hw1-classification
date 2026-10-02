@@ -1,0 +1,29 @@
+{
+  "experiment_id": "RNN-FINAL-001",
+  "test_dataset": "data/val",
+  "samples": 500,
+  "cat_samples": 250,
+  "dog_samples": 250,
+  "loss": 0.6694752497673034,
+  "accuracy": 0.816,
+  "cat_accuracy": 0.748,
+  "dog_accuracy": 0.884,
+  "balanced_accuracy": 0.8160000000000001,
+  "macro_f1": 0.8151452315506904,
+  "confusion_matrix": [
+    [
+      187,
+      63
+    ],
+    [
+      29,
+      221
+    ]
+  ],
+  "checkpoint_sha256": "625b98cd4bd3616dd200506ebde2a3135c0fe197d1d9ac15b7b77929e1aac442",
+  "checkpoint_reloaded_for_evaluation": true,
+  "train_cache_manifest_sha256": "97f9453652a511952fad677d596feb41e33d2c9c9f94024ec616c9916767ecd6",
+  "flipped_cache_manifest_sha256": "37c0be14b83957bf8674a29aba7e8b4013fdf8fa80c0c6a2c93fe42b01fa8d8c",
+  "val_cache_manifest_sha256": "bb83d6d7c285f3c38887ceac370f782333c8831b7ee63e57148fcb4391a34af2",
+  "status": "complete"
+}

@@ -208,3 +208,24 @@ python rnn_lr_optimization_experiments.py audit
 ```
 
 T0/T1/T2/T3 三种子平均内部验证准确率为 **84.00%/83.00%/83.17%/82.67%**。三个新策略均未通过预设的均值、最差种子或稳定性改进门槛，最终学习率政策保留 **恒定 `3e-4`**。详细结果、调度器事件、曲线和选定政策的共同轮次表见[学习率实验汇总](report/rnn_lr_optimization/lr_summary.md)。下一步单独推导固定最终轮次，再执行 `RNN-FINAL-001`；本阶段未评估 RNN 留出测试集。
+
+## 最终 DNN / CNN / RNN 实验状态
+
+三个必需模型的最终训练和留出集评估均已完成。以下为各自冻结流程在相同 500 张 `data/val` 原图上的一次最终评估；RNN 的 10 轮数在评估前由三种子共同轮次分析固定。
+
+| 模型 | 准确率 | 猫准确率 | 狗准确率 | Macro F1 |
+|---|---:|---:|---:|---:|
+| DNN-FINAL-001 | 73.80% | 65.60% | 82.00% | 73.62% |
+| CNN-FINAL-001 | 81.20% | 81.20% | 81.20% | 81.20% |
+| RNN-FINAL-001 | 81.60% | 74.80% | 88.40% | 81.51% |
+
+RNN 使用冻结的 REP-006 `[190,7,7]`、三块双轴双向 tanh RNN、2000 原图加 2000 RGB 水平镜像图、恒定学习率 `3e-4`、种子 42 和恰好 10 轮。其最终检查点从磁盘重载后评估一次；结果及跨模型比较见[最终 RNN 报告](report/rnn_final/final_summary.md)。三模型的训练增强、轮数和优化过程不同，因此表中差异是描述性结果。留出集此前已用于项目 DNN 和 CNN 的最终评估，但未用于 RNN 的开发选择。
+
+```bash
+python rnn_final_experiment.py smoke
+python rnn_final_experiment.py train
+python rnn_final_experiment.py evaluate
+python rnn_final_experiment.py archive
+```
+
+`train` 拒绝覆盖已有最终运行，`evaluate` 拒绝第二次留出集评估。大检查点位于忽略的 `outputs/rnn_final/RNN-FINAL-001/`；配置、归一化、10 轮训练记录、500 行预测和报告位于 `report/rnn_final/`。
