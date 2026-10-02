@@ -50,7 +50,7 @@ class TokenProjection(nn.Module):
 
 
 class BiRNN2DBlock(nn.Module):
-    def __init__(self, embed_dim: int, hidden_size: int) -> None:
+    def __init__(self, embed_dim: int, hidden_size: int, dropout_probability: float = 0.0) -> None:
         super().__init__()
         self.pre_norm = nn.LayerNorm(embed_dim)
         self.horizontal_rnn = nn.RNN(embed_dim, hidden_size, num_layers=1,
@@ -60,9 +60,15 @@ class BiRNN2DBlock(nn.Module):
                                    nonlinearity="tanh", batch_first=True,
                                    bidirectional=True, dropout=0.0)
         self.fusion = nn.Linear(4 * hidden_size, embed_dim)
+        self.fusion_dropout = nn.Dropout(dropout_probability) if dropout_probability else nn.Identity()
         self.channel_norm = nn.LayerNorm(embed_dim)
-        self.channel_mlp = nn.Sequential(nn.Linear(embed_dim, 2 * embed_dim),
-                                         nn.ReLU(), nn.Linear(2 * embed_dim, embed_dim))
+        mlp_layers: list[nn.Module] = [nn.Linear(embed_dim, 2 * embed_dim), nn.ReLU()]
+        if dropout_probability:
+            mlp_layers.append(nn.Dropout(dropout_probability))
+        mlp_layers.append(nn.Linear(2 * embed_dim, embed_dim))
+        if dropout_probability:
+            mlp_layers.append(nn.Dropout(dropout_probability))
+        self.channel_mlp = nn.Sequential(*mlp_layers)
         self.embed_dim = embed_dim
         self.hidden_size = hidden_size
 
@@ -81,21 +87,24 @@ class BiRNN2DBlock(nn.Module):
         fused_axes = torch.cat((horizontal, vertical), dim=-1)
         if fused_axes.shape != (batch_size, 7, 7, 4 * self.hidden_size):
             raise AssertionError("Axis fusion shape changed")
-        x = x + self.fusion(fused_axes)
+        x = x + self.fusion_dropout(self.fusion(fused_axes))
         x = x + self.channel_mlp(self.channel_norm(x))
         return x
 
 
 class VisionRNN2DClassifier(nn.Module):
-    def __init__(self, architecture_id: str) -> None:
+    def __init__(self, architecture_id: str, dropout_probability: float = 0.0) -> None:
         super().__init__()
         if architecture_id not in ARCHITECTURES:
             raise ValueError(f"Unknown two-axis RNN architecture: {architecture_id}")
+        if not 0.0 <= dropout_probability < 1.0:
+            raise ValueError("Dropout probability must be in [0,1)")
         self.architecture_id = architecture_id
         self.specification = ARCHITECTURES[architecture_id]
         embed_dim = self.specification["embed_dim"]
         self.projection = TokenProjection(embed_dim)
-        self.blocks = nn.ModuleList(BiRNN2DBlock(embed_dim, self.specification["rnn_hidden_size"])
+        self.blocks = nn.ModuleList(BiRNN2DBlock(embed_dim, self.specification["rnn_hidden_size"],
+                                                 dropout_probability)
                                     for _ in range(self.specification["num_blocks"]))
         self.head_norm = nn.LayerNorm(embed_dim)
         self.classifier = nn.Linear(embed_dim, 2)
