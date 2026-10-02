@@ -1,0 +1,9 @@
+{
+  "architecture_id": "RNN-ARCH-A",
+  "seed": 42,
+  "samples": 64,
+  "epoch": 4,
+  "training_accuracy_on_subset": 0.953125,
+  "formal_result": false,
+  "status": "passed"
+}
